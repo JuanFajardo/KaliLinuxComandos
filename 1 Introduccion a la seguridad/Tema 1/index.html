@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a la Seguridad · Ciberseguridad</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+
+    <style>
+        .reveal { color: #2c3e50; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #2c3e50; }
+        .command-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        .command { color: #2980b9; font-weight: bold; }
+        .explanation { font-size: 0.9em; margin-top: 8px; }
+        .example {
+            background: #fdf2e9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 8px;
+            border-left: 3px solid #e67e22;
+            font-size: 0.9em;
+        }
+        .tip {
+            background: #d5f4e6;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #27ae60;
+            font-size: 0.9em;
+        }
+        .warning {
+            background: #fadbd8;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #e74c3c;
+            font-size: 0.9em;
+        }
+        .slide-title {
+            color: #557cf2;
+            border-bottom: 2px solid #557cf2;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        .description {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px 20px;
+            margin-top: 15px;
+        }
+        .grid-list li {
+            list-style-type: none;
+            margin-bottom: 8px;
+        }
+        .grid-list li::before {
+            content: "•";
+            color: #557cf2;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .small-note {
+            font-size: 0.8rem;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- ================= PORTADA ================= -->
+ <section>
+    <img src="logo.png" alt="">
+</section>
+<section>
+    <h1>Introducción a la </h1>
+    <h2>Seguridad, Seguridad Informática, Seguridad de la Información-InfoSec, Ciberseguridad</h2>
+    
+    <p class="tip">Juan Alberto Fajardo Canaza</p>
+</section>
+
+
+<section>
+    <section>
+        <h2 class="slide-title">1. Fundamentos de Seguridad</h2>
+        <div class="description">
+            Seguridad física<br> 
+            Seguridad informática<br>
+            Seguridad  de la información InfoSec<br>
+            Ciberseguridad.
+        </div>
+    </section>
+    <section>
+        <h3>1.1 Seguridad </h3>
+        <div class="command-box">
+            <div class="explanation">
+                Condición de estar protegido frente a riesgos, amenazas o peligros.
+            </div>
+            <div class="example">
+                <strong>Componentes:</strong> Protección · Prevención · Control · Gestión de riesgos · Continuidad
+            </div>
+            <p class="small-note" style="margin-top:5px;">Aplica a personas, bienes, procesos, información y tecnología.</p>
+        </div>
+    </section>
+    <section>
+        <h3>1.2 Seguridad Informática</h3>
+        <div class="command-box">
+            
+            <div class="explanation">
+                Protección de sistemas informáticos (hardware, software, redes).
+            </div>
+            <div class="grid-list">
+                <li><b>Protección de equipos</b></li>
+                <li><b>Seguridad de redes</b></li>
+                <li><b>Control de accesos</b></li>
+                <li><b>Antivirus / antimalware</b></li>
+                <li><b>Firewalls</b></li>
+                <li><b>Hardening de sistemas</b></li>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h3>1.3 Seguridad de la Información</h3>
+        <div class="command-box">
+            <div class="explanation">
+                Protege la información(activo) en cualquier formato (digital, físico, verbal) garantizando CIA.
+            </div>
+            <div class="grid-list">
+                <li><b>Políticas de seguridad</b></li>
+                <li><b>Gestión de riesgos</b></li>
+                <li><b>Controles organizacionales</b></li>
+                <li><b>Controles físicos/técnicos</b></li>
+                <li><b>Gestión de incidentes</b></li>
+                <li><b>ISO/IEC 27001</b></li>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h3>1.4 Ciberseguridad</h3>
+        <div class="command-box">
+            <div class="explanation">
+                Protege sistemas conectados a redes (ataques digitales).
+            </div>
+            <div class="grid-list">
+                <li><b>Protección contra malware</b></li>
+                <li><b>Defensa ante ataques remotos</b></li>
+                <li><b>Seguridad en la nube</b></li>
+                <li><b>Infraestructuras críticas</b></li>
+                <li><b>Inteligencia de amenazas</b></li>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- ============================================ -->
+<!-- 2. PRINCIPIOS FUNDAMENTALES (CIA + McCumber) -->
+<!-- ============================================ -->
+<section>
+    <section>
+        <h2 class="slide-title">2. Principios Fundamentales</h2>
+        <div class="description">Tríada CIA y Cubo de John McCumber.</div>
+    </section>
+    
+    <section>
+        <h3>2.1 Tríada CIA</h3>
+        <div class="three-column" style="margin-top:20px;">
+            <div class="tip" style="border-left-color:#2980b9; background:#eef7fd;">
+                <strong>🔐 Confidencialidad</strong><br>Solo acceden autorizados
+            </div>
+            <div class="tip" style="border-left-color:#27ae60; background:#e2f3e4;">
+                <strong>📦 Integridad</strong><br>No alteración sin permiso
+            </div>
+            <div class="tip" style="border-left-color:#e67e22; background:#fdf2e6;">
+                <strong>⏱️ Disponibilidad</strong><br>Accesible cuando se necesita
+            </div>
+        </div>
+        
+    </section>
+
+    <section>
+        <h3>2.2 Cubo de John McCumber</h3>
+        <img src="logo1.jpg" alt="">
+    </section>
+    
+</section>
+
+
+<section>
+    <section>
+        <h2 class="slide-title">4. Panorama de Amenazas</h2>
+        <div class="description">
+            https://cloud.google.com/security/resources/m-trends <br>
+            https://www.verizon.com/business/resources/reports/dbir/
+        </div>
+    </section>
+    <section>
+        <h3>4.1 Tipos de amenazas</h3>
+        <div class="grid-list">
+            <li><strong>Internas:</strong> empleados, terceros</li>
+            <li><strong>Externas:</strong> ciberdelincuentes, hacktivistas, APT</li>
+        </div>
+        <h3 style="margin-top:20px;">4.2 Malware</h3>
+        <div class="grid-list">
+            <li>Virus · Gusanos</li>
+            <li>Troyanos · Ransomware</li>
+        </div>
+        <h3 style="margin-top:15px;">4.4 Phising</h3>
+        <div class="grid-list">
+            <li>Phishing / Spear phishing</li>
+            <li>Vishing (llamadas)</li>
+            <li>Smishing (SMS)</li>
+        </div>
+        <h3 style="margin-top:15px;">4.4 Ataques comunes</h3>
+        <div class="grid-list">
+            <li>Fuerza bruta · DDoS</li>
+            <li>Man-in-the-Middle (MITM)</li>
+            <li>Explotación de vulnerabilidades</li>
+        </div>
+    </section>
+    
+</section>
+
+
+<section>
+    <section>
+        <h2 class="slide-title">5. Marco Normativo</h2>
+        <div class="description">Bolivia y estándares internacionales.</div>
+    </section>
+    <section>
+        <h3>🇧🇴 Normativa Nacional (Bolivia)</h3>
+        <div class="command-box">
+            
+            <div class="example">
+                <a href="https://cgii.gob.bo" target="_blank">CGII</a> · Centro de Gestión de Incidentes
+            </div>
+            <div class="example">
+                <a href="https://www.contraloria.gob.bo/wp-content/uploads/2022/06/20121129_291.pdf" target="_blank">Contraloria</a> · Normas TIC
+            </div>
+            <div class="example">
+                <a href="https://servdmzw.asfi.gob.bo/CircularValores/Textos/L11T01.pdf" target="_blank">ASFI</a> · REGLAMENTO PARA LA GESTIÓN DE SEGURIDAD DE LA
+INFORMACIÓN 
+            </div>
+        </div>
+    </section>
+    <section>
+        <h3>🌐 Normativa Internacional</h3>
+        <div class="command-box">
+            <ul style="font-size:2rem;">
+                                
+                <li><strong>ISO/IEC 27000</strong> familia:
+                    <ul>
+                        <li>27001 (requisitos SGSI)</li>
+                        <li>27002 (controles)</li>
+                        <li>27003 (implementación)</li>
+                        <li>27004 (métricas)</li>
+                        <li>27005 (gestión riesgos)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <img src="logo5.png" alt="">
+    </section>
+
+    <section>
+        <img src="logo4.png" alt="">
+    </section>
+    
+</section>
+
+
+
+
+<!-- ============================================ -->
+<!-- 6. SEGURIDAD DEFENSIVA (BLUE TEAM) + SOC -->
+<!-- ============================================ -->
+<section>
+    <section>
+        <h2 class="slide-title">6. Seguridad Defensiva · Blue Team</h2>
+        <div class="description">Proteger, detectar, responder.</div>
+    </section>
+    <section>
+        <div class="command-box">
+            <span class="command">Blue Team</span>
+            <div class="grid-list">
+                <li>Implementación de controles</li>
+                <li>Monitoreo continuo</li>
+                <li>Gestión de vulnerabilidades</li>
+                <li>Hardening</li>
+                <li>Respuesta a incidentes</li>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h3>SOC – Centro de Operaciones de Seguridad</h3>
+        <div class="tip">
+            Monitorea 24/7, analiza alertas, gestiona incidentes, coordina respuesta.
+        </div>
+        <div class="example">
+            Herramientas: SIEM, EDR, IDS/IPS.
+        </div>
+    </section>
+</section>
+
+<!-- ============================================ -->
+<!-- 7. RESPUESTA A INCIDENTES + ANÁLISIS FORENSE -->
+<!-- ============================================ -->
+<section>
+    <section>
+        <h2 class="slide-title">7. Respuesta a Incidentes y Forense</h2>
+        <div class="description"><strong>NIST</strong>  Incident Response 800-61 Revision 3</div>
+    </section>
+    <section>
+        <h3>Fases de respuesta</h3>
+        <div class="grid-list">
+            <li>Identificación</li><li>Contención</li>
+            <li>Erradicación</li><li>Recuperación</li>
+            <li>Lecciones aprendidas</li>
+        </div>
+        <div class="warning" style="margin-top:15px;">
+            <strong>Análisis forense digital:</strong> qué ocurrió, cómo, responsable, impacto.
+        </div>
+    </section>
+</section>
+
+<!-- ============================================ -->
+<!-- 8. SEGURIDAD OFENSIVA (RED TEAM) + PENTESTING -->
+<!-- ============================================ -->
+<section>
+    <section>
+        <h2 class="slide-title">8. Seguridad Ofensiva · Red Team</h2>
+        <div class="description">Simular ataques reales para identificar vulnerabilidades.</div>
+    </section>
+    <section>
+        <div class="command-box">
+            <span class="command">Disciplinas:</span>
+            <div class="grid-list">
+                <li>Ethical Hacking</li><li>Pentesting</li>
+                <li>Análisis de vulnerabilidades</li>
+                <li>Ingeniería social controlada</li>
+                <li>Red Team vs Blue Team</li>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h3>Metodologías y marcos</h3>
+        <div class="grid-list">
+            <li>OWASP</li><li>MITRE ATT&CK</li>
+            <li>EC-Council CEH</li><li>OSSTM</li>
+        </div>
+        <h3 style="margin-top:20px;">Etapas del pentesting</h3>
+        <div class="grid-list small-note">
+            <li>Reconocimiento</li><li>Escaneo</li>
+            <li>Enumeración</li><li>Explotación</li>
+            <li>Post-explotación</li><li>Reporte</li>
+        </div>
+    </section>
+</section>
+
+
+<!-- ============================================ -->
+<!-- 3. CONCEPTOS CLAVE DE GESTIÓN DE RIESGOS -->
+<!-- ============================================ -->
+<section>
+
+    <section>
+        <h2 class="slide-title">9. Gestión de Riesgos</h2>
+        <div class="description">Peligro, amenaza, vulnerabilidad, impacto, riesgo.
+        <br> <pre>
+            <b>Riesgo</b> = Probabilidad * Impacto <br>
+            <b>Probabilidad</b> = Amenaza * Vulnerabilidad <br>
+            <b>Impacto</b> = C + I + A <br>
+            </pre>
+        </div>
+    </section>
+
+    <section>
+        <div class="grid-list">
+            <span class="command">Peligro:</span> fuente potencial de daño<br/>
+            <span class="command">Amenaza:</span> evento que explota vulnerabilidad<br/>
+            <span class="command">Vulnerabilidad:</span> debilidad explotable<br/>
+            <span class="command">Impacto:</span> consecuencia negativa<br/>
+            <span class="command">Riesgo:</span> probabilidad de materialización<br/>
+        </div>
+    </section>
+
+    <section>
+        <img src="logo2.png" alt="">
+    </section>
+</section>
+
+
+
+</div> <!-- slides -->
+</div> <!-- reveal -->
+
+<!-- Reveal.js scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/zoom/zoom.min.js"></script>
+
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        plugins: [RevealHighlight, RevealNotes, RevealMarkdown, RevealZoom]
+    });
+</script>
+
+</body>
+</html>
