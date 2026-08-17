@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerabilidades asociadas a amenazas · Gestión de riesgos</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background: #f2f5f9;
+            margin: 0;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card {
+            max-width: 1400px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -10px rgba(0,20,40,0.12);
+            padding: 28px 28px 36px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .title-section h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin: 0 0 6px 0;
+            color: #0c2d4b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .title-section h1 span {
+            background: #1a4972;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 4px 14px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+        .subhead {
+            color: #2f4b6e;
+            margin: 0;
+            font-size: 1rem;
+            background: #eaf0f9;
+            padding: 8px 20px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+        .search-wrapper {
+            min-width: 300px;
+            flex: 1;
+            max-width: 420px;
+            position: relative;
+        }
+        .search-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c819e;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+        .search-wrapper input {
+            width: 100%;
+            padding: 16px 20px 16px 52px;
+            font-size: 1rem;
+            background: #f8fafd;
+            border: 1px solid #cbd6e6;
+            border-radius: 60px;
+            transition: 0.2s;
+        }
+        .search-wrapper input:focus {
+            border-color: #1f6193;
+            outline: none;
+            background: #ffffff;
+            box-shadow: 0 6px 14px rgba(23,80,140,0.1);
+        }
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px 20px;
+            margin: 28px 0 22px;
+            padding: 6px 0;
+        }
+        .filter-label {
+            font-weight: 600;
+            color: #1d3a5a;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .filter-tag {
+            background: white;
+            border: 1px solid #bdcde0;
+            color: #1d3a5a;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.1s;
+            white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .filter-tag:hover {
+            background: #e3ecf5;
+            border-color: #7c9ec2;
+        }
+        .filter-tag.active {
+            background: #1f6193;
+            border-color: #1f6193;
+            color: white;
+            box-shadow: 0 4px 10px rgba(26,86,140,0.3);
+        }
+        .stats {
+            font-size: 0.95rem;
+            background: #e5ecf5;
+            padding: 10px 24px;
+            border-radius: 40px;
+            color: #1e3a5a;
+            margin-bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stats strong {
+            background: #1b3a5e;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-left: 6px;
+        }
+        .table-container {
+            border-radius: 24px;
+            border: 1px solid #dee7f0;
+            overflow: auto;
+            max-height: 68vh;
+            background: white;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.02);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #112f4b;
+            color: white;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 16px 14px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            white-space: nowrap;
+        }
+        td {
+            padding: 18px 14px;
+            border-bottom: 1px solid #e9eef4;
+            vertical-align: top;
+            background-color: white;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background-color: #f6faff;
+        }
+        .vuln-id {
+            font-family: 'SF Mono', 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: #124072;
+            background: #e2ebf6;
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .threat-cat {
+            font-weight: 600;
+            color: #153e5a;
+        }
+        .empty-message td {
+            padding: 50px;
+            text-align: center;
+            color: #7c95b0;
+            font-size: 1rem;
+            font-style: italic;
+        }
+        .footer-note {
+            margin-top: 26px;
+            display: flex;
+            justify-content: space-between;
+            color: #607d9c;
+            font-size: 0.9rem;
+            border-top: 1px dashed #c9d8ea;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header">
+        <div class="title-section">
+            <h1>
+                🧩 Vulnerabilidades por amenaza
+                <span>riesgo & controls</span>
+            </h1>
+            <div class="subhead">Basado en taxonomía ENISA · 25 categorías de vulnerabilidad</div>
+        </div>
+        <div class="search-wrapper">
+            <i>🔎</i>
+            <input type="text" id="searchVuln" placeholder="Buscar vulnerabilidad, amenaza o palabra clave" autocomplete="off">
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <span class="filter-label">Filtrar por amenaza:</span>
+        <div class="filter-tags" id="filterTags">
+            <span class="filter-tag active" data-filter="all">📋 Todas</span>
+            <span class="filter-tag" data-filter="fisico">🔨 Ataque físico</span>
+            <span class="filter-tag" data-filter="robo">💰 Robo / Pérdida</span>
+            <span class="filter-tag" data-filter="error">⚠️ Error humano</span>
+            <span class="filter-tag" data-filter="diseno">📐 Diseño / Procesos</span>
+            <span class="filter-tag" data-filter="desastre">🌪️ Desastres</span>
+            <span class="filter-tag" data-filter="fallo">⚙️ Fallos técnicos</span>
+            <span class="filter-tag" data-filter="red">🌐 Red / Comunicaciones</span>
+            <span class="filter-tag" data-filter="malware">🦠 Código malicioso</span>
+            <span class="filter-tag" data-filter="legal">⚖️ Legal / Cumplimiento</span>
+        </div>
+    </div>
+
+    <div class="stats" id="stats">
+        <span>🔍 Mostrando <strong id="visibleCount">25</strong> de <strong id="totalCount">25</strong> vulnerabilidades</span>
+    </div>
+
+    <div class="table-container">
+        <table id="vulnTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Amenaza (categoría principal)</th>
+                    <th>Vulnerabilidades asociadas</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- se llena por javascript -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-note">
+        <span>📌 Cada vulnerabilidad puede estar relacionada con múltiples amenazas.</span>
+        <span>⚡ Clic en filtros para explorar.</span>
+    </div>
+</div>
+
+<script>
+(function() {
+    // ------------------------------------------------------------
+    // DATOS: listado de vulnerabilidades (25 items traducidos)
+    // cada fila: [ id, categoriaAmenaza, descripcionVulnerabilidades ]
+    // ------------------------------------------------------------
+    const vulnRows = [
+        ["VUL-01", "Ataque físico", "Falta de controles de acceso perimetral (vallas, puertas blindadas). Ausencia de sistemas de vigilancia (CCTV, alarmas). Inexistencia de un registro de visitas o escolta a personal ajeno. Personal de seguridad no capacitado o insuficiente."],
+        ["VUL-02", "Robo de dispositivos", "Dispositivos no asegurados físicamente (anclajes, candados). Política de 'lugar de trabajo limpio' inexistente o no aplicada. Ausencia de herramientas de localización y borrado remoto. Cifrado de disco no implementado en portátiles y móviles."],
+        ["VUL-03", "Fraude por empleados", "Falta de segregación de funciones. Ausencia de un código de conducta o políticas de conflicto de interés. Controles internos débiles (doble verificación en transacciones sensibles). Falta de concienciación sobre el fraude."],
+        ["VUL-04", "Sabotaje / Vandalismo", "Acceso físico sin restricciones a áreas sensibles (salas de servidores, cuadros eléctricos). Personal descontento con acceso a sistemas críticos. Falta de monitoreo en tiempo real de la infraestructura crítica."],
+        ["VUL-05", "Fuga de información (intencional)", "Controles de acceso a la información basados únicamente en 'necesidad de conocer' mal definidos. Ausencia de soluciones DLP (Data Loss Prevention). Canales de comunicación no seguros para información sensible (ej. correo sin cifrar)."],
+        ["VUL-06", "Error humano (no intencional)", "Falta de capacitación y concienciación continua a los usuarios. Procedimientos complejos, poco claros o inexistentes. Interfaz de usuario de las aplicaciones poco intuitiva y propensa a errores. Fatiga o estrés laboral."],
+        ["VUL-07", "Diseño inadecuado / Mala adaptación", "Especificaciones de requisitos incompletas o incorrectas. Falta de pruebas de usabilidad y seguridad en el diseño. Procedimientos y políticas obsoletas que no reflejan la realidad operativa. Evaluaciones de riesgo no actualizadas."],
+        ["VUL-08", "Daño por terceros / Proveedores", "Falta de cláusulas de seguridad y confidencialidad en los contratos. Ausencia de un proceso de debida diligencia en la selección de proveedores. No se realiza un seguimiento ni auditoría de las prácticas de seguridad del proveedor."],
+        ["VUL-09", "Pérdida de dispositivos / soportes", "Ausencia de un inventario actualizado de activos (hardware y soportes). Política de uso de dispositivos de almacenamiento extraíbles (USB) no controlada. Falta de cifrado en los soportes de backup."],
+        ["VUL-10", "Desastres naturales", "Ubicación geográfica en zona de riesgo (inundable, sísmica). Infraestructura del edificio no preparada para desastres (falta de sistemas de extinción, impermeabilización). Ausencia de un Plan de Continuidad del Negocio (BCP) y recuperación ante desastres (DRP)."],
+        ["VUL-11", "Fallos de equipos / sistemas", "Falta de un plan de mantenimiento preventivo. Hardware obsoleto más allá de su vida útil. Ausencia de redundancia en componentes críticos (fuentes de alimentación, discos en RAID). Control de cambios deficiente en sistemas y software."],
+        ["VUL-12", "Corte de suministro eléctrico", "Ausencia de Sistemas de Alimentación Ininterrumpida (SAIs). Generadores de emergencia sin mantenimiento o prueba periódica. Dependencia de un único punto de suministro eléctrico."],
+        ["VUL-13", "Ausencia de personal / Huelga", "Falta de personal capacitado como backup para funciones críticas. Conocimiento concentrado en una sola persona (falta de documentación de procesos). Mal clima laboral que puede derivar en huelgas."],
+        ["VUL-14", "Interceptación de comunicaciones", "Uso de protocolos de red no seguros y sin cifrar (HTTP, FTP, Telnet). Redes Wi-Fi abiertas o con cifrado débil (WEP). Ausencia de segmentación de red que permita el tráfico sensible en claro por la red."],
+        ["VUL-15", "Ataques de red (DoS, DDoS)", "Ancho de banda insuficiente para absorber tráfico malicioso. Ausencia de servicios de mitigación de DDoS (locales o en la nube). Sistemas y aplicaciones sin parchear, vulnerables a ataques de agotamiento de recursos."],
+        ["VUL-16", "Código malicioso (malware)", "Falta de una solución antivirus/antimalware actualizada en todos los endpoints. Políticas de ejecución de software permisivas (usuarios con privilegios de administrador). Falta de concienciación para no abrir archivos adjuntos o enlaces sospechosos."],
+        ["VUL-17", "Ingeniería social / Phishing", "Falta de programas de concienciación y simulacros de phishing. Cultura organizacional de confianza excesiva. Procedimientos para la verificación de solicitudes inusuales (ej. transferencias bancarias) inexistentes o no aplicados."],
+        ["VUL-18", "Abuso de privilegios / Acceso no autorizado", "Asignación de privilegios excesivos a los usuarios (violación del principio de mínimo privilegio). Cuentas compartidas. Falta de autenticación multifactor (MFA). Auditoría de accesos y acciones privilegiadas inexistente o no revisada."],
+        ["VUL-19", "Manipulación de información", "Controles de integridad de datos débiles. Ausencia de firmas electrónicas o hash para verificar la integridad de documentos críticos. Registros de auditoría (logs) que no son a prueba de manipulaciones."],
+        ["VUL-20", "Ataques a aplicaciones web (SQLi, XSS)", "Validación de entrada de datos insuficiente o inexistente. Configuraciones de servidor web inseguras. Frameworks y librerías con vulnerabilidades conocidas sin actualizar. Falta de pruebas de seguridad en el ciclo de vida del desarrollo (SDLC)."],
+        ["VUL-21", "Violaciones legales / regulatorias", "Desconocimiento de las leyes y regulaciones aplicables (GDPR, LOPD, sectoriales). Ausencia de una función de cumplimiento normativo (compliance). Políticas de privacidad y protección de datos desactualizadas o inexistentes."],
+        ["VUL-22", "Uso de software no autorizado / Shadow IT", "Falta de un inventario de software autorizado. Controles técnicos que impidan la instalación de software por parte de usuarios. Ausencia de una política que regule el uso de aplicaciones y servicios en la nube no corporativos."],
+        ["VUL-23", "Pérdida de integridad de certificados", "Debilidades en la gestión del ciclo de vida de los certificados (generación, renovación, revocación). Almacenamiento inseguro de claves privadas. Confianza en autoridades de certificación (CA) de dudosa reputación."],
+        ["VUL-24", "Obsolescencia tecnológica", "Falta de un plan de actualización tecnológica. Sistemas operativos y aplicaciones que ya no reciben soporte del fabricante (parches de seguridad). Hardware que ya no tiene repuestos disponibles."],
+        ["VUL-25", "Ataques dirigidos (APT)", "Falta de capacidades de detección avanzada (análisis de comportamiento, threat hunting). Segmentación de red pobre que permite el movimiento lateral. Controles de seguridad tradicionales basados únicamente en firmas."]
+    ];
+
+    // Mapeo de filtros a palabras clave dentro de la categoría (columna 1)
+    const filterMap = {
+        'fisico': ['físico', 'fuga de información (intencional)', 'sabotaje', 'vandalismo'],
+        'robo': ['robo', 'pérdida'],
+        'error': ['error humano', 'no intencional'],
+        'diseno': ['diseño', 'adaptación', 'procesos', 'terceros', 'proveedores'],
+        'desastre': ['desastres naturales'],
+        'fallo': ['fallos', 'corte', 'equipos', 'sistemas', 'eléctrico'],
+        'red': ['interceptación', 'comunicaciones', 'dos', 'ddos', 'red'],
+        'malware': ['código malicioso', 'malware', 'ingeniería social', 'phishing'],
+        'legal': ['legales', 'regulatorias', 'cumplimiento', 'violaciones legales']
+    };
+
+    // Referencias DOM
+    const tbody = document.getElementById('tableBody');
+    const totalSpan = document.getElementById('totalCount');
+    const visibleSpan = document.getElementById('visibleCount');
+    const searchInput = document.getElementById('searchVuln');
+    const filterTags = document.querySelectorAll('.filter-tag');
+
+    // estado
+    let currentFilter = 'all';
+    let searchTerm = '';
+
+    function renderRows() {
+        const searchLower = searchTerm.trim().toLowerCase();
+        let visible = 0;
+
+        // construir html de filas
+        let html = '';
+        for (let row of vulnRows) {
+            const vulnId = row[0];
+            const threatCat = row[1];
+            const vulnDesc = row[2];
+
+            // filtro por pestaña
+            if (currentFilter !== 'all') {
+                const keywords = filterMap[currentFilter] || [];
+                const matchFilter = keywords.some(kw => threatCat.toLowerCase().includes(kw.toLowerCase()));
+                if (!matchFilter) continue;
+            }
+
+            // filtro por búsqueda textual
+            if (searchLower !== '') {
+                const haystack = (vulnId + ' ' + threatCat + ' ' + vulnDesc).toLowerCase();
+                if (!haystack.includes(searchLower)) continue;
+            }
+
+            visible++;
+            html += `<tr>
+                <td><span class="vuln-id">${vulnId}</span></td>
+                <td class="threat-cat">${threatCat}</td>
+                <td>${vulnDesc}</td>
+            </tr>`;
+        }
+
+        if (visible === 0) {
+            html = `<tr class="empty-message"><td colspan="3">❌ No se encontraron vulnerabilidades con los criterios actuales. Prueba con otros filtros o búsqueda.</td></tr>`;
+        }
+
+        tbody.innerHTML = html;
+        visibleSpan.innerText = visible;
+        totalSpan.innerText = vulnRows.length;
+    }
+
+    // inicial
+    renderRows();
+
+    // búsqueda
+    searchInput.addEventListener('input', (e) => {
+        searchTerm = e.target.value;
+        renderRows();
+    });
+
+    // filtros por categoría
+    filterTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+            filterTags.forEach(t => t.classList.remove('active'));
+            tag.classList.add('active');
+            currentFilter = tag.dataset.filter;
+            renderRows();
+        });
+    });
+
+})();
+</script>
+</body>
+</html>

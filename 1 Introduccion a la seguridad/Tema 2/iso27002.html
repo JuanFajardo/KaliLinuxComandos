@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Controles ISO 27002</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --preventivo: #0d6efd;
+            --detectivo: #fd7e14;
+            --correctivo: #dc3545;
+            --disuasivo: #6f42c1;
+            --compensatorio: #20c997;
+        }
+
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            padding: 2.5rem 0 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 { font-weight: 700; font-size: 1.8rem; }
+        .hero p  { opacity: .85; font-size: .95rem; }
+
+        .filter-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,.08);
+            margin-bottom: 2rem;
+        }
+
+        .form-select:focus {
+            border-color: #0f3460;
+            box-shadow: 0 0 0 .2rem rgba(15,52,96,.25);
+        }
+
+        /* ---- Badges de tipo ---- */
+        .badge-preventivo    { background: var(--preventivo) !important; }
+        .badge-detectivo     { background: var(--detectivo) !important; }
+        .badge-correctivo    { background: var(--correctivo) !important; }
+        .badge-disuasivo     { background: var(--disuasivo) !important; }
+        .badge-compensatorio { background: var(--compensatorio) !important; }
+
+        /* ---- Tarjetas ---- */
+        .card-control {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.06);
+            transition: transform .2s, box-shadow .2s;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-control:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,.12);
+        }
+
+        .card-control .card-header {
+            border-radius: 10px 10px 0 0;
+            font-weight: 600;
+            font-size: .82rem;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        .border-left-preventivo    { border-left: 4px solid var(--preventivo) !important; }
+        .border-left-detectivo     { border-left: 4px solid var(--detectivo) !important; }
+        .border-left-correctivo    { border-left: 4px solid var(--correctivo) !important; }
+        .border-left-disuasivo     { border-left: 4px solid var(--disuasivo) !important; }
+        .border-left-compensatorio { border-left: 4px solid var(--compensatorio) !important; }
+
+        .header-preventivo    { background: var(--preventivo); color: #fff; }
+        .header-detectivo     { background: var(--detectivo); color: #fff; }
+        .header-correctivo    { background: var(--correctivo); color: #fff; }
+        .header-disuasivo     { background: var(--disuasivo); color: #fff; }
+        .header-compensatorio { background: var(--compensatorio); color: #fff; }
+
+        .control-id   { font-weight: 700; color: #1a1a2e; font-size: 1rem; }
+        .control-name { font-weight: 600; color: #333; font-size: .92rem; }
+
+        .area-badge {
+            font-size: .72rem;
+            padding: .3em .6em;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform .15s, box-shadow .15s;
+            position: relative;
+        }
+
+        .area-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,.18);
+            z-index: 2;
+        }
+
+        .area-administrativo { background: #e3f2fd; color: #1565c0; }
+        .area-tecnico        { background: #fff3e0; color: #e65100; }
+        .area-fisico         { background: #e8f5e9; color: #2e7d32; }
+
+        /* ---- Tooltip de ejemplo al fondo de la tarjeta ---- */
+        .ejemplo-panel {
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: .6rem .85rem;
+            font-size: .78rem;
+            color: #444;
+            line-height: 1.35;
+            min-height: 0;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height .35s ease, opacity .25s ease, padding .3s ease;
+        }
+
+        .ejemplo-panel.show {
+            max-height: 200px;
+            opacity: 1;
+            padding: .7rem .85rem;
+        }
+
+        .ejemplo-panel .ej-label {
+            font-weight: 700;
+            color: #1a1a2e;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            display: block;
+            margin-bottom: .2rem;
+        }
+
+        .ejemplo-panel .ej-icon {
+            margin-right: .3rem;
+            opacity: .7;
+        }
+
+        /* ---- Grupo headers ---- */
+        .group-header {
+            font-weight: 700;
+            font-size: 1.25rem;
+            padding: .75rem 1rem;
+            border-radius: 8px;
+            margin: 1.5rem 0 1rem;
+            color: #fff;
+        }
+
+        /* ---- Stats ---- */
+        .stats-card {
+            border: none;
+            border-radius: 10px;
+            text-align: center;
+            padding: 1rem;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .stats-number { font-size: 2rem; font-weight: 800; }
+        #results-count { font-weight: 600; color: #555; }
+
+        .no-results { text-align: center; padding: 3rem; color: #888; }
+        .no-results i { font-size: 3rem; margin-bottom: 1rem; display: block; }
+
+        /* ---- Panel descriptivo (reemplaza leyenda) ---- */
+        .desc-panel {
+            margin-top: 1.25rem;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all .3s ease;
+        }
+
+        .desc-card {
+            border: none;
+            border-radius: 10px;
+            margin-bottom: .75rem;
+            box-shadow: 0 1px 6px rgba(0,0,0,.06);
+            overflow: hidden;
+        }
+
+        .desc-card .desc-header {
+            padding: .6rem 1rem;
+            font-weight: 700;
+            font-size: .82rem;
+            letter-spacing: .4px;
+            text-transform: uppercase;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .desc-card .desc-body {
+            padding: .75rem 1rem;
+            font-size: .85rem;
+            color: #444;
+            background: #fff;
+            line-height: 1.5;
+        }
+
+        .desc-card .desc-body strong {
+            color: #1a1a2e;
+        }
+
+        .desc-combo {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            font-size: .88rem;
+            line-height: 1.5;
+            box-shadow: 0 2px 10px rgba(0,0,0,.12);
+        }
+
+        .desc-combo .combo-title {
+            font-weight: 700;
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            opacity: .8;
+            margin-bottom: .35rem;
+        }
+
+        /* ---- Animaciones ---- */
+        .fade-in { animation: fadeIn .4s ease-in; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-clear {
+            border: 1px solid #dee2e6;
+            background: #fff;
+            color: #666;
+            transition: all .2s;
+        }
+        .btn-clear:hover {
+            background: #f8f9fa;
+            color: #333;
+            border-color: #adb5bd;
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 { font-size: 1.3rem; }
+            .stats-number { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <i class="fas fa-shield-halved fa-2x opacity-75"></i>
+            </div>
+            <div class="col">
+                <h1 class="mb-1">Controles ISO 27002:2022</h1>
+                <p class="mb-0">Visualizador interactivo &mdash; Anexo A &middot; NCh-ISO/IEC 27001:2023</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container pb-5">
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4" id="stats-row">
+        <div class="col-6 col-md">
+            <div class="stats-card" style="background:var(--preventivo)">
+                <div class="stats-number" id="stat-preventivo">0</div>
+                <small>Preventivos</small>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card" style="background:var(--detectivo)">
+                <div class="stats-number" id="stat-detectivo">0</div>
+                <small>Detectivos</small>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card" style="background:var(--correctivo)">
+                <div class="stats-number" id="stat-correctivo">0</div>
+                <small>Correctivos</small>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card" style="background:var(--disuasivo)">
+                <div class="stats-number" id="stat-disuasivo">0</div>
+                <small>Disuasivos</small>
+            </div>
+        </div>
+        <div class="col-6 col-md mx-auto">
+            <div class="stats-card" style="background:var(--compensatorio)">
+                <div class="stats-number" id="stat-compensatorio">0</div>
+                <small>Compensatorios</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filter-section">
+        <div class="row g-3 align-items-end">
+            <div class="col-12 col-md-5">
+                <label for="filterTipo" class="form-label fw-semibold">
+                    <i class="fas fa-filter me-1"></i> Tipo de Control
+                </label>
+                <select id="filterTipo" class="form-select">
+                    <option value="">-- Todos los tipos --</option>
+                    <option value="Preventivo">Preventivo</option>
+                    <option value="Detectivo">Detectivo</option>
+                    <option value="Correctivo">Correctivo</option>
+                    <option value="Disuasivo">Disuasivo</option>
+                    <option value="Compensatorio">Compensatorio</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-5">
+                <label for="filterArea" class="form-label fw-semibold">
+                    <i class="fas fa-layer-group me-1"></i> Area
+                </label>
+                <select id="filterArea" class="form-select">
+                    <option value="">-- Todas las areas --</option>
+                    <option value="Administrativo">Administrativos</option>
+                    <option value="Tecnico">Tecnicos</option>
+                    <option value="Fisico">Fisicos</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-2 d-grid">
+                <button id="btnClear" class="btn btn-clear">
+                    <i class="fas fa-rotate-left me-1"></i> Limpiar
+                </button>
+            </div>
+        </div>
+
+        <!-- Panel descriptivo dinamico (reemplaza la leyenda) -->
+        <div id="desc-panel" class="desc-panel"></div>
+    </div>
+
+    <!-- Resultados -->
+    <div id="results-count" class="mb-3"></div>
+    <div id="results"></div>
+
+</div>
+
+<footer class="bg-dark text-white text-center py-3 mt-auto">
+    <small>Basado en NCh-ISO/IEC 27001:2023 &mdash; Anexo A &middot; ISO/IEC 27002:2022</small>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+$(function () {
+
+    /* =============================================================
+       DESCRIPCIONES DE TIPOS DE CONTROL
+       ============================================================= */
+    var tipoDescripciones = {
+        Preventivo:    "Controles disenados para evitar que un incidente de seguridad se materialice. Actuan antes de que la amenaza impacte, estableciendo barreras y restricciones que reducen la probabilidad de ocurrencia de un evento adverso.",
+        Detectivo:     "Controles que identifican y alertan sobre actividades no autorizadas, anomalias o incidentes de seguridad durante o despues de su ocurrencia. Permiten una respuesta oportuna al hacer visible lo que de otro modo pasaria desapercibido.",
+        Correctivo:    "Controles que mitigan el impacto de un incidente ya ocurrido y restauran los sistemas, procesos o servicios a su estado normal de operacion. Se activan despues del evento para limitar el dano y acelerar la recuperacion.",
+        Disuasivo:     "Controles que desalientan a potenciales atacantes o infractores de intentar acciones maliciosas. Funcionan como advertencia visible de que existen consecuencias, reduciendo la motivacion para cometer una violacion de seguridad.",
+        Compensatorio: "Controles alternativos que proporcionan un nivel de proteccion equivalente cuando el control primario no puede implementarse. Suplen limitaciones tecnicas, presupuestarias u operativas sin comprometer el nivel de seguridad requerido."
+    };
+
+    /* =============================================================
+       DESCRIPCIONES DE AREAS
+       ============================================================= */
+    var areaDescripciones = {
+        Administrativo: "Politicas, procedimientos, normas y directrices que regulan la gestion organizacional de la seguridad. Incluyen la gobernanza, la gestion de riesgos, la formacion del personal y el cumplimiento normativo.",
+        Tecnico:        "Mecanismos tecnologicos implementados en hardware, software y redes para proteger los sistemas de informacion. Abarcan desde cifrado y autenticacion hasta monitoreo automatizado y control de acceso logico.",
+        Fisico:         "Medidas tangibles de proteccion del entorno, las instalaciones, los equipos y la infraestructura. Incluyen barreras perimetrales, control de acceso fisico, vigilancia, climatizacion y proteccion ambiental."
+    };
+
+    /* =============================================================
+       DESCRIPCIONES DE COMBINACION TIPO + AREA
+       ============================================================= */
+    var comboDescripciones = {
+        "Preventivo|Administrativo":    "Establece politicas, normas y procedimientos organizacionales que bloquean amenazas antes de que se concreten. Ataca la falta de gobernanza, la ausencia de directrices claras y el desconocimiento del personal como vectores de riesgo.",
+        "Preventivo|Tecnico":           "Implementa barreras tecnologicas (firewalls, cifrado, ACLs, antimalware) que impiden el acceso no autorizado y bloquean ataques antes de que comprometan los sistemas. Ataca vulnerabilidades de software, configuraciones debiles y exposicion de datos.",
+        "Preventivo|Fisico":            "Instala barreras fisicas, cerraduras, controles biometricos y zonificacion que impiden el acceso no autorizado a instalaciones criticas. Ataca la intrusion fisica, el robo de equipos y la manipulacion de infraestructura.",
+        "Detectivo|Administrativo":     "Define procesos de auditoria, revision periodica y evaluacion que identifican irregularidades en la gestion. Ataca el incumplimiento de politicas, el fraude interno y las desviaciones en los procedimientos establecidos.",
+        "Detectivo|Tecnico":            "Despliega sistemas de monitoreo (SIEM, IDS/IPS, analisis de logs) que detectan comportamientos anomalos en tiempo real. Ataca intrusiones activas, malware en ejecucion, fugas de datos y movimiento lateral de atacantes.",
+        "Detectivo|Fisico":             "Utiliza camaras CCTV, sensores de movimiento y sistemas de alarma que identifican accesos fisicos no autorizados. Ataca la infiltracion en areas restringidas, el sabotaje y la vigilancia hostil.",
+        "Correctivo|Administrativo":    "Establece planes de respuesta a incidentes, procedimientos de escalamiento y protocolos de recuperacion organizacional. Ataca la desorganizacion post-incidente, la perdida de continuidad operativa y la repeticion de errores.",
+        "Correctivo|Tecnico":           "Activa mecanismos de respaldo, restauracion automatizada y parches de emergencia que recuperan sistemas comprometidos. Ataca la perdida de datos, la indisponibilidad de servicios y la persistencia de vulnerabilidades explotadas.",
+        "Correctivo|Fisico":            "Ejecuta procedimientos de reparacion, reemplazo de equipos danados y restauracion de infraestructura fisica. Ataca los efectos de desastres naturales, fallas electricas y danos fisicos a los activos.",
+        "Disuasivo|Administrativo":     "Comunica consecuencias disciplinarias, legales y contractuales para desalentar conductas indebidas. Ataca la negligencia interna, el abuso de privilegios y la tentacion de violar las politicas de seguridad.",
+        "Disuasivo|Tecnico":            "Implementa banners de advertencia, registros de auditoria visibles y marcas de agua digitales que disuaden la manipulacion. Ataca el acceso furtivo, la exfiltracion oportunista y el uso indebido de sistemas.",
+        "Disuasivo|Fisico":             "Instala senalizacion de seguridad, camaras visibles, iluminacion perimetral y guardias que desalientan tentativas de intrusion. Ataca el vandalismo, el robo y los intentos de acceso no autorizado a instalaciones.",
+        "Compensatorio|Administrativo": "Establece procedimientos alternativos, controles manuales y supervisiones reforzadas cuando los controles primarios de gestion no son viables. Ataca las brechas de cobertura cuando restricciones legales, presupuestarias u organizativas impiden la solucion ideal.",
+        "Compensatorio|Tecnico":        "Implementa soluciones tecnologicas de respaldo como redundancia, replicacion y failover que suplen las limitaciones del control principal. Ataca la indisponibilidad, el punto unico de falla y la insuficiencia de recursos tecnologicos.",
+        "Compensatorio|Fisico":         "Aplica medidas fisicas sustitutivas como vigilancia adicional, escoltas o rutas alternas cuando las protecciones principales no pueden instalarse. Ataca la exposicion por limitaciones de infraestructura o ubicacion."
+    };
+
+    /* =============================================================
+       ICONOS
+       ============================================================= */
+    var tipoIconos = {
+        Preventivo:    "fa-shield-halved",
+        Detectivo:     "fa-magnifying-glass",
+        Correctivo:    "fa-wrench",
+        Disuasivo:     "fa-hand",
+        Compensatorio: "fa-scale-balanced"
+    };
+
+    var areaIconos = {
+        Administrativo: "fa-briefcase",
+        Tecnico:        "fa-microchip",
+        Fisico:         "fa-building-shield"
+    };
+
+    var tiposOrden = ["Preventivo","Detectivo","Correctivo","Disuasivo","Compensatorio"];
+
+    /* =============================================================
+       BASE DE DATOS DE CONTROLES  (Anexo A - ISO/IEC 27001:2023)
+       Cada control: id, nombre, tipos[], areas[], ejemplos:{}
+       ============================================================= */
+    var controles = [
+        // ===== 5  CONTROLES ORGANIZACIONALES =====
+        { id:"5.1",  nombre:"Politicas para la seguridad de la informacion",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Redactar y aprobar una politica corporativa de seguridad de la informacion con revision anual obligatoria." }},
+        { id:"5.2",  nombre:"Funciones y responsabilidades de seguridad de la informacion",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Designar formalmente un CISO y definir responsabilidades de seguridad para cada jefatura de area." }},
+        { id:"5.3",  nombre:"Segregacion de funciones",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Separar las funciones de quien aprueba pagos de quien los ejecuta para evitar fraude interno." }},
+        { id:"5.4",  nombre:"Responsabilidades de la direccion",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"La alta direccion firma un compromiso de cumplimiento de la politica de seguridad y lo comunica a toda la organizacion." }},
+        { id:"5.5",  nombre:"Contacto con autoridades",
+          tipos:["Preventivo","Correctivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Mantener un directorio actualizado de contactos en CSIRT, policia cibernetica y reguladores para reportar incidentes." }},
+        { id:"5.6",  nombre:"Contacto con grupos de interes especiales",
+          tipos:["Preventivo","Correctivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Participar activamente en foros sectoriales de ciberseguridad (ej. ISAC) para compartir alertas tempranas." }},
+        { id:"5.7",  nombre:"Inteligencia de amenazas",
+          tipos:["Preventivo","Detectivo"], areas:["Administrativo","Tecnico"],
+          ejemplos:{ Administrativo:"Suscribirse a boletines de alertas del CSIRT nacional y evaluar su impacto en comite de riesgos.", Tecnico:"Integrar feeds de indicadores de compromiso (IoC) en el SIEM para correlacion automatica de amenazas." }},
+        { id:"5.8",  nombre:"Seguridad de la informacion en la gestion de proyectos",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Incluir un checklist de requisitos de seguridad en la metodologia de gestion de proyectos de la organizacion." }},
+        { id:"5.9",  nombre:"Inventario de informacion y otros activos asociados",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Mantener una CMDB actualizada con todos los activos de informacion, sus propietarios y su clasificacion." }},
+        { id:"5.10", nombre:"Uso aceptable de la informacion y otros activos asociados",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Publicar una politica de uso aceptable que prohiba almacenar datos corporativos en cuentas personales de nube." }},
+        { id:"5.11", nombre:"Retorno de activos",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Implementar un checklist de offboarding que verifique la devolucion de laptop, tarjetas y tokens antes de la desvinculacion." }},
+        { id:"5.12", nombre:"Clasificacion de la informacion",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Definir niveles de clasificacion (Publica, Interna, Confidencial, Secreta) con criterios claros para cada categoria." }},
+        { id:"5.13", nombre:"Etiquetado de la informacion",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Aplicar marcas de agua 'CONFIDENCIAL' en documentos sensibles y etiquetas en correos segun su clasificacion." }},
+        { id:"5.14", nombre:"Transferencia de informacion",
+          tipos:["Preventivo"], areas:["Administrativo","Tecnico"],
+          ejemplos:{ Administrativo:"Establecer acuerdos de intercambio de informacion con terceros que definan canales y protocolos autorizados.", Tecnico:"Configurar SFTP con cifrado TLS para todas las transferencias de archivos con proveedores externos." }},
+        { id:"5.15", nombre:"Control de acceso",
+          tipos:["Preventivo"], areas:["Administrativo","Tecnico","Fisico"],
+          ejemplos:{ Administrativo:"Documentar una politica de control de acceso basada en roles (RBAC) con revision trimestral de permisos.", Tecnico:"Configurar listas de control de acceso (ACL) en firewalls, routers y sistemas criticos.", Fisico:"Instalar torniquetes con tarjeta de proximidad RFID en los accesos al centro de datos." }},
+        { id:"5.16", nombre:"Gestion de identidad",
+          tipos:["Preventivo"], areas:["Administrativo","Tecnico"],
+          ejemplos:{ Administrativo:"Definir un procedimiento formal de alta, baja y modificacion de cuentas de usuario con aprobacion del jefe directo.", Tecnico:"Implementar un sistema IAM centralizado que gestione el ciclo de vida completo de las identidades digitales." }},
+        { id:"5.17", nombre:"Informacion de autenticacion",
+          tipos:["Preventivo"], areas:["Administrativo","Tecnico"],
+          ejemplos:{ Administrativo:"Establecer una politica de contrasenas que exija minimo 12 caracteres, complejidad y cambio periodico.", Tecnico:"Implementar autenticacion multifactor (MFA) con token TOTP para todos los accesos a sistemas criticos." }},
+        { id:"5.18", nombre:"Derechos de acceso",
+          tipos:["Preventivo"], areas:["Administrativo","Tecnico"],
+          ejemplos:{ Administrativo:"Realizar revisiones trimestrales de privilegios con certificacion de accesos por cada responsable de area.", Tecnico:"Configurar el principio de minimo privilegio en Active Directory con GPOs que restrinjan accesos innecesarios." }},
+        { id:"5.19", nombre:"Seguridad de la informacion en la relacion con los proveedores",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Incluir clausulas de seguridad, derecho a auditoria y gestion de incidentes en todos los contratos con proveedores." }},
+        { id:"5.20", nombre:"Abordar la seguridad de la informacion en los acuerdos con los proveedores",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Exigir certificacion ISO 27001 o evaluacion SOC 2 a proveedores que traten datos sensibles de la organizacion." }},
+        { id:"5.21", nombre:"Gestion de la seguridad de la informacion en la cadena de suministro de TIC",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Evaluar riesgos de seguridad de cada eslabon de la cadena de suministro TIC antes de adquirir software o hardware." }},
+        { id:"5.22", nombre:"Seguimiento, revision y gestion de cambios de servicios de proveedores",
+          tipos:["Detectivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Realizar auditorias semestrales a proveedores criticos verificando cumplimiento de SLAs y controles de seguridad." }},
+        { id:"5.23", nombre:"Seguridad de la informacion para el uso de servicios en la nube",
+          tipos:["Preventivo"], areas:["Administrativo","Tecnico"],
+          ejemplos:{ Administrativo:"Definir una politica de uso de nube que especifique proveedores aprobados y requisitos de residencia de datos.", Tecnico:"Configurar Cloud Access Security Broker (CASB) para controlar y monitorear el uso de servicios SaaS." }},
+        { id:"5.24", nombre:"Planificacion y preparacion de la gestion de incidentes de seguridad de la informacion",
+          tipos:["Correctivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Disenar un plan de respuesta a incidentes con roles definidos, arboles de escalamiento y simulacros semestrales." }},
+        { id:"5.25", nombre:"Evaluacion y decision sobre los eventos de seguridad de la informacion",
+          tipos:["Detectivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Establecer criterios de triaje para clasificar eventos de seguridad y decidir cuales escalan a incidente formal." }},
+        { id:"5.26", nombre:"Respuesta a incidentes de seguridad de la informacion",
+          tipos:["Correctivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Activar el equipo CSIRT interno con procedimientos documentados para contener, erradicar y recuperar ante un ransomware." }},
+        { id:"5.27", nombre:"Aprendizaje de los incidentes de seguridad de la informacion",
+          tipos:["Correctivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Realizar un post-mortem despues de cada incidente y documentar lecciones aprendidas para actualizar los controles." }},
+        { id:"5.28", nombre:"Recoleccion de evidencia",
+          tipos:["Detectivo","Disuasivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Establecer un procedimiento de cadena de custodia digital para preservar evidencia forense admisible legalmente." }},
+        { id:"5.29", nombre:"Seguridad de la informacion durante la interrupcion",
+          tipos:["Preventivo","Compensatorio"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Definir procedimientos manuales alternativos para mantener operaciones criticas durante caidas de sistemas." }},
+        { id:"5.30", nombre:"Preparacion de las TIC para la continuidad del negocio",
+          tipos:["Correctivo","Compensatorio"], areas:["Administrativo","Tecnico"],
+          ejemplos:{ Administrativo:"Desarrollar un BCP/DRP con RTOs y RPOs definidos para cada sistema critico y ensayar su ejecucion anualmente.", Tecnico:"Configurar un sitio de recuperacion de desastres (DR site) con replicacion asincrona de bases de datos." }},
+        { id:"5.31", nombre:"Requisitos legales, estatutarios, reglamentarios y contractuales",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Mantener un registro actualizado de leyes aplicables (ej. Ley de Proteccion de Datos) y verificar su cumplimiento anual." }},
+        { id:"5.32", nombre:"Derechos de propiedad intelectual",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Auditar periodicamente las licencias de software instalado para evitar el uso de programas no autorizados." }},
+        { id:"5.33", nombre:"Proteccion de los registros",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Definir periodos de retencion de registros contables y legales, almacenandolos en repositorios con acceso restringido." }},
+        { id:"5.34", nombre:"Privacidad y proteccion de la informacion de identificacion personal (PII)",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Realizar evaluaciones de impacto de privacidad (PIA) antes de implementar sistemas que procesen datos personales." }},
+        { id:"5.35", nombre:"Revision independiente de seguridad de la informacion",
+          tipos:["Detectivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Contratar una firma externa para realizar auditorias anuales del SGSI y emitir recomendaciones independientes." }},
+        { id:"5.36", nombre:"Cumplimiento de politicas, reglas y normas de seguridad de la informacion",
+          tipos:["Detectivo","Disuasivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Ejecutar revisiones periodicas de cumplimiento con sanciones documentadas por infracciones reiteradas." }},
+        { id:"5.37", nombre:"Procedimientos operativos documentados",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Mantener un manual de operaciones de TI con procedimientos paso a paso para backup, monitoreo y gestion de cambios." }},
+
+        // ===== 6  CONTROLES DE PERSONAS =====
+        { id:"6.1",  nombre:"Seleccion",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Verificar antecedentes penales, referencias laborales y certificaciones antes de contratar personal con acceso a datos sensibles." }},
+        { id:"6.2",  nombre:"Terminos y condiciones de empleo",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Incluir clausulas de confidencialidad y responsabilidades de seguridad de la informacion en todos los contratos laborales." }},
+        { id:"6.3",  nombre:"Concientizacion, educacion y formacion en seguridad de la informacion",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Realizar campanas trimestrales de phishing simulado y talleres de concientizacion para todo el personal." }},
+        { id:"6.4",  nombre:"Proceso disciplinario",
+          tipos:["Preventivo","Disuasivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Publicar un reglamento interno con sanciones graduales (amonestacion, suspension, desvinculacion) por violaciones de seguridad." }},
+        { id:"6.5",  nombre:"Responsabilidades tras el cese o cambio de empleo",
+          tipos:["Preventivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Revocar todos los accesos fisicos y logicos dentro de las primeras 4 horas posteriores al cese del colaborador." }},
+        { id:"6.6",  nombre:"Acuerdos de confidencialidad o no divulgacion",
+          tipos:["Preventivo","Disuasivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Firmar NDAs con todo personal, contratistas y proveedores que tengan acceso a informacion clasificada." }},
+        { id:"6.7",  nombre:"Trabajo a distancia",
+          tipos:["Preventivo"], areas:["Administrativo","Tecnico","Fisico"],
+          ejemplos:{ Administrativo:"Establecer una politica de teletrabajo que defina requisitos de seguridad para el entorno de trabajo remoto.", Tecnico:"Exigir conexion VPN con cifrado AES-256 y endpoint protection actualizado para todo acceso remoto.", Fisico:"Requerir que el empleado remoto cuente con un espacio privado con cerradura para manejar informacion confidencial." }},
+        { id:"6.8",  nombre:"Informe de eventos de seguridad de la informacion",
+          tipos:["Detectivo"], areas:["Administrativo"],
+          ejemplos:{ Administrativo:"Habilitar un canal de reporte (correo, portal, linea telefonica) para que el personal informe incidentes sospechosos." }},
+
+        // ===== 7  CONTROLES FISICOS =====
+        { id:"7.1",  nombre:"Perimetros de seguridad fisica",
+          tipos:["Preventivo","Disuasivo"], areas:["Fisico"],
+          ejemplos:{ Fisico:"Instalar cercas perimetrales con alambre de puas, iluminacion LED y senalizacion de zona restringida." }},
+        { id:"7.2",  nombre:"Acceso fisico",
+          tipos:["Preventivo"], areas:["Fisico"],
+          ejemplos:{ Fisico:"Implementar acceso biometrico (huella/iris) combinado con tarjeta de proximidad para areas con servidores." }},
+        { id:"7.3",  nombre:"Seguridad de oficinas, salas e instalaciones",
+          tipos:["Preventivo"], areas:["Fisico"],
+          ejemplos:{ Fisico:"Instalar puertas con cerraduras electronicas y vidrios reforzados en salas que albergan equipos de red." }},
+        { id:"7.4",  nombre:"Supervision de seguridad fisica",
+          tipos:["Detectivo","Disuasivo"], areas:["Fisico","Tecnico"],
+          ejemplos:{ Fisico:"Instalar camaras CCTV con grabacion 24/7 y sensores de movimiento en pasillos de acceso al datacenter.", Tecnico:"Integrar las camaras IP y sensores con una plataforma de gestion de video (VMS) con alertas automaticas." }},
+        { id:"7.5",  nombre:"Proteccion contra amenazas fisicas y ambientales",
+          tipos:["Preventivo"], areas:["Fisico"],
+          ejemplos:{ Fisico:"Instalar sistemas de supresion de incendios FM-200, detectores de humo y sensores de inundacion en el datacenter." }},
+        { id:"7.6",  nombre:"Trabajo en areas seguras",
+          tipos:["Preventivo"], areas:["Fisico"],
+          ejemplos:{ Fisico:"Prohibir el uso de dispositivos moviles con camara dentro de la sala de servidores; exigir acompanante para visitantes." }},
+        { id:"7.7",  nombre:"Escritorio despejado y pantalla limpia",
+          tipos:["Preventivo"], areas:["Fisico","Administrativo"],
+          ejemplos:{ Fisico:"Proveer cajones con llave en cada puesto de trabajo para guardar documentos sensibles al finalizar la jornada.", Administrativo:"Incluir en la politica interna la obligacion de bloquear la pantalla (Win+L) al abandonar el puesto." }},
+        { id:"7.8",  nombre:"Ubicacion y proteccion de equipos",
+          tipos:["Preventivo"], areas:["Fisico"],
+          ejemplos:{ Fisico:"Ubicar los servidores en piso elevado, con sistema de climatizacion dedicado y proteccion contra vibraciones." }},
+        { id:"7.9",  nombre:"Seguridad de activos fuera de las instalaciones",
+          tipos:["Preventivo"], areas:["Fisico"],
+          ejemplos:{ Fisico:"Usar candados Kensington y cifrado de disco completo en laptops que se trasladen fuera de la oficina." }},
+        { id:"7.10", nombre:"Medios de almacenamiento",
+          tipos:["Preventivo"], areas:["Fisico","Tecnico"],
+          ejemplos:{ Fisico:"Almacenar medios de respaldo (cintas LTO) en una boveda ignifuga con control de acceso independiente.", Tecnico:"Cifrar todos los discos extraibles con BitLocker o VeraCrypt antes de transportar datos sensibles." }},
+        { id:"7.11", nombre:"Servicios de apoyo",
+          tipos:["Preventivo","Compensatorio"], areas:["Fisico","Tecnico"],
+          ejemplos:{ Fisico:"Instalar UPS y generador electrico disel con autonomia de 48 horas para el centro de datos.", Tecnico:"Configurar conmutacion automatica de fuente de energia y monitoreo SNMP del estado de las UPS." }},
+        { id:"7.12", nombre:"Seguridad de cableado",
+          tipos:["Preventivo"], areas:["Fisico"],
+          ejemplos:{ Fisico:"Tender el cableado de red por canalizaciones cerradas y separar el cableado electrico del de datos." }},
+        { id:"7.13", nombre:"Mantenimiento de equipo",
+          tipos:["Preventivo","Correctivo"], areas:["Fisico"],
+          ejemplos:{ Fisico:"Ejecutar un plan de mantenimiento preventivo trimestral para servidores, UPS y climatizacion con registro de intervenciones." }},
+        { id:"7.14", nombre:"Eliminacion segura o reutilizacion de equipos",
+          tipos:["Preventivo"], areas:["Fisico"],
+          ejemplos:{ Fisico:"Usar desmagnetizacion o destruccion fisica certificada de discos duros antes de desechar o donar equipos obsoletos." }},
+
+        // ===== 8  CONTROLES TECNOLOGICOS =====
+        { id:"8.1",  nombre:"Dispositivos terminales del usuario",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Desplegar un MDM (Mobile Device Management) que aplique politicas de cifrado, bloqueo remoto y whitelist de apps." }},
+        { id:"8.2",  nombre:"Derechos de acceso privilegiado",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Implementar una solucion PAM (Privileged Access Management) con sesiones grabadas para administradores de servidores." }},
+        { id:"8.3",  nombre:"Restriccion de acceso a la informacion",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Configurar permisos granulares en SharePoint/carpetas de red para que cada area solo acceda a su informacion." }},
+        { id:"8.4",  nombre:"Acceso al codigo fuente",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Restringir repositorios Git con branch protection rules y aprobaciones obligatorias de pull requests." }},
+        { id:"8.5",  nombre:"Autenticacion segura",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Implementar SSO con SAML 2.0/OAuth 2.0 y MFA obligatorio para todos los sistemas de la organizacion." }},
+        { id:"8.6",  nombre:"Gestion de capacidad",
+          tipos:["Preventivo","Detectivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Configurar alertas automaticas en Zabbix/Grafana cuando CPU, RAM o disco superen el 80% de uso." }},
+        { id:"8.7",  nombre:"Proteccion contra malware",
+          tipos:["Preventivo","Detectivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Desplegar un EDR (Endpoint Detection & Response) con actualizaciones automaticas de firmas y analisis heuristico." }},
+        { id:"8.8",  nombre:"Gestion de vulnerabilidades tecnicas",
+          tipos:["Preventivo","Detectivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Ejecutar escaneos de vulnerabilidades mensuales con Nessus/Qualys y remediar criticas en menos de 72 horas." }},
+        { id:"8.9",  nombre:"Gestion de configuracion",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Utilizar Ansible/Puppet para aplicar hardening CIS Benchmarks y gestionar configuraciones como codigo." }},
+        { id:"8.10", nombre:"Eliminacion de informacion",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Implementar politicas de retencion automatica en Exchange y SharePoint que eliminen datos caducados." }},
+        { id:"8.11", nombre:"Enmascaramiento de datos",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Aplicar data masking en bases de datos de desarrollo para ocultar nombres reales, RUT y tarjetas de credito." }},
+        { id:"8.12", nombre:"Prevencion de fuga de datos",
+          tipos:["Preventivo","Detectivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Configurar un DLP que bloquee el envio de archivos con datos sensibles por correo, USB o servicios cloud no autorizados." }},
+        { id:"8.13", nombre:"Respaldo de informacion",
+          tipos:["Correctivo","Compensatorio"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Implementar backup 3-2-1 (3 copias, 2 medios distintos, 1 offsite) con pruebas de restauracion trimestrales." }},
+        { id:"8.14", nombre:"Redundancia de las instalaciones de tratamiento de informacion",
+          tipos:["Preventivo","Compensatorio"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Configurar un cluster activo-activo de servidores con balanceo de carga y failover automatico." }},
+        { id:"8.15", nombre:"Registro",
+          tipos:["Detectivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Centralizar logs de servidores, firewalls y aplicaciones en un SIEM con retencion minima de 12 meses." }},
+        { id:"8.16", nombre:"Actividades de seguimiento",
+          tipos:["Detectivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Configurar reglas de correlacion en el SIEM para detectar intentos de fuerza bruta, movimiento lateral y exfiltracion." }},
+        { id:"8.17", nombre:"Sincronizacion de reloj",
+          tipos:["Detectivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Sincronizar todos los dispositivos via NTP con servidores de tiempo Stratum 1 para correlacionar eventos de seguridad." }},
+        { id:"8.18", nombre:"Uso de programas de utilidad privilegiados",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Restringir el acceso a herramientas como PsExec, PowerShell remoto y editores de registro solo a administradores autorizados." }},
+        { id:"8.19", nombre:"Instalacion de software en sistemas operativos",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Aplicar whitelisting de aplicaciones (AppLocker/SRP) que impida instalar software no autorizado en estaciones de trabajo." }},
+        { id:"8.20", nombre:"Seguridad de redes",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Desplegar firewalls de nueva generacion (NGFW) con inspeccion profunda de paquetes y filtrado por aplicacion." }},
+        { id:"8.21", nombre:"Seguridad de servicios de red",
+          tipos:["Preventivo","Detectivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Monitorear los servicios DNS, DHCP y VPN con alertas ante cambios no autorizados o comportamiento anomalo." }},
+        { id:"8.22", nombre:"Segregacion de redes",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Segmentar la red en VLANs (servidores, usuarios, IoT, invitados) con reglas de firewall entre segmentos." }},
+        { id:"8.23", nombre:"Filtro Web",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Implementar un proxy web que bloquee categorias de sitios maliciosos, phishing y contenido no productivo." }},
+        { id:"8.24", nombre:"Uso de criptografia",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Cifrar datos en reposo con AES-256 y en transito con TLS 1.3, gestionando claves en un HSM dedicado." }},
+        { id:"8.25", nombre:"Ciclo de vida de desarrollo seguro",
+          tipos:["Preventivo"], areas:["Tecnico","Administrativo"],
+          ejemplos:{ Tecnico:"Integrar herramientas SAST/DAST en el pipeline CI/CD para detectar vulnerabilidades antes del despliegue.", Administrativo:"Incorporar fases de revision de seguridad (threat modeling, code review) en cada etapa del SDLC." }},
+        { id:"8.26", nombre:"Requisito de seguridad de las aplicaciones",
+          tipos:["Preventivo"], areas:["Tecnico","Administrativo"],
+          ejemplos:{ Tecnico:"Validar entradas, implementar prepared statements y headers de seguridad (CSP, HSTS) en todas las aplicaciones web.", Administrativo:"Documentar requisitos de seguridad funcionales y no funcionales como parte de las historias de usuario." }},
+        { id:"8.27", nombre:"Principios de ingenieria y arquitectura de sistemas seguros",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Aplicar arquitectura Zero Trust con microsegmentacion, autenticacion continua y principio de minimo privilegio." }},
+        { id:"8.28", nombre:"Codificacion segura",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Seguir las guias OWASP Top 10 y realizar peer code review enfocado en inyeccion SQL, XSS y CSRF." }},
+        { id:"8.29", nombre:"Pruebas de seguridad en desarrollo y aceptacion",
+          tipos:["Detectivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Ejecutar pentesting de aplicaciones antes de cada release mayor y validar la remediacion de hallazgos." }},
+        { id:"8.30", nombre:"Desarrollo externalizado",
+          tipos:["Preventivo","Detectivo"], areas:["Tecnico","Administrativo"],
+          ejemplos:{ Tecnico:"Realizar analisis de codigo estatico sobre los entregables del proveedor antes de aceptarlos en el repositorio.", Administrativo:"Incluir en el contrato SLAs de seguridad, derecho a auditoria del codigo y penalidades por vulnerabilidades criticas." }},
+        { id:"8.31", nombre:"Separacion de entornos de desarrollo, prueba y produccion",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Mantener entornos DEV, QA y PROD en redes separadas con datos anonimizados en ambientes no productivos." }},
+        { id:"8.32", nombre:"Gestion de cambio",
+          tipos:["Preventivo"], areas:["Tecnico","Administrativo"],
+          ejemplos:{ Tecnico:"Usar un sistema de tickets (ServiceNow, Jira) para registrar, aprobar y auditar cada cambio en infraestructura o codigo.", Administrativo:"Mantener un CAB (Change Advisory Board) que revise y apruebe cambios de alto impacto antes de su implementacion." }},
+        { id:"8.33", nombre:"Informacion de prueba",
+          tipos:["Preventivo"], areas:["Tecnico"],
+          ejemplos:{ Tecnico:"Generar datasets sinteticos o anonimizados para pruebas, prohibiendo el uso de datos reales de produccion." }},
+        { id:"8.34", nombre:"Proteccion de sistemas de informacion durante pruebas de auditoria",
+          tipos:["Preventivo"], areas:["Tecnico","Administrativo"],
+          ejemplos:{ Tecnico:"Ejecutar escaneos de auditoria en horarios de baja carga con alcance controlado para no afectar la disponibilidad.", Administrativo:"Definir un alcance y cronograma formal de auditoria acordado entre el auditor y la gerencia de TI." }}
+    ];
+
+    /* =============================================================
+       RENDER DEL PANEL DESCRIPTIVO
+       ============================================================= */
+    function renderDescPanel() {
+        var tipo = $("#filterTipo").val();
+        var area = $("#filterArea").val();
+        var html = "";
+
+        // --- Ambos seleccionados: mostrar tipo + area + combo ---
+        if (tipo && area) {
+            html += buildDescCard(tipo, tipoDescripciones[tipo], tipoIconos[tipo], "header-" + tipo.toLowerCase());
+            html += buildDescCardArea(area, areaDescripciones[area], areaIconos[area]);
+            var comboKey = tipo + "|" + area;
+            if (comboDescripciones[comboKey]) {
+                html += '<div class="desc-combo fade-in mt-2">' +
+                    '<div class="combo-title"><i class="fas fa-bolt me-1"></i> Que ataca esta combinacion</div>' +
+                    comboDescripciones[comboKey] +
+                '</div>';
+            }
+        }
+        // --- Solo tipo ---
+        else if (tipo && !area) {
+            html += buildDescCard(tipo, tipoDescripciones[tipo], tipoIconos[tipo], "header-" + tipo.toLowerCase());
+        }
+        // --- Solo area ---
+        else if (!tipo && area) {
+            html += buildDescCardArea(area, areaDescripciones[area], areaIconos[area]);
+        }
+        // --- Ninguno: mostrar resumen compacto de todos ---
+        else {
+            html += '<div class="row g-2 mt-1 fade-in">';
+            tiposOrden.forEach(function(t) {
+                html += '<div class="col-12 col-md-6 col-xl">' +
+                    '<div class="desc-card mb-0" style="height:100%">' +
+                        '<div class="desc-header header-' + t.toLowerCase() + '">' +
+                            '<i class="fas ' + tipoIconos[t] + '"></i> ' + t +
+                        '</div>' +
+                        '<div class="desc-body" style="font-size:.78rem">' + tipoDescripciones[t].substring(0, 120) + '&hellip;</div>' +
+                    '</div>' +
+                '</div>';
+            });
+            html += '</div>';
+            html += '<div class="row g-2 mt-2 fade-in">';
+            ["Administrativo","Tecnico","Fisico"].forEach(function(a) {
+                var colors = { Administrativo:"#1565c0", Tecnico:"#e65100", Fisico:"#2e7d32" };
+                var bgs = { Administrativo:"#e3f2fd", Tecnico:"#fff3e0", Fisico:"#e8f5e9" };
+                html += '<div class="col-12 col-md-4">' +
+                    '<div class="desc-card mb-0" style="height:100%">' +
+                        '<div class="desc-header" style="background:' + colors[a] + '">' +
+                            '<i class="fas ' + areaIconos[a] + '"></i> ' + a +
+                        '</div>' +
+                        '<div class="desc-body" style="font-size:.78rem;background:' + bgs[a] + '">' + areaDescripciones[a].substring(0, 110) + '&hellip;</div>' +
+                    '</div>' +
+                '</div>';
+            });
+            html += '</div>';
+        }
+
+        $("#desc-panel").html(html);
+    }
+
+    function buildDescCard(tipo, desc, icon, headerClass) {
+        return '<div class="desc-card fade-in">' +
+            '<div class="desc-header ' + headerClass + '">' +
+                '<i class="fas ' + icon + '"></i> Tipo de Control: ' + tipo +
+            '</div>' +
+            '<div class="desc-body">' + desc + '</div>' +
+        '</div>';
+    }
+
+    function buildDescCardArea(area, desc, icon) {
+        var colors = { Administrativo:"#1565c0", Tecnico:"#e65100", Fisico:"#2e7d32" };
+        var bgs = { Administrativo:"#e3f2fd", Tecnico:"#fff3e0", Fisico:"#e8f5e9" };
+        return '<div class="desc-card fade-in">' +
+            '<div class="desc-header" style="background:' + colors[area] + '">' +
+                '<i class="fas ' + icon + '"></i> Area: ' + area +
+            '</div>' +
+            '<div class="desc-body" style="background:' + bgs[area] + '">' + desc + '</div>' +
+        '</div>';
+    }
+
+    /* =============================================================
+       BUILD CARD CON TOOLTIP DE EJEMPLO
+       ============================================================= */
+    function buildCard(ctrl, tipo) {
+        var tipoKey = tipo.toLowerCase();
+
+        var areasHtml = ctrl.areas.map(function(a) {
+            var ej = (ctrl.ejemplos && ctrl.ejemplos[a]) ? ctrl.ejemplos[a] : "";
+            return '<span class="badge area-badge area-' + a.toLowerCase() + '" ' +
+                'data-ejemplo="' + escapeAttr(ej) + '" ' +
+                'data-area="' + a + '">' +
+                '<i class="fas ' + areaIconos[a] + ' me-1"></i>' + a +
+            '</span>';
+        }).join(' ');
+
+        var tiposHtml = ctrl.tipos.map(function(t) {
+            return '<span class="badge badge-' + t.toLowerCase() + '">' + t + '</span>';
+        }).join(' ');
+
+        return '<div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-3 fade-in">' +
+            '<div class="card card-control border-left-' + tipoKey + '">' +
+                '<div class="card-header header-' + tipoKey + '">' +
+                    '<i class="fas ' + tipoIconos[tipo] + ' me-1"></i> ' + tipo +
+                '</div>' +
+                '<div class="card-body">' +
+                    '<div class="control-id mb-1">' + ctrl.id + '</div>' +
+                    '<div class="control-name mb-2">' + ctrl.nombre + '</div>' +
+                    '<div class="mb-2">' + tiposHtml + '</div>' +
+                    '<div>' + areasHtml + '</div>' +
+                '</div>' +
+                '<div class="ejemplo-panel"></div>' +
+            '</div>' +
+        '</div>';
+    }
+
+    function escapeAttr(str) {
+        return str.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    /* =============================================================
+       HOVER EN BADGES: Mostrar ejemplo en panel inferior de la tarjeta
+       ============================================================= */
+    $(document).on("mouseenter", ".area-badge", function() {
+        var $badge = $(this);
+        var ejemplo = $badge.attr("data-ejemplo");
+        var area = $badge.attr("data-area");
+        if (!ejemplo) return;
+
+        var areaColors = { Administrativo:"#1565c0", Tecnico:"#e65100", Fisico:"#2e7d32" };
+        var $panel = $badge.closest(".card-control").find(".ejemplo-panel");
+
+        $panel.html(
+            '<span class="ej-label" style="color:' + areaColors[area] + '">' +
+                '<i class="fas ' + areaIconos[area] + ' ej-icon"></i>Ejemplo ' + area +
+            '</span>' + ejemplo
+        ).addClass("show");
+    });
+
+    $(document).on("mouseleave", ".area-badge", function() {
+        $(this).closest(".card-control").find(".ejemplo-panel").removeClass("show");
+    });
+
+    /* =============================================================
+       RENDER PRINCIPAL
+       ============================================================= */
+    function render() {
+        var tipoFilter = $("#filterTipo").val();
+        var areaFilter = $("#filterArea").val();
+        var $results   = $("#results");
+        var html       = "";
+        var totalShown = 0;
+        var counts     = { Preventivo:0, Detectivo:0, Correctivo:0, Disuasivo:0, Compensatorio:0 };
+
+        if (tipoFilter && !areaFilter) {
+            controles.forEach(function(c) {
+                if (c.tipos.indexOf(tipoFilter) !== -1) {
+                    html += buildCard(c, tipoFilter);
+                    totalShown++;
+                    counts[tipoFilter]++;
+                }
+            });
+        }
+        else if (!tipoFilter && areaFilter) {
+            tiposOrden.forEach(function(tipo) {
+                var cards = "";
+                var groupCount = 0;
+                controles.forEach(function(c) {
+                    if (c.areas.indexOf(areaFilter) !== -1 && c.tipos.indexOf(tipo) !== -1) {
+                        cards += buildCard(c, tipo);
+                        groupCount++;
+                        totalShown++;
+                        counts[tipo]++;
+                    }
+                });
+                if (groupCount > 0) {
+                    html += '<div class="group-header header-' + tipo.toLowerCase() + '">' +
+                        '<i class="fas ' + tipoIconos[tipo] + ' me-2"></i>' +
+                        tipo + 's (' + groupCount + ')' +
+                    '</div>';
+                    html += '<div class="row">' + cards + '</div>';
+                }
+            });
+        }
+        else if (tipoFilter && areaFilter) {
+            controles.forEach(function(c) {
+                if (c.tipos.indexOf(tipoFilter) !== -1 && c.areas.indexOf(areaFilter) !== -1) {
+                    html += buildCard(c, tipoFilter);
+                    totalShown++;
+                    counts[tipoFilter]++;
+                }
+            });
+        }
+        else {
+            tiposOrden.forEach(function(tipo) {
+                var cards = "";
+                var groupCount = 0;
+                controles.forEach(function(c) {
+                    if (c.tipos.indexOf(tipo) !== -1) {
+                        cards += buildCard(c, tipo);
+                        groupCount++;
+                        totalShown++;
+                        counts[tipo]++;
+                    }
+                });
+                if (groupCount > 0) {
+                    html += '<div class="group-header header-' + tipo.toLowerCase() + '">' +
+                        '<i class="fas ' + tipoIconos[tipo] + ' me-2"></i>' +
+                        tipo + 's (' + groupCount + ')' +
+                    '</div>';
+                    html += '<div class="row">' + cards + '</div>';
+                }
+            });
+        }
+
+        if ((tipoFilter && !areaFilter) || (tipoFilter && areaFilter)) {
+            html = '<div class="row">' + html + '</div>';
+        }
+
+        if (totalShown === 0) {
+            html = '<div class="no-results"><i class="fas fa-inbox"></i><h5>Sin resultados</h5>' +
+                   '<p class="text-muted">No se encontraron controles para la combinacion seleccionada.</p></div>';
+        }
+
+        $results.html(html);
+        $("#results-count").html(
+            '<i class="fas fa-list me-1"></i> Mostrando <strong>' + totalShown + '</strong> controles'
+        );
+
+        $("#stat-preventivo").text(counts.Preventivo);
+        $("#stat-detectivo").text(counts.Detectivo);
+        $("#stat-correctivo").text(counts.Correctivo);
+        $("#stat-disuasivo").text(counts.Disuasivo);
+        $("#stat-compensatorio").text(counts.Compensatorio);
+
+        renderDescPanel();
+    }
+
+    // Eventos
+    $("#filterTipo, #filterArea").on("change", render);
+
+    $("#btnClear").on("click", function () {
+        $("#filterTipo").val("");
+        $("#filterArea").val("");
+        render();
+    });
+
+    // Render inicial
+    render();
+});
+</script>
+</body>
+</html>

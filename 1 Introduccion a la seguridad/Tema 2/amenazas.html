@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxonomía de Amenazas - Gestión de Riesgos</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: #f4f7fb;
+            margin: 0;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 98%;
+            width: 1600px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            padding: 28px 24px;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 500;
+            margin: 0 0 8px 0;
+            color: #0b2b4a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        h1 small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            background: #e9ecf3;
+            color: #1f3a5f;
+            padding: 4px 12px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+        .subtitle {
+            color: #2f4858;
+            margin-top: -5px;
+            margin-bottom: 28px;
+            border-left: 5px solid #1e6f9f;
+            padding-left: 18px;
+            background: #f0f6fe;
+            border-radius: 0 40px 40px 0;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+        .search-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 28px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .search-box {
+            flex: 2;
+            min-width: 280px;
+            position: relative;
+        }
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7c8b9a;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 16px 16px 16px 52px;
+            font-size: 1rem;
+            border: 1px solid #cfddee;
+            border-radius: 60px;
+            background: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: 0.2s;
+        }
+        .search-box input:focus {
+            border-color: #1e6f9f;
+            outline: none;
+            box-shadow: 0 4px 14px rgba(23, 98, 155, 0.15);
+        }
+        .filter-tabs {
+            flex: 3;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        .filter-tab {
+            background: white;
+            border: 1px solid #cdddec;
+            color: #1a344d;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s;
+            white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .filter-tab:hover {
+            background: #e3ecf7;
+            border-color: #7fa3c2;
+        }
+        .filter-tab.active {
+            background: #1e6f9f;
+            border-color: #1e6f9f;
+            color: white;
+            box-shadow: 0 4px 8px rgba(24, 100, 150, 0.25);
+        }
+        .stats {
+            font-size: 0.9rem;
+            background: #eef2f7;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: #1e3e64;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        .table-wrapper {
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            overflow: auto;
+            max-height: 70vh;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+            background: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1400px;
+            font-size: 0.85rem;
+        }
+        th {
+            background: #1b2b45;
+            color: white;
+            font-weight: 500;
+            padding: 16px 10px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            white-space: nowrap;
+        }
+        td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #e6edf5;
+            vertical-align: top;
+            background: white;
+        }
+        tr:hover td {
+            background-color: #f5faff;
+        }
+        .high-level {
+            font-weight: 600;
+            color: #0b2b4a;
+            background-color: #f2f7ff;
+            border-left: 4px solid #0b2b4a;
+        }
+        .threat-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #5e6f8d;
+        }
+        .pill {
+            background: #e3eefb;
+            color: #113355;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            display: inline-block;
+            font-weight: 500;
+        }
+        .empty-row td {
+            padding: 40px;
+            text-align: center;
+            color: #8a9db0;
+            font-style: italic;
+        }
+        .footer-note {
+            margin-top: 24px;
+            color: #597a9f;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>
+        🛡️ Taxonomía de amenazas · Gestión de riesgos
+        <small>v.2016 traducida</small>
+    </h1>
+    <div class="subtitle">Amenazas de alto nivel, vulnerabilidades, tendencias, referencias ENISA y descripciones completas</div>
+
+    <div class="search-section">
+        <div class="search-box">
+            <i>🔍</i>
+            <input type="text" id="searchInput" placeholder="Buscar en toda la tabla (amenazas, descripciones, referencias...)" autocomplete="off">
+        </div>
+        <div class="filter-tabs" id="filterTabs">
+            <span class="filter-tab active" data-filter="all">📋 Todas</span>
+            <span class="filter-tab" data-filter="fisico">🔨 Ataque físico</span>
+            <span class="filter-tab" data-filter="noIntencional">⚠️ Daño no intencional</span>
+            <span class="filter-tab" data-filter="desastre">🌪️ Desastre</span>
+            <span class="filter-tab" data-filter="fallos">⚙️ Fallos/Malfunción</span>
+            <span class="filter-tab" data-filter="interrupcion">📡 Interrupción</span>
+            <span class="filter-tab" data-filter="escuchas">👂 Escuchas</span>
+            <span class="filter-tab" data-filter="nefasta">💀 Actividad nefasta</span>
+            <span class="filter-tab" data-filter="legal">⚖️ Legal</span>
+        </div>
+    </div>
+
+    <div class="stats" id="stats">Mostrando <span id="visibleCount">0</span> de <span id="totalCount">0</span> amenazas</div>
+
+    <div class="table-wrapper" id="tableWrapper">
+        <!-- la tabla se inyecta desde js -->
+    </div>
+    <div class="footer-note">
+        <span>🔎 Haz clic en los filtros rápidos o escribe para buscar en cualquier campo.</span>
+        <span>📋 Basado en Threat Taxonomy v2016 · ENISA + referencias.</span>
+    </div>
+</div>
+
+<script>
+(function() {
+    // --------------------------------------------------------------
+    // DATOS TRADUCIDOS (versión resumida pero completa, con las columnas esenciales)
+    // Se han seleccionado las columnas más representativas: 
+    // Número, AltoNivel, Amenaza, Detalle, Exploit, Tendencias, Activo, Comentarios, Referencias, ENISA2014, Descripción.
+    // Se incluyen las filas más significativas para que la tabla sea funcional.
+    // Se han preservado las filas con información para que los filtros tengan contenido.
+    // --------------------------------------------------------------
+    const threatData = [
+        [1,"Ataque físico (deliberado/ intencional)","","","","","","","","Daño/robo/pérdida física (ENISA 2014)","Amenazas de acciones humanas hostiles intencionales"],
+        [3,"Ataque físico (deliberado/ intencional)","Fraude","","","","","","","","Fraude cometido por humanos"],
+        [4,"Ataque físico (deliberado/ intencional)","Fraude","Fraude por empleados","","","","","","","Fraude cometido por empleados u otros que tengan acceso a información y activos TI"],
+        [5,"Ataque físico (deliberado/ intencional)","Sabotaje","","","","","","","","Acciones intencionales para causar interrupción o daño de Activos TI"],
+        [6,"Ataque físico (deliberado/ intencional)","Vandalismo","","","","","","","","Acto de dañar físicamente los Activos de TI"],
+        [7,"Ataque físico (deliberado/ intencional)","Robo (dispositivos, soportes, docs)","","","Estable (?)","","Como fue el caso en informes anteriores, la gente todavía roba cosas","Verizon DBIR 2015","","Robo de información o Activos TI. Hurto"],
+        [8,"Ataque físico (deliberado/ intencional)","Robo","Robo de dispositivos móviles","","","","","","","Tomar propiedad de otra persona: smartphones, tablets"],
+        [9,"Ataque físico (deliberado/ intencional)","Robo","Robo de hardware fijo","","Decreciente","","Gráfico muestra disminución de incidentes por robo de ordenador","Symantec ISTR 20","","Robo de hardware fijo (excepto móviles) con datos sensibles"],
+        [12,"Ataque físico (deliberado/ intencional)","Fuga/divulgación de información","","","","","","","Fuga de información (ENISA 2014)","Compartir información con entidades no autorizadas (intencional)"],
+        [13,"Ataque físico (deliberado/ intencional)","Acceso físico no autorizado","","","","","","","","Acceso no aprobado a instalaciones"],
+        [14,"Ataque físico (deliberado/ intencional)","Coacción, extorsión o corrupción","","","","","","","","Acciones causadas por coacción, extorsión o corrupción"],
+        [16,"Ataque físico (deliberado/ intencional)","Ataque terrorista","","","","","","","","Amenazas de bombardeos u otras acciones terroristas"],
+        [17,"Daño no intencional / pérdida de información o activos de TI","","","","","","","","","Amenazas de acciones humanas no intencionales o errores"],
+        [18,"Daño no intencional / pérdida de información o activos de TI","Fuga/divulgación por error humano","","","decreciente","","Página 11: 25% breaches por pérdida accidental","Gemalto BLI 2014","",""],
+        [21,"Daño no intencional / pérdida de información o activos de TI","Fuga accidental de datos por empleados","","","Decreciente","","Gráfico muestra disminución de datos públicos accidentales","Symantec ISTR 20","","Distribución no intencional de datos sensibles por empleado"],
+        [22,"Daño no intencional / pérdida de información o activos de TI","Fugas de datos por apps móviles","","","Creciente","","El mayor problema: empleado negligente con múltiples dispositivos","Ponemon 2015","",""],
+        [24,"Daño no intencional / pérdida de información o activos de TI","Fugas por apps web","Interfaces inseguras (APIs)","decreciente","","errores de publicación no intencionales","Verizon DBIR 2015","Ataques aplicación web/inyección (ENISA 2014)","Fuga por apps web"],
+        [26,"Daño no intencional / pérdida de información o activos de TI","Uso o administración errónea de dispositivos","fallos de sistemas: compatibilidad, config., software sin parchear","","","","","","","Fuga por mal uso o configuración incorrecta"],
+        [31,"Daño no intencional / pérdida de información o activos de TI","Usar información de fuente no confiable","","","","","","","","Mala decisión por fuentes no verificadas"],
+        [32,"Daño no intencional / pérdida de información o activos de TI","Cambio no intencional de datos","","","","","","","","Pérdida de integridad por error humano"],
+        [33,"Daño no intencional / pérdida de información o activos de TI","Diseño inadecuado / adaptación incorrecta","especificaciones, usabilidad, procedimientos obsoletos","","","","","","","Amenazas por diseño inadecuado de activos o procesos"],
+        [34,"Daño no intencional / pérdida de información o activos de TI","Daño causado por un tercero","","","","","","","","Daño a activos TI por terceros"],
+        [37,"Daño no intencional / pérdida de información o activos de TI","Pérdida de información en la nube","","","","","","","Diferencia: Pérdida de info","Perder datos almacenados en la nube"],
+        [40,"Daño no intencional / pérdida de información o activos de TI","Pérdida de dispositivos, soportes y documentos","","","","","IBM X-Force 2T2015 Top8 puesto 7 (35%)","","Diferencia: Pérdida","Pérdida de activos y documentos"],
+        [41,"Daño no intencional / pérdida de información o activos de TI","Pérdida","Pérdida dispositivos móviles","","","","","","","Amenaza de perder móviles"],
+        [47,"Desastre (natural, ambiental)","","","","","","","","","Amenazas por elementos naturales o ambientales"],
+        [48,"Desastre (natural, ambiental)","Desastre natural (terremotos, inundaciones)","","","","","","","Diferencia: Natural disasters","Desastres de gran escala"],
+        [49,"Desastre (natural, ambiental)","Incendio","","","","","","","Diferencia: Incendios","Amenaza de fuego"],
+        [50,"Desastre (natural, ambiental)","Contaminación, polvo, corrosión","","","","","","","Diferencia: Polución, polvo","Interrupción por polvo/corrosión"],
+        [51,"Desastre (natural, ambiental)","Rayo","","","","","","","Diferencia: Impacto rayo","Daño por sobretensión"],
+        [52,"Desastre (natural, ambiental)","Agua","","","","","","","No","Daño hardware por agua"],
+        [55,"Desastre (natural, ambiental)","Condiciones climáticas desfavorables","","","","","","","Diferencia: Clima desfavorable","Efecto negativo en hardware"],
+        [61,"Fallos/ Mal funcionamiento","","","","","","","","","Fallo de dispositivos o sistemas"],
+        [62,"Fallos/ Mal funcionamiento","Fallo de dispositivos o sistemas","fallos: hardware, software, diseño, complejidad","","","","","","","Fallo de activos hardware/software"],
+        [64,"Fallos/ Mal funcionamiento","Fallo de hardware","","","","","","","Diferencia: Servidores",""],
+        [67,"Fallos/ Mal funcionamiento","Fallo o interrupción de enlaces de comunicación","redes de próxima gen, IPv6","","","","","","","Fallo en enlaces de comunicaciones"],
+        [72,"Fallos/ Mal funcionamiento","Fallo o interrupción del suministro principal","fallo proveedor","","","","","","","Fallo de suministro requerido"],
+        [75,"Fallos/ Mal funcionamiento","Fallo o interrupción de proveedores (cadena)","dependencias, servicios emergencia","","","","","","","Fallo servicios de terceros"],
+        [77,"Interrupciones","","","","","","","","","Interrupciones por acciones de personas"],
+        [78,"Interrupciones","Pérdida de recursos","capacidad, rendimiento, combustible","","","","","","Diferencia: falta recursos","Indisponibilidad de recursos"],
+        [81,"Interrupciones","Ausencia de personal","","","","","","","","Indisponibilidad de personal clave"],
+        [82,"Interrupciones","Huelga","","","","","","","","Indisponibilidad por huelga"],
+        [84,"Interrupciones","Interrupción de Internet","","","","","","","No","Indisponibilidad conexión internet"],
+        [85,"Interrupciones","Interrupción de red","","","","","","","Sí, Network outages","Indisponibilidad enlaces comunicación"],
+        [89,"Escuchas/ Interceptación/ Secuestro","","","","","","","","","Amenazas que alteran comunicación entre dos partes"],
+        [90,"Escuchas/ Interceptación/ Secuestro","War driving","","","","","","","No","Localizar y explotar red wifi"],
+        [91,"Escuchas/ Interceptación/ Secuestro","Interceptación de emisiones comprometedoras","","","","","","","","Divulgación por análisis de emisión"],
+        [92,"Escuchas/ Interceptación/ Secuestro","Interceptación de información","","","Creciente","","Nº3 top9 (18%) Verizon DBIR 2015","","Ciberespionaje (ENISA 2014)","Interceptación de información no asegurada"],
+        [93,"Escuchas/ Interceptación/ Secuestro","Espionaje corporativo","","","","","","","Sí, Espionaje",""],
+        [98,"Escuchas/ Interceptación/ Secuestro","Radiación interferente","","","","","","","","Fallo por inducción electromagnética"],
+        [99,"Escuchas/ Interceptación/ Secuestro","Repetición de mensajes","","","","","","","","Transmisión repetida maliciosa"],
+        [100,"Escuchas/ Interceptación/ Secuestro","Reconocimiento de red / manipulación tráfico","","","","","","","","Identificar debilidades de red"],
+        [101,"Escuchas/ Interceptación/ Secuestro","Hombre en el medio / secuestro sesión","","","","","","","","Alteración comunicación"],
+        [102,"Actividad Nefasta/ Abuso","","","","Creciente","","Nº5 top10 (8.3%) Verizon DBIR 2015","","","Actividades nefastas"],
+        [103,"Actividad Nefasta/ Abuso","Robo de identidad","Interfaz usuario","creciente (dramático)","","54% del total, desde 20% en 2013","Gemalto BLI 2014","13 Robo identidad/fraude (ENISA 2014)","Robo de identidad"],
+        [104,"Actividad Nefasta/ Abuso","Troyanos robadores de credenciales","mecanismos AAA inadecuados","Creciente","","95% cosechan credenciales","Verizon DBIR 2015","",""],
+        [105,"Actividad Nefasta/ Abuso","Recepción de email no solicitado","","","","","","","","Afecta seguridad y eficiencia"],
+        [112,"Actividad Nefasta/ Abuso","Denegación de servicio","","","","","","6,8,5 (ENISA)","Ataques DoS/DDoS (diferencia)","Ataques de denegación servicio"],
+        [114,"Actividad Nefasta/ Abuso","DDoS capa red","Protocol exploitation, flooding","Creciente","","Aumento volumen 253 Gbps","IMPERVA Q2 2015","",""],
+        [115,"Actividad Nefasta/ Abuso","DDoS capa aplicación","HTTP Floods, XDoS","Creciente","","17.65% aumento capa 7","Akamai Q2 2015","",""],
+        [125,"Actividad Nefasta/ Abuso","Código/software malicioso","juegos online","Creciente","","IBM X-Force top8 puesto4","","1 Malicious code (ENISA 2014)","Ejecución de código malicioso"],
+        [133,"Actividad Nefasta/ Abuso","Gusanos/Troyanos","","Creciente","","IBM X-Force 1T2015 más común","","",""],
+        [136,"Actividad Nefasta/ Abuso","Malware móvil","","Creciente","","+17% muestras Q2","McAfee Aug2015","",""],
+        [141,"Actividad Nefasta/ Abuso","Ataques aplicación web / inyección SQL, XSS","","Creciente","","Nº3 (19%) y 7 (6.3%) Verizon DBIR 2015","","",""],
+        [149,"Actividad Nefasta/ Abuso","Ransomware / scareware","","Creciente","","crypto-ransomware sigue creciendo","Symantec intelligence Aug2015","15 Ransomware/rogueware (ENISA 2014)",""],
+        [161,"Actividad Nefasta/ Abuso","Ingeniería social","","Creciente","","IBM X-Force top8 puesto2","","",""],
+        [162,"Actividad Nefasta/ Abuso","Phishing","","Mismo nivel / creciente","","CozyDukes usa spear-phishing","Kaspersky Q2","7 Phishing (ENISA 2014)","Ataques phishing"],
+        [166,"Actividad Nefasta/ Abuso","Spear phishing","","Creciente","","aumento 8% en 2014","Symantec ISTR","",""],
+        [180,"Actividad Nefasta/ Abuso","Manipulación de hardware y software","","Creciente","","IBM X-Force top8 puesto3","","","Manipulación no autorizada"],
+        [190,"Actividad Nefasta/ Abuso","Manipulación de información","","","","","","","","Manipulación intencional de datos"],
+        [193,"Actividad Nefasta/ Abuso","Envenenamiento DNS / DNS spoofing","","Creciente","","aumento detecciones DNS changer, sobre todo Brasil","TrendMicro","",""],
+        [198,"Actividad Nefasta/ Abuso","Mal uso de herramientas de auditoría","","","","","","","","Descubrir debilidades"],
+        [199,"Actividad Nefasta/ Abuso","Mal uso de información/sistemas","","Creciente","","Nº4 top9 (18%) Verizon DBIR","","",""],
+        [201,"Actividad Nefasta/ Abuso","Uso no autorizado de dispositivos y sistemas","","Creciente","","IBM X-Force top8 puesto1","","",""],
+        [206,"Actividad Nefasta/ Abuso","Instalación no autorizada de software","","","","","","1 Drive-by exploits (ENISA 2012)","2 Web-based attacks (ENISA 2014)","Instalación no autorizada"],
+        [209,"Actividad Nefasta/ Abuso","Comprometer información confidencial","","Creciente","","aumento 23% breaches 2014","Symantec","9 Data breaches (ENISA 2014)","Violación de datos"],
+        [215,"Actividad Nefasta/ Abuso","Actividad remota (ejecución)","","","","","","","","Actividad remota sobre activos controlados"],
+        [223,"Actividad Nefasta/ Abuso","Ataques dirigidos (APTs)","","Creciente","","IBM X-Force top8 puesto5 (36%)","","","Ataque sofisticado multi-técnica"],
+        [237,"Legal","","","","","","","","",""],
+        [238,"Legal","Violación de leyes/regulaciones","","","","","","","","Sanción legal o pérdida de confianza"],
+        [239,"Legal","Incumplimiento contractual","","","","","","","","Penalización financiera"],
+        [241,"Legal","Uso no autorizado de IPR","","","","","","","","Uso ilegal de copyright"],
+        [243,"Legal","Abuso de datos personales","","","","","","","Diferencia: Abuso datos personales","Uso ilegal de datos personales"]
+    ];
+
+    // Referencia a columnas
+    const COL_NUM = 0, COL_HIGH = 1, COL_THREAT = 2, COL_DETAIL = 3, COL_EXPLOIT = 4, COL_TRENDS = 5,
+          COL_ASSET = 6, COL_COMMENTS = 7, COL_REF = 8, COL_ENISA = 9, COL_DESC = 10;
+
+    let currentFilter = 'all';
+    let lastSearch = '';
+
+    // elementos DOM
+    const tbody = document.createElement('tbody');
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    thead.innerHTML = `<tr>
+        <th>#</th><th>Alto nivel</th><th>Amenaza</th><th>Detalle</th><th>Exploit</th><th>Tendencias</th><th>Activo</th><th>Comentarios</th><th>Referencias</th><th>ENISA 2014</th><th>Descripción</th>
+    </tr>`;
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    document.getElementById('tableWrapper').appendChild(table);
+
+    const totalSpan = document.getElementById('totalCount');
+    const visibleSpan = document.getElementById('visibleCount');
+
+    function renderTable() {
+        tbody.innerHTML = '';
+        const searchTerm = lastSearch.trim().toLowerCase();
+        let visible = 0;
+
+        threatData.forEach(row => {
+            const highLevel = row[COL_HIGH] || '';
+            // filtro por pestaña
+            if (currentFilter !== 'all') {
+                const catMap = {
+                    'fisico': 'ataque físico',
+                    'noIntencional': 'no intencional',
+                    'desastre': 'desastre',
+                    'fallos': 'fallos',
+                    'interrupcion': 'interrupción',
+                    'escuchas': 'escucha',
+                    'nefasta': 'nefasta',
+                    'legal': 'legal'
+                };
+                const filterValue = catMap[currentFilter];
+                if (!highLevel.toLowerCase().includes(filterValue) && 
+                    !(currentFilter === 'nefasta' && (highLevel.includes('Actividad Nefasta')||highLevel.includes('Nefasta')) ) &&
+                    !(currentFilter === 'fisico' && highLevel.includes('Ataque físico')) &&
+                    !(currentFilter === 'noIntencional' && highLevel.includes('no intencional')) &&
+                    !(currentFilter === 'desastre' && highLevel.includes('Desastre')) &&
+                    !(currentFilter === 'fallos' && highLevel.includes('Fallos')) &&
+                    !(currentFilter === 'interrupcion' && highLevel.includes('Interrupción')) &&
+                    !(currentFilter === 'escuchas' && highLevel.includes('Escuchas')) &&
+                    !(currentFilter === 'legal' && highLevel.includes('Legal'))
+                ) {
+                    // ver si es la categoría nefasta / exacta
+                    const pass = (currentFilter === 'nefasta' && highLevel.includes('Nefasta')) ||
+                                 (currentFilter === 'fisico' && highLevel.includes('físico')) ||
+                                 (currentFilter === 'noIntencional' && highLevel.includes('no intencional')) ||
+                                 (currentFilter === 'desastre' && highLevel.includes('Desastre')) ||
+                                 (currentFilter === 'fallos' && highLevel.includes('Fallos')) ||
+                                 (currentFilter === 'interrupcion' && highLevel.includes('Interrupción')) ||
+                                 (currentFilter === 'escuchas' && highLevel.includes('Escuchas')) ||
+                                 (currentFilter === 'legal' && highLevel.includes('Legal'));
+                    if (!pass) return;
+                }
+            }
+
+            // búsqueda texto
+            if (searchTerm !== '') {
+                const haystack = row.map(cell => (cell || '').toString().toLowerCase()).join(' ');
+                if (!haystack.includes(searchTerm)) return;
+            }
+
+            visible++;
+            const tr = document.createElement('tr');
+            for (let i = 0; i <= 10; i++) {
+                const td = document.createElement('td');
+                let val = row[i] !== undefined ? row[i] : '';
+                if (i === COL_NUM) td.innerHTML = `<span class="threat-id">#${val}</span>`;
+                else td.textContent = val;
+                tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+        });
+
+        if (visible === 0) {
+            const tr = document.createElement('tr');
+            tr.className = 'empty-row';
+            tr.innerHTML = `<td colspan="11">❌ No se encontraron amenazas con los filtros actuales.</td>`;
+            tbody.appendChild(tr);
+        }
+
+        visibleSpan.textContent = visible;
+        totalSpan.textContent = threatData.length;
+    }
+
+    // inicial
+    renderTable();
+
+    // búsqueda
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        lastSearch = e.target.value;
+        renderTable();
+    });
+
+    // filtros por pestaña
+    const tabs = document.querySelectorAll('.filter-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentFilter = tab.dataset.filter;
+            renderTable();
+        });
+    });
+
+})();
+</script>
+</body>
+</html>
