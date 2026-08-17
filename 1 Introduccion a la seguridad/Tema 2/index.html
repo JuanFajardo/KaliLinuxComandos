@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Riesgos · Curso universitario</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+
+    <style>
+        .reveal { color: #1e2b37; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #0b3954; font-weight: 600; }
+        .command-box {
+            background: #f0f5fa;
+            padding: 20px;
+            border-radius: 16px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border-left: 6px solid #2a7faa;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        .command { color: #1b6b8f; font-weight: bold; }
+        .explanation { font-size: 0.95em; margin-top: 8px; }
+        .example {
+            background: #fef7e8;
+            padding: 12px 18px;
+            border-radius: 14px;
+            margin-top: 12px;
+            border-left: 4px solid #e67e22;
+            font-size: 0.9em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .tip {
+            background: #dff0ea;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border-left: 5px solid #1e7e5e;
+            font-size: 0.9em;
+        }
+        .warning {
+            background: #fbe9e7;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border-left: 5px solid #c44536;
+            font-size: 0.9em;
+        }
+        .slide-title {
+            color: #1f7a8c;
+            border-bottom: 3px solid #1f7a8c;
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+            font-weight: 600;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 24px;
+            margin-top: 20px;
+        }
+        .grid-list li {
+            list-style-type: none;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+        .grid-list li::before {
+            content: "▹";
+            color: #1f7a8c;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .small-note { font-size: 0.8rem; line-height: 1.4; opacity: 0.8; }
+        .university-badge {
+            background: #022b40;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 40px;
+            display: inline-block;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .matrix-scale {
+            background: white;
+            padding: 14px;
+            border-radius: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+        }
+        .risk-highlight {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #bf4e3f;
+        }
+        .fragment.step { opacity: 0.9; transition: all 0.2s; }
+    </style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- ========== PORTADA ========== -->
+
+<section>
+    <img src="logo.png" alt="">
+</section>
+<section>
+    <h1>Gestión de Riesgos</h1>
+    
+    <div class="description">
+        <p>operacionales y de seguridad</p>
+    </div>
+    <p class="tip">Juan Alberto Fajardo Canaza</p>
+</section>
+
+<section>
+    
+    <section>
+        <h2>¿Qué es el Riesgo?</h2>
+        <p>El riesgo es la posibilidad de que una amenaza aproveche una vulnerabilidad y cause daño a un activo.</p>
+        <p><strong>Fórmula:</strong> Riesgo = Probabilidad × Impacto</p>
+        <ul>
+            <li><strong>Probabilidad:</strong> Qué tan posible es que ocurra.</li>
+            <li><strong>Impacto:</strong> Qué tan grave sería el daño.</li>
+        </ul>
+    </section>
+
+    <section>
+        <a href="riesgo_1.jpg"><img src="riesgo_1.jpg" alt="" width="350"></a>
+        <a href="riesgo_2.jpg"><img src="riesgo_2.jpg" alt="" width="350"></a>
+    </section>
+
+    <section>
+        <h2>¿Qué es la Gestión de Riesgos?</h2>
+        <p>Es el proceso de identificar, analizar y controlar los riesgos que pueden afectar a la organización.</p>
+        <ol>
+            <li>Identificación de activos</li>
+            <li>Identificación de amenazas</li>
+            <li>Identificación de vulnerabilidades</li>
+            <li>Análisis de probabilidad e impacto</li>
+            <li>Aplicación de controles</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>¿Qué es un SGSI?</h2>
+        <p>Un Sistema de Gestión de Seguridad de la Información (SGSI) es un conjunto de políticas, procesos y controles diseñados para proteger la información de una organización.</p>
+        <ul>
+            <li>Confidencialidad</li>
+            <li>Integridad</li>
+            <li>Disponibilidad</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Importancia del Análisis de Riesgos en un SGSI</h2>
+        <ul>
+            <li>Permite identificar amenazas reales.</li>
+            <li>Ayuda a priorizar inversiones en seguridad.</li>
+            <li>Reduce pérdidas económicas.</li>
+            <li>Protege la reputación de la empresa.</li>
+            <li>Es obligatorio en estándares internacionales.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>¿Por qué es importante el SGSI en una empresa?</h2>
+        <ul>
+            <li>Protege la información sensible.</li>
+            <li>Previene ataques informáticos.</li>
+            <li>Mejora la confianza de clientes y socios.</li>
+            <li>Permite cumplir normas y regulaciones.</li>
+            <li>Promueve la mejora continua en seguridad.</li>
+        </ul>
+    </section>
+</section>
+
+
+<!-- ========== MÓDULO 1 – ACTIVOS ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">📦 1. Identificación de activos</h2>
+        <div class="tip">todo lo que la universidad valora y debe proteger</div>
+    </section>
+    <section>
+        <h3>clasificación</h3>
+        <div class="grid-list">
+            <li><b>Tecnológicos</b> · servidores, wi-fi, laboratorios</li>
+            <li><b>Físicos</b> · biblioteca, rectoría, laboratorios</li>
+            <li><b>Humanos</b> · docentes, estudiantes, personal</li>
+            <li><b>Información</b> · expedientes, tesis, nóminas</li>
+            <li><b>Servicios</b> · matrícula, emisión de títulos, internet</li>
+        </div>
+        <div class="example">
+            <strong>🏛️ ejemplo U:</strong> servidor de matrículas · edificio de rectoría · estudiantes · calificaciones · proceso de inscripción
+        </div>
+    </section>
+</section>
+
+<!-- ========== MÓDULO 2 – AMENAZAS ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">⚠️ 2. Identificación de amenazas</h2>
+        <div class="tip">eventos que pueden dañar un activo</div>
+    </section>
+    <section>
+        <div class="three-column">
+            <div class="command-box" style="border-left-color:#d97706;">🔥 incendio</div>
+            <div class="command-box" style="border-left-color:#b91c1c;">💻 ransomware</div>
+            <div class="command-box" style="border-left-color:#2563eb;">🎣 phishing</div>
+        </div>
+        <div class="example">
+            <b>universidad:</b> ransomware en servidor de matrículas · robo de credenciales Wi-Fi · inundación en archivo
+        </div>
+    </section>
+</section>
+
+<!-- ========== MÓDULO 3 – VULNERABILIDADES ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">🔓 3. Vulnerabilidades</h2>
+        <div class="tip">debilidades que hacen posible la amenaza</div>
+    </section>
+    <section>
+        <div class="grid-list">
+            <li>sin copias de seguridad (backup)</li>
+            <li>antivirus desactualizado</li>
+            <li>falta de autenticación MFA</li>
+            <li>puertas sin resistencia al fuego</li>
+            <li>personal no capacitado</li>
+        </div>
+        <div class="example">
+            <b>relación directa:</b> ransomware ↔ sin backups, MFA desactivado
+        </div>
+    </section>
+</section>
+
+<!-- ========== MÓDULO 4 – PROBABILIDAD ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">📊 4. Análisis de probabilidad</h2>
+        <div class="tip">escala 1 (improbable) a 5 (casi seguro)</div>
+    </section>
+    <section>
+        <div class="matrix-scale">
+            <p><b>fórmula:</b> frecuencia + vulnerabilidad + controles existentes</p>
+            <table style="width:100%; border-collapse:collapse;">
+                <tr><th>factor</th><th>valor</th></tr>
+                <tr><td>frecuencia (ataques a universidades)</td><td>4</td></tr>
+                <tr><td>vulnerabilidad (sin backups, MFA)</td><td>5</td></tr>
+                <tr><td>controles actuales (cortafuegos básico)</td><td>3</td></tr>
+                <tr><td style="font-weight:bold;">probabilidad final</td><td style="font-weight:bold;">4 · muy probable</td></tr>
+            </table>
+        </div>
+    </section>
+</section>
+
+<!-- ========== MÓDULO 5 – IMPACTO ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">💥 5. Análisis de impacto</h2>
+        <div class="tip">impacto = C + I + D (confidencialidad, integridad, disponibilidad)</div>
+    </section>
+    <section>
+        <div class="command-box">
+            <p><b>caso ransomware en matrículas:</b></p>
+            <ul>
+                <li>Confidencialidad: datos 20k estudiantes filtrados → 5</li>
+                <li>Integridad: archivos cifrados / no confiables → 4</li>
+                <li>Disponibilidad: sistema caído semanas → 5</li>
+            </ul>
+            <div class="example" style="font-size:1.2rem; text-align:center;">🔢 impacto total = 5+4+5 = <strong>14</strong>/15</div>
+        </div>
+    </section>
+</section>
+
+<!-- ========== MÓDULO 6 – RIESGO INHERENTE ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">🧮 6. Riesgo inherente</h2>
+        <div class="tip">antes de aplicar controles adicionales</div>
+    </section>
+    <section>
+        <div style="background:#f1f9fe; border-radius: 40px; padding: 20px;">
+            <span style="font-size:1.4rem;">probabilidad × impacto</span>
+            <div style="font-size:3rem; font-weight:800; margin:20px; color:#b33;">4 × 14 = 56</div>
+            <div class="warning">🔴 riesgo inherente crítico · requiere acción inmediata</div>
+        </div>
+    </section>
+</section>
+
+<!-- ========== MÓDULO 7 – TRATAMIENTO / CONTROLES ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">🛡️ 7. Tratamiento (controles)</h2>
+        <div class="tip">preventivos · detectivos · correctivos</div>
+    </section>
+    <section>
+        <div class="three-column">
+            <div class="tip">🔒 preventivo<br><small>MFA, segmentación, capacitación</small></div>
+            <div class="tip">🔍 detectivo<br><small>IDS, alertas, monitoreo</small></div>
+            <div class="tip">🔧 correctivo<br><small>backup 3-2-1, plan de respuesta</small></div>
+        </div>
+        <div class="example">
+            <b>universidad aplica:</b> MFA a sistemas críticos, backups externos diarios, simulacros de phishing
+        </div>
+    </section>
+</section>
+
+<!-- ========== MÓDULO 8 – RIESGO RESIDUAL ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">📉 8. Riesgo residual</h2>
+        <div class="tip">después de implementar controles</div>
+    </section>
+    <section>
+        <div style="background:#e6f7ec; border-radius: 40px; padding: 25px;">
+            <p><b>nueva probabilidad:</b> 2 (poco probable, gracias a MFA+conciencia)</p>
+            <p><b>nuevo impacto:</b> C=2, I=2, D=2 → total 6</p>
+            <div style="font-size:2.5rem; font-weight:700; color:#1e7e5e;">2 × 6 = 12</div>
+            <div class="tip" style="margin-top:20px;">✅ residual = 12 (antes 56) · reducción del 78%</div>
+        </div>
+    </section>
+</section>
+
+<!-- ========== MÓDULO 9 – DECISIÓN ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">⚖️ 9. Decisión sobre el riesgo</h2>
+        <div class="tip">aceptar · mitigar · transferir · evitar</div>
+    </section>
+    <section>
+        <div class="grid-list">
+            <li><b>aceptar:</b> riesgo bajo / muy caro mitigar</li>
+            <li><b>mitigar:</b> aplicar más controles</li>
+            <li><b>transferir:</b> seguro cibernético</li>
+            <li><b>evitar:</b> eliminar actividad</li>
+        </div>
+        <div class="example">
+            <b>decisión universidad (riesgo residual 12):</b><br>
+            • aceptar el riesgo de interrupción ≤4h<br>
+            • transferir mediante seguro cibernético<br>
+            <span style="font-style:italic; opacity:0.8;">decisión documentada en comité de riesgos</span>
+        </div>
+    </section>
+</section>
+
+<!-- ========== CASO COMPLETO (TABLA RESUMEN) ========== -->
+<section>
+    <h2 class="slide-title">📋 caso completo · servidor de matrículas</h2>
+    <table style="width:100%; background:#f7fafc; border-radius: 20px; padding:10px;">
+        <tr><td>activo</td><td>servidor matrículas</td></tr>
+        <tr><td>amenaza</td><td>ransomware</td></tr>
+        <tr><td>vulnerabilidad</td><td>sin backups, sin MFA</td></tr>
+        <tr><td>riesgo inherente</td><td>56 (crítico)</td></tr>
+        <tr><td>controles</td><td>backup 3-2-1, MFA, IDS</td></tr>
+        <tr><td>riesgo residual</td><td>12 (medio-bajo)</td></tr>
+        <tr><td>decisión</td><td>transferir + aceptar</td></tr>
+    </table>
+    <div class="tip" style="margin-top:25px;">🔁 proceso aplicable a cualquier activo universitario</div>
+</section>
+
+<!-- ========== ACTIVIDAD INTERACTIVA ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">🧪 ejercicio guiado</h2>
+        <div class="tip">aplica los 9 pasos a otro activo</div>
+    </section>
+    <section>
+        <div class="command-box">
+            <b>activo:</b> laboratorio de química (instalaciones + reacciones)
+        </div>
+        <div class="example">
+            <p>1. amenaza principal: <span contenteditable="true" style="background:#fcf2db;">incendio/explosión</span></p>
+            <p>2. vulnerabilidades: <span contenteditable="true">extintores vencidos, falta de campana</span></p>
+            <p>3. impacto (C+I+D): <span contenteditable="true">C=?, I=?, D=?</span></p>
+            <p>4. controles propuestos: <span contenteditable="true">detectores de humo, inspección</span></p>
+        </div>
+        <small>✏️ edita los textos directamente (simulación)</small>
+    </section>
+</section>
+
+<!-- ========== PANORAMA AMENAZAS / NORMATIVA (BREVE) ========== -->
+<section>
+    <section>
+        <h2 class="slide-title">🌐 normativa aplicable</h2>
+        <div class="grid-list">
+            <li>ISO/IEC 27001 (SGSI)</li>
+            <li>ISO 27005 (riesgos)</li>
+            <li>NIST CSF</li>
+            <li>ASFI Bolivia · Reglamento SGSI</li>
+        </div>
+    </section>
+    <section>
+        <h3>tipos de amenazas</h3>
+        <div>internas (personal) · externas (ciberdelincuentes) · malware · phishing · DDoS</div>
+        <div class="warning" style="margin-top:25px;">universidades: objetivo frecuente de ransomware</div>
+    </section>
+</section>
+
+<!-- ========== CIERRE ========== -->
+<section>
+    <div style="background: #022b40; color: white; padding: 40px; border-radius: 50px;">
+        <h3 style="color:white;">gestión de riesgos</h3>
+        <p>de la identificación a la decisión</p>
+        <hr style="border-color:#2a7faa;">
+        <p class="small-note" style="color:#bcd4de;">ejemplo universidad · curso aplicado</p>
+    </div>
+</section>
+
+</div> <!-- slides -->
+</div> <!-- reveal -->
+
+<!-- Reveal libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/zoom/zoom.min.js"></script>
+
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        plugins: [RevealHighlight, RevealNotes, RevealMarkdown, RevealZoom]
+    });
+</script>
+
+<!-- pequeño script para permitir edición en la actividad sin conflictos -->
+<script>
+    document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+        el.addEventListener('keydown', (e) => e.stopPropagation());  // evitar que reveal capture teclas
+    });
+</script>
+
+</body>
+</html>
