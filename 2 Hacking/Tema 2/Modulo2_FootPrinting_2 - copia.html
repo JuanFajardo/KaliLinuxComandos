@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Riesgos · Curso universitario</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+
+    <style>
+        .reveal { color: #1e2b37; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #0b3954; font-weight: 600; }
+        .command-box {
+            background: #f0f5fa;
+            padding: 20px;
+            border-radius: 16px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border-left: 6px solid #2a7faa;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        .command { color: #1b6b8f; font-weight: bold; }
+        .explanation { font-size: 0.95em; margin-top: 8px; }
+        .example {
+            background: #fef7e8;
+            padding: 12px 18px;
+            border-radius: 14px;
+            margin-top: 12px;
+            border-left: 4px solid #e67e22;
+            font-size: 0.9em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .tip {
+            background: #dff0ea;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border-left: 5px solid #1e7e5e;
+            font-size: 0.9em;
+        }
+        .warning {
+            background: #fbe9e7;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border-left: 5px solid #c44536;
+            font-size: 0.9em;
+        }
+        .slide-title {
+            color: #1f7a8c;
+            border-bottom: 3px solid #1f7a8c;
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+            font-weight: 600;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 24px;
+            margin-top: 20px;
+        }
+        .grid-list li {
+            list-style-type: none;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+        .grid-list li::before {
+            content: "▹";
+            color: #1f7a8c;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .small-note { font-size: 0.8rem; line-height: 1.4; opacity: 0.8; }
+        .university-badge {
+            background: #022b40;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 40px;
+            display: inline-block;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .matrix-scale {
+            background: white;
+            padding: 14px;
+            border-radius: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+        }
+        .risk-highlight {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #bf4e3f;
+        }
+        .fragment.step { opacity: 0.9; transition: all 0.2s; }
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 24px;
+            margin-top: 20px;
+            padding: 0;
+        }
+
+        .grid-list li {
+            list-style-type: none;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+
+        .grid-list li::before {
+            content: "▹";
+            color: #1f7a8c;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- Diapositiva 1: Logo -->
+<section>
+    <img src="logo.png" alt="Logo">
+</section>
+
+<!-- Diapositiva 2: Título y autor -->
+<section>
+    <h2 class="slide-title">Primer Paso <br> Footprinting <br>Reconocimiento Pasivo</h2>
+    <p class="tip">Juan Alberto Fajardo Canaza</p>
+</section>
+
+
+
+<!-- Sección 6: Inicio del Proceso de Escaneo y Footprinting -->
+<section>
+
+    <section>
+        <p>Si te conoces a ti mismo y conoces a tu enemigo, ni en cien batallas correrás peligro <br>
+        <small>El Arte de Guerra - Sun Tzu</small></p>
+        
+        <img src="footprintin.jpg" alt="">
+    </section>
+
+    <section>
+    <h3>Pre-engagement</h3>
+
+    <ul>
+        <li><strong>Autorización expresa:</strong> (MAE) - Universidad Católica Boliviana (UCB)</li>
+        <li><strong>Alcance (Scope):</strong> Dominios y subdominiosde de <code>*.ucb.edu.bo</code></li>
+        <li><strong>Activos permitidos:</strong> Servidores expuestos internet </li>
+        <li><strong>Activos excluidos:</strong> Servidores Windows</li>
+        <li><strong>Ventana de ejecución:</strong> Fuera de horario laboral</li>
+        <li><strong>Reglas de compromiso (RoE):</strong> Avisar inmediata por una vulnerabilidad Crítica o explotable.</li>
+        <li><strong>Contacto de emergencia:</strong> Celular/WhatsApp: 73854298</li>
+    </ul>
+</section>
+
+    <section>
+        <ul class="grid-list">
+
+            <li>1. Introducción al hacking ético</li>
+            <li style="background-color: #91bbce;">2. Footprinting y reconocimiento</li>
+            <li>3. Escaneo de redes</li>
+            <li>4. Enumeración (Ingeniería social)</li>
+            <li>5. Análisis de vulnerabilidades</li>
+            <li>6. Hacking de sistemas</li>
+            
+
+        </ul>
+    </section>
+
+    <section>
+        <h3>1. Inicio del Proceso de Escaneo</h3>
+        <b>Footprinting </b> es la  recolección de información pública sin interactuar directamente con el objetivo. 
+        <ul>
+            <li> <b>Información de red:</b> <small> Direcciones IP, rangos de red, nombres de dominio (DNS) y servidores asociados. </small></li>
+            <li> <b>Infraestructura y tecnología :</b> <small>Sistemas operativos, tipos de servidores, cortafuegos y servicios expuestos en la red.</small></li>
+            <li> <b>Información organizacional y personal:</b> <small>Nombres de empleados, correos electrónicos, números de teléfono y perfiles laborales o en redes sociales.</small></li>
+            <li> <b>Datos de dominios y registros:</b> <small>Información de registro de dominios (como registros WHOIS) y subdominios relacionados.</small> </li>
+        </ul>
+    </section>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section>
+    <section>
+        <h3>2. Footprinting </h3>
+        <div class="tip"><small>Información de red <br>Direcciones IP y Rangos de Red</small></div>
+
+        <ul>
+            <li><b>ping </b> ping ucb.edu.bo </li>
+            <li><b>FlagFox </b> ucb.edu.bo</li>
+            <li><b>ASN </b> ASN [IP] </li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>2. Footprinting </h3>
+        <div class="tip"><small>Información de red <br>Recolección de dominios y subdominios</small></div>
+        <ul>
+            <li><b>Google Dorks </b> site:ucb.edu.bo -site:www.ucb.edu.bo </li>
+            <li><b>dnsdumpster </b> ucb.edu.bo</li>
+            <li><b>crt.sh </b> ucb.edu.bo</li>
+            <li><b>crt.name </b> https://crt.name/v1/search?apex=ucb.edu.bo</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>2. Footprinting </h3>
+        <div class="tip"><small>Infraestructura y tecnología<br> Nombres de tecnologias y versiones</small>  </div>
+
+        <ul>
+            <li><b>wappalyzer </b> ucb.edu.bo</li>
+            <li><b>whatweb </b> ucb.edu.bo</li>
+            <li><b>cve </b> cve [tecnologia][version]</li>            
+        </ul>
+    </section>
+
+    <section>
+        <h3>2. Footprinting</h3>
+        <div class="tip"> <small>Información organizacional y personal</small>  </div>
+        <ul>
+            <li><b>https://whois.domaintools.com/ </b> facebook.com</li>
+            <li><b>https://nic.bo/ </b> ucb.edu.bo</li>
+        </ul>
+    </section>
+
+
+    <section>
+        <h3>2. Footprinting</h3>
+        <div class="tip"><small>Datos de dominios y registros</small><br>dig  </div>
+             <ul>
+            <li><b>correo</b> dig ucb.edu.bo MX</li>
+            <li><b>dns</b> dig ucb.edu.bo NS</li>
+            <li><b>STL</b> dig ucb.edu.bo TXT</li>
+            <li><b>Menos</b> dig ucb.edu.bo MS +short </li>
+        </ul>
+
+    </section>
+    
+
+</section>
+
+</div> <!-- slides -->
+</div> <!-- reveal -->
+
+<!-- Reveal libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/zoom/zoom.min.js"></script>
+
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        plugins: [RevealHighlight, RevealNotes, RevealMarkdown, RevealZoom]
+    });
+</script>
+
+<!-- pequeño script para permitir edición en la actividad sin conflictos -->
+<script>
+    document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+        el.addEventListener('keydown', (e) => e.stopPropagation());  // evitar que reveal capture teclas
+    });
+</script>
+
+</body>
+</html>
