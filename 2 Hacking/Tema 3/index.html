@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Riesgos · Curso universitario</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+
+    <style>
+        .reveal { color: #1e2b37; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #0b3954; font-weight: 600; }
+        .command-box {
+            background: #f0f5fa;
+            padding: 20px;
+            border-radius: 16px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border-left: 6px solid #2a7faa;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        .command { color: #1b6b8f; font-weight: bold; }
+        .explanation { font-size: 0.95em; margin-top: 8px; }
+        .example {
+            background: #fef7e8;
+            padding: 12px 18px;
+            border-radius: 14px;
+            margin-top: 12px;
+            border-left: 4px solid #e67e22;
+            font-size: 0.9em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .tip {
+            background: #dff0ea;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border-left: 5px solid #1e7e5e;
+            font-size: 0.9em;
+        }
+        .warning {
+            background: #fbe9e7;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border-left: 5px solid #c44536;
+            font-size: 0.9em;
+        }
+        .slide-title {
+            color: #1f7a8c;
+            border-bottom: 3px solid #1f7a8c;
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+            font-weight: 600;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 24px;
+            margin-top: 20px;
+        }
+        .grid-list li {
+            list-style-type: none;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+        .grid-list li::before {
+            content: "▹";
+            color: #1f7a8c;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .small-note { font-size: 0.8rem; line-height: 1.4; opacity: 0.8; }
+        .university-badge {
+            background: #022b40;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 40px;
+            display: inline-block;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .matrix-scale {
+            background: white;
+            padding: 14px;
+            border-radius: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+        }
+        .risk-highlight {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #bf4e3f;
+        }
+        .fragment.step { opacity: 0.9; transition: all 0.2s; }
+    </style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- Diapositiva 1: Logo -->
+<section>
+    <img src="logo.png" alt="Logo">
+</section>
+
+<!-- Diapositiva 2: Título y autor -->
+<section>
+    <h2 class="slide-title"> FingerPrinting <br>Reconocimiento Activo</h2>
+    <p class="tip">Juan Alberto Fajardo Canaza</p>
+</section>
+
+
+<section>
+    <section>
+        <img src="frase.jpg" alt="">
+    </section>
+
+    <section>
+        <h3>1 Pre-engagement</h3>
+        <ul>
+            <li><small><strong>Autorización expresa:</strong> <br>(MAE) - Universidad Católica Boliviana (UCB)</small></li>
+            <li><small><strong>Alcance (Scope):</strong>  <br>Dominios y subdominiosde de <code>*.ucb.edu.bo</code></small></li>
+            <li><small><strong>Activos permitidos:</strong>  <br>Servidores expuestos internet </small></li>
+            <li><small><strong>Activos excluidos:</strong>  <br>Servidores Windows</small></li>
+            <li><small><strong>Ventana de ejecución:</strong>  <br>Fuera de horario laboral</small></li>
+            <li><small><strong>Reglas de compromiso (RoE):</strong>  <br>Avisar inmediata por una vulnerabilidad Crítica o explotable.</small></li>
+            <li><small><strong>Contacto de emergencia:</strong>  <br>Celular/WhatsApp: 73854298</small></li>
+        </ul>
+    </section>
+
+    <section>
+        <ul class="grid-list">
+
+            <li>1. Introducción al hacking ético</li>
+            <li style="background-color: #91bbce;">2. Footprinting y reconocimiento</li>
+            <li style="background-color: #91bbce;">3. Escaneo de redes</li>
+            <li>4. Enumeración (Ingeniería social)</li>
+            <li>5. Análisis de vulnerabilidades</li>
+            <li>6. Hacking de sistemas</li>
+            
+
+        </ul>
+    </section>
+
+    
+</section>
+
+<section>
+    <section>
+        <h3>2. Continuando el Proceso de Escaneo</h3>
+        <b>FingerPrinting </b> Técnica para determinar el sistema operativo, servicios y versiones de un objetivo mediante el análisis de su "huella digital" en la red.
+        <ul>
+            <li> <b>1. Informacion Metadata</b> </li>
+            <li> <b>2. Sistema Opertivo</b> </li>
+            <li> <b>3. Puertos, servicios, versiones</b> </li>
+            <li> <b>4. Tecnologías de Aplicación </b> <small>  </small></li>
+        </ul>
+    </section>
+     <section>
+        <h3>2.1 Protocolos, Puertos, Servicios </h3>
+        <div class="tip">
+            <b>Protocolo</b> 
+            Reglas de comunicación entre sistemas
+        </div>
+        <div class="tip">
+            <b>Puertos</b> 
+            Son puntos virtuales para gestionar  el tráfico de red a aplicaciones.<br/>
+            <pre> 0 - 1,023: Puertos Bien Conocidos (Well-Known Ports) <br>
+1,024 - 49,151: Puertos Registrados (Registered Ports) <br>
+49,152 - 65,535: Puertos Dinámicos o Privados (Dynamic/Ephemeral Ports)  
+            </pre>
+        </div>
+        <div class="tip">
+            <b>Servicios </b><br> <small> services.msc | Get-Service <br>systemctl list-units --type=service 
+</small>
+        </div>
+    </section>
+</section>
+
+
+<section>
+    <section>
+        <h3>3.1 Fingerprinting </h3>
+        <div class="tip"> <small>Informacion  (Google Hacking)</small> </div>
+        <div class="example" style="text-align: left;">
+            site:ucb.edu.bo filetype:doc|pdf|xlsx|<br>
+            site:ucb.edu.bo inurl:Juan Fajardo<br>
+            site:ucb.edu.bo inbody:"fajardo@ucb.edu.bo"<br>
+        </div>
+    </section>
+    <section>
+        <h3>3.1 Fingerprinting </h3>
+        <div class="tip"> <small>Informacion Metadata </small> </div>
+        <div class="example" style="text-align: left;">
+            sudo apt update<br>
+            sudo apt search exiftool<br>
+            sudo apt install exiftool<br>
+            exiftool archivo.pdf<br>
+        </div>
+    </section>
+
+    <section>
+        <h3>3.1 Fingerprinting </h3>
+        <div class="tip"> <small>Informacion Metadata (dirbuster) <br> /usr/share/dirbuster/wordlists/ </small> </div>
+        <a href="dirbuster.png">
+            <img src="dirbuster.png" alt="">
+        </a>
+    </section>
+ 
+    <section>
+        <h3>3.2 Fingerprinting (ping)</h3>
+            <div class="tip"> <small>Recolección de Sistema Opertivo </small> </div>
+            <div class="example" style="text-align: left;">
+                <pre> 
+                ping 192.168.100.1
+                Respuesta desde 192.168.100.1: bytes=32 tiempo=3ms TTL=64
+                Respuesta desde 192.168.100.1: bytes=32 tiempo=4ms TTL=64
+
+                ping 192.168.1.15
+                Respuesta desde 192.168.1.15: bytes=32 tiempo=1m TTL=128
+                Respuesta desde 192.168.1.15: bytes=32 tiempo=1m TTL=128
+                </pre>
+            </div>
+    </section>
+
+    <section>
+        <h3>3.3 Fingerprinting (telnet)</h3>
+            <div class="tip"> <small>Recolección de puertos, servicios, versiones </small> </div>
+            <div class="example" style="text-align: left;">
+                <pre> 
+                    telnet 192.168.100.1 80
+                    telnet 192.168.100.1 22
+                    telnet 192.168.100.1 21
+                </pre>
+            </div>
+    </section>
+
+    <section>
+        <h3>3.3 Fingerprinting (nmap)</h3>
+            <div class="tip"> <small>Recolección de puertos, servicios, versiones </small> </div>
+            <div class="example" style="text-align: left;">
+                <pre> 
+                    nmap scanme.nmap.com<br>
+                    nmap insecure.org<br>
+                    zonetransfer.me<br>
+                    nmap help<br>
+                    nmap -p 80 IP <br>
+                    nmap -sS  IP <br>
+                    nmap -sV  IP <br>
+                    nmap -T4  IP <br>
+                    nmap -sS -sV -p 80 -T4  IP <br>
+                    nmap -sn  IP/CIDR <br>
+                </pre>
+            </div>
+    </section>
+
+    <section>
+        <h3>3.3 Fingerprinting (ASN nmap)</h3>
+        <div class="tip"> <small>Un ASN (Autonomous System Number o Número de Sistema Autónomo) es un identificador numérico único asignado globalmente a un grupo de redes IP gestionadas por una sola organización (ISP, empresa o institución).</small> </div>
+            <div class="example" style="text-align: left;">
+                <pre> 
+                    https://ipinfo.io/countries/bo
+                    nmap -sn  IP/CIDR <br>
+                </pre>
+            </div>
+    </section>
+
+    <section>
+        <h3>3.4 FootPrinting (Suizo/EEUU)</h3>
+            <div class="tip">  https://www.shodan.io/ </div>
+            <img src="shodan.png" alt="">
+    </section>
+
+    <section>
+        <h3>3.4 FootPrinting (Chino)</h3>
+            <div class="tip"> https://en.fofa.info/ </div>
+            <img src="fofa.png" alt="">
+    </section> 
+    
+</section>
+
+</div> <!-- slides -->
+</div> <!-- reveal -->
+
+<!-- Reveal libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/zoom/zoom.min.js"></script>
+
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        plugins: [RevealHighlight, RevealNotes, RevealMarkdown, RevealZoom]
+    });
+</script>
+
+<!-- pequeño script para permitir edición en la actividad sin conflictos -->
+<script>
+    document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+        el.addEventListener('keydown', (e) => e.stopPropagation());  // evitar que reveal capture teclas
+    });
+</script>
+
+</body>
+</html>

@@ -26,3 +26,13 @@
 ## Tema 2
 - [Footprinting](https://elhacker.info/manuales/Auditorias%20Web/La_Biblia_del_Footprinting.pdf)
 - https://shorturl.at/8Qjby
+
+
+## Tema 3
+- https://nmap.org/book/
+- https://ffuf.me/
+
+__Testeo:__
+- scanme.nmap.com
+- nmap insecure.org
+- zonetransfer.me
