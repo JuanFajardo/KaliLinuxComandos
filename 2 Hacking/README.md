@@ -36,3 +36,19 @@ __Testeo:__
 - scanme.nmap.com
 - nmap insecure.org
 - zonetransfer.me
+
+
+## Tema 4
+
+Zona de transferencia en DNS
+
+https://shorturl.at/seAMJ
+
+https://digi.ninja/projects/zonetransferme.php
+
+
+__Testeo:__
+- scanme.nmap.com
+- nmap insecure.org
+- zonetransfer.me
+
