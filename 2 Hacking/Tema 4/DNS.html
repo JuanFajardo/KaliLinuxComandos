@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SMTP · Seguridad en Correo Electrónico</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+
+    <style>
+        .reveal { color: #1e2b37; font-family: 'Segoe UI', system-ui; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #0b3954; }
+        .reveal h2 { border-left: 5px solid #1f7a8c; padding-left: 15px; }
+
+        .command-box {
+            background: #f0f5fa;
+            padding: 18px;
+            border-radius: 15px;
+            font-family: monospace;
+            border-left: 5px solid #2a7faa;
+        }
+
+        .tip {
+            background: #dff0ea;
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 5px solid #1e7e5e;
+            margin: 10px 0;
+        }
+
+        .warning {
+            background: #fbe9e7;
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 5px solid #c44536;
+        }
+
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        pre { font-size: 0.7rem; }
+    </style>
+</head>
+
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+    <!-- PORTADA -->
+
+    <!-- Diapositiva 1: Logo -->
+    <section>
+        <img src="logo.png" alt="Logo">
+    </section>
+
+    <!-- Diapositiva 2: Título y autor -->
+    <section>
+        <h3> DNS & Zone Transfer</h3>
+        
+        <p class="tip">Juan Alberto Fajardo Canaza</p>
+    </section> 
+
+    <!-- SECCIÓN 1: INTRODUCCIÓN -->
+    <section>
+        <section>
+            <h3>1. 1. ¿Cómo funciona el  DNS?</h3>
+            <div class="tip">
+                Domain Name System (Sistema de Nombres de Dominio) – traduce nombres legibles (ej. www.ejemplo.com) a direcciones IP.
+            </div>
+            <div>
+                Ayuda a identificar el dominio o la URL de :<br/>
+                - Pagina Web<br/>
+                - Correos<br/>
+                - Servidores<br/>
+            </div>
+           
+        </section>
+
+        <section>
+                <img src="dns.jpg" alt="">
+        </section>
+    </section>
+
+    <!-- SECCIÓN 2: TIPOS DE DNS -->
+    <section>
+    <h3>2. Protocolos de DNS</h3>
+    <table>
+        <tr><th>Protocolo</th><th>Función</th><th>Puerto</th></tr>
+        <tr><td>DNS</td><td>Consulta</td><td>53</td></tr>
+        
+    </table>
+</section>
+
+    <!-- SECCIÓN 3: HERRAMIENTAS PARA CONSULTA DNS -->
+    <section>
+        <section>
+            <h3 class="slide-title">3. Herramientas para consulta DNS</h3>
+            <div class="tip">
+                <b> dig (Domain Information Groper):</b> 
+                <span class="command">Resgistro:</span> A, MX, NS, TXT, AXFR, etc.
+            </div>
+            <div class="tip">
+                <pre>
+                $ dig ucb.edu.bo
+                $ dig ucb.edu.bo NS
+                $ dig ucb.edu.bo NS +short
+                $ dig ns.ucb.edu.bo
+            </pre>
+            </div>
+        </section>
+    </section>
+
+    <!-- SECCIÓN 5: OBTENCIÓN DE DNS USANDO SERVICIOS NIC -->
+    <section>
+        <section>
+            <h3 class="slide-title">4. Obtención de DNS usando servicios NIC</h3>
+            <div class="tip">
+                <b> NIC (Network Information Center):</b> <br>
+                nic.bo
+            </div>
+            
+        </section>
+
+    </section>
+
+    <!-- SECCIÓN 6: TRANSFERENCIA DE ZONA (ZONE TRANSFER) -->
+    <section>
+        <section>
+            <h2 class="slide-title">5. Transferencia de Zona (Zone Transfer)</h2>
+            
+            <div class="tip">
+                <span class="command">🔹 AXFR (Full Zone Transfer):</span> Transfiere la zona completa.<br>
+                <span class="command">🔸 IXFR (Incremental Zone Transfer):</span> Solo envía cambios recientes (más eficiente).
+            </div>
+        
+        </section>
+
+           
+        <section>
+            <h3 class="slide-title">5.1 Cómo ocurre una mala configuración</h3>
+            
+            <div class="command-box">
+                <span class="command"># Desde cualquier máquina:</span>
+                <pre>dig @ns.ejemplo.com ejemplo.com AXFR</pre>
+                <div class="explanation">Si la consulta devuelve todos los registros, la zona está completamente expuesta.</div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 class="slide-title"> Demo práctica: Comprobación de AXFR</h3>
+            <div class="command-box">
+                <pre>
+# 1. Identificar servidores NS del objetivo
+dig ucb.edu.bo +short NS
+
+# 2. Probar transferencia contra cada NS
+dig @ns1.ucb.edu.bo ucb.edu.bo AXFR +short
+
+# 3. Usar herramienta whatweb, httpx
+whatweb -i example.com 
+
+            </div>
+        </section>
+    </section>
+
+
+   
+
+</div> <!-- /.slides -->
+</div> <!-- /.reveal -->
+
+<!-- Reveal.js scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/zoom/zoom.min.js"></script>
+
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        slideNumber: true,
+        plugins: [ RevealHighlight, RevealNotes, RevealMarkdown, RevealZoom ]
+    });
+</script>
+
+</body>
+</html>

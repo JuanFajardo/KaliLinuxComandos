@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SMTP · Seguridad en Correo Electrónico</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+
+    <style>
+        .reveal { color: #1e2b37; font-family: 'Segoe UI', system-ui; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #0b3954; }
+        .reveal h2 { border-left: 5px solid #1f7a8c; padding-left: 15px; }
+
+        .command-box {
+            background: #f0f5fa;
+            padding: 18px;
+            border-radius: 15px;
+            font-family: monospace;
+            border-left: 5px solid #2a7faa;
+        }
+
+        .tip {
+            background: #dff0ea;
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 5px solid #1e7e5e;
+            margin: 10px 0;
+        }
+
+        .warning {
+            background: #fbe9e7;
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 5px solid #c44536;
+        }
+
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        pre { font-size: 0.7rem; }
+    </style>
+</head>
+
+<body>
+<div class="reveal">
+<div class="slides">
+    
+    <!-- PORTADA -->
+
+    <!-- Diapositiva 1: Logo -->
+    <section>
+        <img src="logo.jpg" alt="Logo">
+    </section>
+
+<!-- PORTADA -->
+<section>
+    <h3> Hackeando el Correo</h3>
+    <p>SMTP · Enumeración · Phishing</p>
+    <p><b>Juan Fajardo</b></p>
+</section>
+
+<!-- INTRO -->
+<section>
+<section>
+    <h2>1. ¿Cómo funciona el correo electrónico?</h2>
+    <div class="tip">
+        El correo electrónico se basa en servidores que envían, reciben y almacenan mensajes.
+    </div>
+    <ul>
+        <li>MUA: Cliente (Outlook, Gmail)</li>
+        <li>MTA: Servidor SMTP</li>
+        <li>MDA: Entrega final</li>
+    </ul>
+</section>
+
+<section>
+    <h3>Flujo del correo</h3>
+    <ul>
+        <li>Usuario envía correo</li>
+        <li>Servidor SMTP lo procesa</li>
+        <li>Consulta DNS (MX)</li>
+        <li>Entrega al servidor destino</li>
+    </ul>
+</section>
+</section>
+
+<!-- PROTOCOLOS -->
+<section>
+<section>
+    <h2>2. Protocolos de correo</h2>
+    <table>
+        <tr><th>Protocolo</th><th>Función</th><th>Puerto</th></tr>
+        <tr><td>SMTP</td><td>Envío</td><td>25 / 587 / 465</td></tr>
+        <tr><td>POP3</td><td>Recepción</td><td>110 / 995</td></tr>
+        <tr><td>IMAP</td><td>Gestión</td><td>143 / 993</td></tr>
+    </table>
+</section>
+</section>
+
+<!-- DNS -->
+<section>
+<section>
+    <h2>3. Identificación de servidor de correo</h2>
+
+    <div class="command-box">
+        <pre>dig dominio.com MX</pre>
+    </div>
+</section>
+
+<section>
+    <h3>Resolver IP del servidor</h3>
+    <div class="command-box">
+        <pre>dig mail.dominio.com</pre>
+    </div>
+</section>
+</section>
+
+<!-- NMAP -->
+<section>
+<section>
+    <h2>4. Escaneo SMTP</h2>
+
+    <div class="command-box">
+        <pre>nmap -sS -sV -p 25 192.168.1.1</pre>
+    </div>
+
+    <ul>
+        <li>Detecta puerto abierto</li>
+        <li>Identifica versión del servicio</li>
+    </ul>
+</section>
+</section>
+
+<!-- RIESGOS -->
+<section>
+<section>
+    <h2>5. Riesgos en SMTP</h2>
+    <ul>
+        <li>Enumeración de usuarios</li>
+        <li>Phishing</li>
+        <li>Open Relay</li>
+    </ul>
+</section>
+</section>
+
+<!-- ENUM -->
+<section>
+<section>
+    <h2>6. Enumeración de usuarios</h2>
+
+    <div class="command-box">
+        <pre>
+            $ telnet IP 25
+            $ HELO dominio.com
+            $ VRFY usuario
+        </pre>
+    </div>
+</section>
+</section>
+
+
+<section>
+<section>
+    <h2>7. Phishing</h2>
+    <img src="correo2.png" alt=""/>
+</section>
+
+
+<section>
+    <h2>7. Phishing</h2>
+    <img src="correo1.png" alt=""/>
+</section>
+
+<section>
+    <h2>7. Envío de correos (Phishing)</h2>
+
+    <div class="command-box">
+        <pre>
+        $ telnet IP 25
+        $ HELO test.com
+        $ MAIL FROM: atacante@test.com
+        RCPT TO: victima@empresa.com
+        DATA
+        Subject: Prueba
+
+        Mensaje falso
+        .
+        $ QUIT
+        </pre>
+    </div>
+</section>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script>
+Reveal.initialize({
+    hash: true,
+    slideNumber: true
+});
+</script>
+
+</body>
+</html>
