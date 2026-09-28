@@ -52,3 +52,30 @@ __Testeo:__
 - nmap insecure.org
 - zonetransfer.me
 
+
+## Tema 5
+
+Fuerza Bruta
+https://drive.google.com/file/d/1V5DqnANstfQpTV1gYZcJ0ZJw39KKoqM5/view
+https://www.kali.org/tools/medusa/
+https://github-com.translate.goog/danielmiessler/seclists?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc
+
+```python
+import itertools
+import string
+letras = string.ascii_lowercase
+combinaciones = itertools.product(letras, repeat=3)
+diccionario_3_letras = { "".join(comb): 0 for comb in combinaciones }
+print(f"Total de claves generadas: {len(diccionario_3_letras)}")
+print("Ejemplo de las primeras claves:")
+for k in list(diccionario_3_letras.keys())[:10]:
+    print(k)
+```
+https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm
+
+__Testeo:__
+- ssh
+- ftp
+- diccioanrios
+- medusa
+
