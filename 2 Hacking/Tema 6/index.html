@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguridad en Sistemas de CCTV · Curso</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+
+    <style>
+        .reveal { color: #1e2b37; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #0b3954; font-weight: 600; }
+        .command-box {
+            background: #f0f5fa;
+            padding: 20px;
+            border-radius: 16px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border-left: 6px solid #2a7faa;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        .command { color: #1b6b8f; font-weight: bold; }
+        .explanation { font-size: 0.95em; margin-top: 8px; }
+        .example {
+            background: #fef7e8;
+            padding: 12px 18px;
+            border-radius: 14px;
+            margin-top: 12px;
+            border-left: 4px solid #e67e22;
+            font-size: 0.9em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .tip {
+            background: #dff0ea;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border-left: 5px solid #1e7e5e;
+            font-size: 0.9em;
+        }
+        .warning {
+            background: #fbe9e7;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border-left: 5px solid #c44536;
+            font-size: 0.9em;
+        }
+        .slide-title {
+            color: #1f7a8c;
+            border-bottom: 3px solid #1f7a8c;
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+            font-weight: 600;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 24px;
+            margin-top: 20px;
+        }
+        .grid-list li {
+            list-style-type: none;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+        .grid-list li::before {
+            content: "▹";
+            color: #1f7a8c;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .small-note { font-size: 0.8rem; line-height: 1.4; opacity: 0.8; }
+        .university-badge {
+            background: #022b40;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 40px;
+            display: inline-block;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .matrix-scale {
+            background: white;
+            padding: 14px;
+            border-radius: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+        }
+        .risk-highlight {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #bf4e3f;
+        }
+        .fragment.step { opacity: 0.9; transition: all 0.2s; }
+        /* Estilos para tablas */
+        .reveal table {
+            font-size: 0.8rem;
+            margin: 15px auto;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .reveal th {
+            background: #1f7a8c;
+            color: white;
+            padding: 8px;
+        }
+        .reveal td {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- Diapositiva 1: Portada -->
+<section>
+    <h2 class="slide-title">Hackeando Camaras</h2>
+    <h3>Puerto 554</h3>
+    <br>
+    <p class="tip">Juan Alberto Fajardo Canaza</p>
+</section>
+
+
+
+<!-- Sección 1: Introducción -->
+<section>
+    <section>
+        <h3 class="slide-title">1. Introducción al CCTV</h3>
+        <div class="tip"><b>Definición:</b> Sistema de circuito cerrado de televisión que utiliza cámaras para transmitir señales a un conjunto específico de monitores.</div>
+        <div class="grid-list" style="margin-top:20px;">
+            <li><b>Analógico:</b> Cable coaxial, grabadores locales.</li>
+            <li><b>Digital (IP):</b> Red de datos, acceso remoto, análisis de video.</li>
+        </div>
+        <div class="warning" style="margin-top:20px;">
+            <b>Punto Clave:</b> Estos sistemas suelen estar <b>siempre encendidos y conectados</b>, lo que los convierte en objetivos atractivos.
+        </div>
+    </section>
+
+    <section>
+        <h3 class="slide-title">2. El Corazón del Sistema: DVR vs. NVR</h3>
+        <div style="display: flex; gap: 20px; justify-content: center;">
+            <div class="tip" style="flex:1;">
+                <h4>DVR</h4>
+                <ul style="list-style-type: none; padding-left:0;">
+                    <li>▹ Procesamiento: Análogo → Digital</li>
+                    <li>▹ Conexión: Cable coaxial</li>
+                    <li>▹ Resolución: Baja / Media</li>
+                    <li>▹ Instalación: Cableado directo</li>
+                </ul>
+            </div>
+            <div class="tip" style="flex:1;">
+                <h4>NVR</h4>
+                <ul style="list-style-type: none; padding-left:0;">
+                    <li>▹ Procesamiento: En la cámara</li>
+                    <li>▹ Conexión: Ethernet (PoE)</li>
+                    <li>▹ Resolución: Alta (HD, 4K)</li>
+                    <li>▹ Instalación: Flexible, sobre red</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section>
+        <img src="camaras.jpg" alt="">
+    </section>
+</section>
+
+<!-- Sección 3: Protocolos y Acceso -->
+<section>
+    <section>
+        <h3 class="slide-title">3. Protocolos y Acceso</h3>
+        <h2>HTTP/HTTPS en CCTV</h2>
+        <div class="tip">La mayoría de dispositivos incluyen un servidor web embebido.</div>
+        <div class="example">
+            <b>Puertos comunes:</b> 80 (HTTP), 443 (HTTPS)
+        </div>
+    </section>
+    <section>
+        <h3 class="slide-title">RTSP</h3>
+        <div class="tip"><b>RTSP (Real Time Streaming Protocol):</b> Estándar para video en vivo.</div>
+        <div class="command-box">
+            <span class="command">Puerto por defecto: 554/TCP</span><br>
+        </div>
+        
+    </section>
+    <section>
+        <h3 class="slide-title">Métodos de Autenticación Web</h3>
+        <div class="grid-list">
+            <li><b>Form Login:</b> Credenciales en cuerpo POST, con sesión (cookie).
+                <span class="explanation">Ejemplo Form:</span><br>
+                <form action="">
+                    <input type="text" value="admin"><br>
+                    <input type="password" value="admin"><br>
+                    <input type="button" value="Iniciar Session">
+                </form>
+            </li>
+
+            <li><b>Basic Authentication:</b> Ventana nativa, credenciales en Base64 en cabecera.
+            <span class="explanation">Ejemplo URL RTSP:</span>
+            <pre>rtsp://user:clave@192.168.1.100:554/</pre>
+            </li>
+        </div>
+    </section>
+</section>
+
+<!-- Sección 4: Fabricantes y Credenciales por Defecto -->
+<section>
+    <section>
+        <h3 class="slide-title">4. Fabricantes y Credenciales por Defecto</h3>
+        <div class="grid-list">
+            <li>Hikvision</li>
+            <li>Dahua</li>
+            <li>Axis Communications</li>
+            <li>Bosch</li>
+            <li>Samsung (Wisenet)</li>
+            <li>Uniview, Amcrest</li>
+        </div>
+    </section>
+    <section>
+        <h3 class="slide-title">Credenciales por Defecto Comunes</h3>
+        <table>
+            <thead><tr><th>Fabricante</th><th>Usuario</th><th>Contraseña</th></tr></thead>
+            <tbody>
+                <tr><td>Hikvision</td><td>admin</td><td>12345</td></tr>
+                <tr><td>Dahua</td><td>admin</td><td>admin</td></tr>
+                <tr><td>Axis</td><td>root</td><td>pass</td></tr>
+                <tr><td>Genéricos</td><td>admin</td><td>(vacío) / 1234</td></tr>
+            </tbody>
+        </table>
+        <div class="warning"><b>Problema:</b> Instaladores no cambian las credenciales predeterminadas.</div>
+    </section>
+</section>
+
+<!-- Sección 5: Reconocimiento y Escaneo -->
+<section>
+    <section>
+        <h3 class="slide-title">5. Reconocimiento y Escaneo (Local)</h3>
+        <div class="command-box">
+            <span class="explanation">Esanear toda la red con RTSP abierto.</span>
+            <pre>nmap -p 554 --open 192.168.1.0/24</pre>
+                    
+            <span class="explanation">Scripts NSE para RTSP.</span>
+            <pre>nmap -sV -p 554 --script rtsp-* 192.168.1.100</pre>
+            
+        </div>
+    </section>
+    <section>
+        <h3 class="slide-title">5. Reconocimiento (Global: Shodan / FOFA)</h3>
+        <div class="example">
+            <b>Shodan:</b> https://www.shodan.io/<br>
+            Búsquedas de ejemplo:<br>
+            <pre>port:554</pre>
+            <pre>"Hikvision-Webs"</pre>
+            <pre>country:BO port:554</pre>
+        </div>
+        <div class="example">
+            <b>FOFA (chino):</b> https://en.fofa.info/<br>
+            Similar a Shodan, con datos actualizados.
+        </div>
+    </section>
+    <section>
+        <a href="country.png" target="_blank"> <img src="country.png" alt=""></a>
+    </section>
+    <section>
+        <h3 class="slide-title">5. ASN en Bolivia</h3>
+        <div class="tip"><b>ASN (Autonomous System Number):</b> Identificador único de una red bajo una entidad (ISP, empresa).</div>
+        <div class="example">
+            <b>Ejemplo: asn:ASXXXXX port:554 </b><br>
+            (ej. Entel).<br>
+            https://ipinfo.io/countries/bo
+        </div>
+    </section>
+    <section>
+        <a href="asn.png" target="_blank"> <img src="asn.png" alt=""></a>
+    </section>
+</section>
+
+
+<!-- Sección 6: Técnicas de Ataque -->
+<section>
+    <section>
+        <h3 class="slide-title">6. Técnicas - Fuerza Bruta,Password Spraying</h3>
+        
+        <div class="command-box">
+            <pre>$ python -m venv myenv</pre>
+            <pre>$ source myenv/bin/activate</pre>
+            <pre>$ git clone https://gitlab.com/woolf/RTSPbrute.git</pre>
+            <pre>$ cd RTSPbrute</pre>
+            <pre>$ pip install av Pillow rich setuptools</pre>
+            <pre>$ nano setup.py # comentar linea 41</pre>
+            <pre>$ python setup.py install</pre>
+            <pre>$ nano hosts.txt</pre>
+            <pre>$ rtspbrute -t hosts.txt</pre>
+            
+        </div>
+        
+    </section>
+    
+    <section>
+        <img src="demo.gif"></img>
+    </section>
+    <section>
+        <img src="888888_888888_200.58.81.48_554_.jpg"></img>
+    </section>
+    
+</section>
+
+
+</div> <!-- slides -->
+</div> <!-- reveal -->
+
+<!-- Reveal libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/zoom/zoom.min.js"></script>
+
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        plugins: [RevealHighlight, RevealNotes, RevealMarkdown, RevealZoom]
+    });
+</script>
+
+</body>
+</html>
