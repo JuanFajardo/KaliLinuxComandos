@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criptografía · Comunidad de Hackers Éticos Bolivianos</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+
+    <style>
+        .reveal { color: #1e2b37; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #0b3954; font-weight: 600; }
+        .command-box {
+            background: #f0f5fa;
+            padding: 20px;
+            border-radius: 16px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border-left: 6px solid #2a7faa;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        .command { color: #1b6b8f; font-weight: bold; }
+        .explanation { font-size: 0.95em; margin-top: 8px; }
+        .example {
+            background: #fef7e8;
+            padding: 12px 18px;
+            border-radius: 14px;
+            margin-top: 12px;
+            border-left: 4px solid #e67e22;
+            font-size: 0.9em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .tip {
+            background: #dff0ea;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border-left: 5px solid #1e7e5e;
+            font-size: 0.9em;
+        }
+        .warning {
+            background: #fbe9e7;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border-left: 5px solid #c44536;
+            font-size: 0.9em;
+        }
+        .slide-title {
+            color: #1f7a8c;
+            border-bottom: 3px solid #1f7a8c;
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+            font-weight: 600;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 24px;
+            margin-top: 20px;
+        }
+        .grid-list li {
+            list-style-type: none;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+        .grid-list li::before {
+            content: "▹";
+            color: #1f7a8c;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .small-note { font-size: 0.8rem; line-height: 1.4; opacity: 0.8; }
+        .university-badge {
+            background: #022b40;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 40px;
+            display: inline-block;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .matrix-scale {
+            background: white;
+            padding: 14px;
+            border-radius: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+        }
+        .risk-highlight {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #bf4e3f;
+        }
+        .fragment.step { opacity: 0.9; transition: all 0.2s; }
+        /* Estilos para tablas */
+        .reveal table {
+            font-size: 0.8rem;
+            margin: 15px auto;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .reveal th {
+            background: #1f7a8c;
+            color: white;
+            padding: 8px;
+        }
+        .reveal td {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+        }
+        /* Ajustes específicos para el contenido de criptografía */
+        .reveal .slides section {
+            padding: 30px 50px;
+            text-align: left;
+        }
+        .reveal p, .reveal .bullet {
+            font-size: 0.85em;
+            line-height: 1.5;
+            margin: 0.4em 0;
+        }
+        .reveal .quote-line {
+            font-style: italic;
+            color: #475569;
+            border-left: 4px solid #1f7a8c;
+            padding-left: 18px;
+            margin: 10px 0;
+        }
+        .reveal .link a {
+            color: #1f7a8c;
+            word-break: break-all;
+        }
+        .reveal .title-slide h1 {
+            font-size: 2.8em;
+            margin: 0;
+        }
+        .reveal .title-slide .subtitle {
+            font-size: 1.05em;
+            color: #64748b;
+            margin-top: 12px;
+        }
+        .reveal .tag {
+            display: inline-block;
+            padding: 7px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 999px;
+            color: #64748b;
+            font-size: 0.55em;
+            margin-bottom: 20px;
+        }
+        .slide-number {
+            position: absolute;
+            right: 28px;
+            bottom: 18px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- Diapositiva 1: Portada -->
+<section>
+    <h1 class="slide-title">CRIPTOGRAFÍA</h1>
+    <h3>Comunidad de Hackers Éticos Bolivianos</h3>
+    <br>
+    <p class="tip">Juan Alberto Fajardo Canaza</p>
+    <div class="slide-number">1</div>
+</section>
+
+
+
+<!-- Diapositiva 7: Qué es la criptografía -->
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">¿Qué es la criptografía?</h2>
+        <p>El proceso de convertir texto plano ordinario en texto ininteligible y viceversa.</p>
+        
+        <div class="example">
+            <p>- Información No cifrada (texto plano)</p>
+            <p>Algoritmo (cifrado)</p>
+            <p>Llave</p>
+            <p>- Información cifrada</p>
+        </div>
+    </div>
+    <div class="slide-number">7</div>
+</section>
+
+<!-- Diapositiva 8: Tipos de cifrado -->
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">Tipos de Cifrado</h2>
+        <div class="grid-list">
+            <li>Codificación</li>
+            <li>Simétrico</li>
+            <li>Asimétrico</li>
+            <li>Cifrado de permutación</li>
+            <li>Hashing</li>
+        </div>
+    </div>
+    <div class="slide-number">8</div>
+</section>
+
+<!-- Diapositiva 9: Cifrado desplazamiento, permutación -->
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">Cifrado desplazamiento, permutación</h2>
+        <div class="tip">
+            <p><b>Cifrado por desplazamiento:</b> Es un tipo de cifrado en el que cada letra en el texto original es reemplazada por una letra que se encuentra un número fijo de posiciones más adelante en el alfabeto. Ej: César.</p>
+        </div>
+        <div class="warning">
+            <p><b>Cifrado de permutación:</b> También conocido como cifrado por transposición, es un tipo de cifrado en el que el texto original se reorganiza o "permuta" de acuerdo con una regla específica antes de ser enviado o almacenado.</p>
+            <p>Bolivia Bonita → Biaotov nalibi</p>
+        </div>
+    </div>
+    <div class="slide-number">9</div>
+</section>
+
+<!-- Diapositiva 10: Codificación, Hashing -->
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">Codificación, Hashing</h2>
+        <div class="command-box">
+            <p><b>La codificación</b> es un método que es utilizado para representar datos binarios en un formato legible por humanos. Ej: Base64</p>
+        </div>
+        <div class="command-box">
+            <p><b>Un hashing</b> o función hash es un proceso que toma un mensaje y lo convierte en una cadena de longitud fija. No utiliza clave, sirve para la integridad de los datos, los datos no están cifrados. MD5, SHA1.</p>
+        </div>
+    </div>
+    <div class="slide-number">10</div>
+</section>
+
+<!-- Diapositiva 10: Codificación, Hashing -->
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">Base64</h2>
+        <pre>
+          echo "Hola mundo" | base64
+          echo "SG9sYSBtdW5kbwo=" | base64 -d
+        </pre>
+    </div>
+    <div class="slide-number">10</div>
+</section>
+
+
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">Base64?</h2>
+        <p>Nuestro amigo nos dejó este mensaje.</p>
+        <div class="command-box" style="font-size: 0.5em; word-break: break-all;">
+            ....- -../..... .-/..... --.../....- --.../....- ...--/..... .-/...-- ...--/...-- ...--/....- ----./..... .-/..... .----/..... --.../....- --.../...-- ...../....- -.-./....- -../....- ..-./..... ..---/..... .----/..... --.../....- ----./..... ---../...-- ..---/....- -./....- ./..... .-/..... ....-/..... --.../....- -.../...-- ...--/..... ....-/....- -./....- -../..... -..../..... .-/....- ..-./...-- ..---/..... ----./....- -.../...-- --.../....- -.../..... ..---/..... ...--/..... --.../....- --.../...-- ...--/..... ....-/..... -----/....- ./..... ..---/..... ---../..... --.../..... -----/...-- ...--/....- -.-./....- ..---/....- -.-./...-- ...../....- -.../..... ...../....- ...--/..... ...../....- ....-/...-- ...../....- ...../....- .----/...-- -../...-- -../...-- -../...-- -../...-- -../...-- -..
+        </div>
+    </div>
+    <div class="slide-number">17</div>
+</section>
+
+
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">HASH Irreversible</h2>
+        <pre>
+MD5
+202cb962ac59075b964b07152d234b70
+bcrypt
+$2a$04$2b44V2F3.A244V2F3.A24u3Kk3d6I5L1k3N5O7P9Q1R3S5T7U9V1W
+SHA-512
+$6$saltejemplo$9K3Xj5vQ0L1mN2oP3qR4sT5uV6wX7yZ8aB9cC0dE1fG2hI3jK4lM5nO6pQ7rS8tU9vW0xY1z2A3B4C5D6E7F8
+<br>
+john --wordlist=/usr/share/john/password.lst hashes.txt
+john --show hashes.txt
+
+        </pre>
+    </div>
+    <div class="slide-number">17</div>
+</section>
+
+
+<!-- Diapositiva 11: Simétrico -->
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">Cifrado Simétrico</h2>
+        <div class="tip">
+            <p>Se utiliza la misma clave para cifrar y descifrar.</p>
+            <p>Se usa ampliamente para proteger datos en reposo.</p>
+            <p>Proporciona confidencialidad.</p>
+            <p>Es excelente para el cifrado de grandes cantidades de datos.</p>
+            <p>Es rápido y tiene buen rendimiento.</p>
+        </div>
+        <div class="warning">
+            <p><b>Desventajas:</b></p>
+            <p>La clave está en un riesgo.</p>
+            <p>Debes compartir la clave por adelantado.</p>
+            <p>Si la clave se ve comprometida se pierde la confidencialidad.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Diapositiva 12: Simétrico (algoritmos) -->
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">Algoritmos Simétricos</h2>
+          <pre>
+Vim
+VmltQ3J5cHR+MDMhtRLEsyMCOq24rFaFJoCNPgDslSjPlsR2f2WLboitnlzdmWCEzLcddQ==
+
+RaR
+UmFyIRoHAQAzkrXlCgEFBgAFAQGAgAAtDY/nWAIDPKAABJAAIJW/ENeAAwALY2lmcmFkby50eHQwAQADD1iXbc8JAml1zTmNZzLNv9mbCE34cDIBbXEVXekgA8X7uY1eJtbT6Q7MNjsDCgMC990PT/hU3QGWLTAiJrYqR8utAUXlwOyBJw1qz6mxnW6Y7l4+Ys6Nqh13VlEDBQQA
+
+rar2john cifrado.rar > hash_rar.txt
+john --wordlist=/ruta/a/tu/diccionario.txt hash_rar.txt
+          </pre>
+    </div>
+</section>
+
+
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title"> Network G.</h2>
+        <div class="command-box" style="font-size: 0.45em; word-break: break-all; font-family: monospace;">
+            iVBORw0KGgoAAAANSUhEUgAAAFkAAAAXCAYAAABgWeOzAAAAAXNSR0IArs4c6QAAAARnQU1BAACx<br>
+            jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIqSURBVGhD7ZSBjeIwEEXTC8VQC6VQCYVQB7Vw<br>
+            +oiH3vnGZMMmXmkvX5qFdcb2/DcTpvuuzbVDHqAd8gD9BXmapldcLpf78Xh8fD8cDs+M36t4xPv5<br>
+            fH5Evp9Op2fG53pB5gJiFGTuWMPMpzLgRAB77Z3CaS7v8eR6vb4SswltDZlpyedP6Xa7vby7jmqS<br>
+            nWvBL7wqPbLdjWxAW0OOgZzvxo5Wb8AqAT5hAb/HacJoG9lYQfZrRLgxkQtPuInVm+I18jxBVR2s<br>
+            OXyOgXgCE0yscxypv72z8s2z3oSjxZDbPALQBlpFBdlNIm8OcmU6wfk9gETy1oIcsVbp2z8XXM50<br>
+            uBjkRhoyuWkoIm8Ocity2GeA1BaxlvwoflmrBsB3+sxWlRe0GDJrbWCO/23MrxNGekWRNwfZjXMA<br>
+            rweEfZy1FuSo6yl/vgrZxlpYSyFH7LXIewfZZrmHnJ+CTP63J5n/MWZ4QAGci6uaE3Ge76z2s5c1<br>
+            znMjyMmZkYFwZ1Xvp5D/mdbneqVFkA2LAApFu5AqKiNeq+4gqKO6gzoqyFUAaQlkc/IzN6/SIsgR<br>
+            eeRizlPVGrSR6nybiziTZ1UdvZx8Rq6hheMpXAI58hDw7EuQt5ZNGjIF29xaMuT21V5bQG4bglaH<br>
+            HGCG5i63RQA/QNbWSMi8DX6brU0gY64NTzFimnsFfqpRkPHbm+Jodcj+jSPeFbCVRk7ynIb8Jv/v<br>
+            2iEP0A55gHbIm+t+/wPfLjX2DYJL3wAAAABJRU5ErkJggg==
+        </div>
+    </div>
+    <div class="slide-number">19</div>
+</section>
+
+<!-- Diapositiva 13: Asimétrico -->
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">Cifrado Asimétrico</h2>
+        <p>Un algoritmo de cifrado asimétrico, también conocido como criptografía de clave pública, es un sistema criptográfico que utiliza un par de claves relacionadas pero diferentes: una clave pública y una clave privada.</p>
+        <div class="three-column" style="margin-top:20px;">
+            <div class="tip">
+                <h4>Clave Pública</h4>
+                <ul style="list-style-type: none; padding-left:0;">
+                    <li>▹ Se puede compartir libremente con cualquiera.</li>
+                    <li>▹ Se usa para cifrar mensajes o verificar firmas digitales.</li>
+                </ul>
+            </div>
+            <div class="tip">
+                <h4>Clave Privada</h4>
+                <ul style="list-style-type: none; padding-left:0;">
+                    <li>▹ Se mantiene en secreto por el propietario.</li>
+                    <li>▹ Se usa para descifrar mensajes o crear firmas digitales.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">13</div>
+</section>
+
+<!-- Diapositiva 16: Herramientas -->
+<section>
+    <div class="slide-content">
+        <h2 class="slide-title">Herramientas</h2>
+        <div class="command-box">
+            <p><b>Cifrado</b></p>
+            <p class="link"><a href="https://gchq.github.io/CyberChef/" target="_blank">https://gchq.github.io/CyberChef/</a></p>
+            <p class="link"><a href="https://www.dcode.fr/cifrado-cesar" target="_blank">https://www.dcode.fr/cifrado-cesar</a></p>
+            <p class="link"><a href="https://github.com/ciphey/ciphey" target="_blank">https://github.com/ciphey/ciphey</a></p>
+        </div>
+        <div class="command-box">
+            <p><b>Detección de Hash</b></p>
+            <p class="link"><a href="https://www.tunnelsup.com/hash-analyzer/" target="_blank">https://www.tunnelsup.com/hash-analyzer/</a></p>
+            <p class="link"><a href="https://hashes.com/en/tools/hash_identifier" target="_blank">https://hashes.com/en/tools/hash_identifier</a></p>
+            <p class="link"><a href="https://www.kali.org/tools/hash-identifier/" target="_blank">https://www.kali.org/tools/hash-identifier/</a></p>
+        </div>
+        <div class="command-box">
+            <p><b>CTF's</b></p>
+            <p class="link"><a href="https://github.com/cryptohack/ctf_archive" target="_blank">https://github.com/cryptohack/ctf_archive</a></p>
+            <p class="link"><a href="https://github.com/Crypto-Cat/CTF" target="_blank">https://github.com/Crypto-Cat/CTF</a></p>
+        </div>
+    </div>
+    <div class="slide-number">16</div>
+</section>
+
+
+
+
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: false,
+  transition: 'slide',
+  backgroundTransition: 'none',
+  controls: true,
+  progress: true,
+  center: false,
+  width: 1280,
+  height: 720,
+  margin: 0.04
+});
+</script>
+</body>
+</html>

@@ -84,3 +84,22 @@ __Testeo:__
 ## Tema 5
 
 https://drive.google.com/drive/folders/1Z8HqFSIjrxVBJdZL2yZ1OtDkVScr-WrW?usp=drive_link
+
+
+## Critpgrafia
+Morse
+....- -../..... .-/..... --.../....- --.../....- ...--/..... .-/...-- ...--/...-- ...--/....- ----./..... .-/..... .----/..... --.../....- --.../...-- ...../....- -.-./....- -../....- ..-./..... ..---/..... .----/..... --.../....- ----./..... ---../...-- ..---/....- -./....- ./..... .-/..... ....-/..... --.../....- -.../...-- ...--/..... ....-/....- -./....- -../..... -..../..... .-/....- ..-./...-- ..---/..... ----./....- -.../...-- --.../....- -.../..... ..---/..... ...--/..... --.../....- --.../...-- ...--/..... ....-/..... -----/....- ./..... ..---/..... ---../..... --.../..... -----/...-- ...--/....- -.-./....- ..---/....- -.-./...-- ...../....- -.../..... ...../....- ...--/..... ...../....- ....-/...-- ...../....- ...../....- .----/...-- -../...-- -../...-- -../...-- -../...-- -../...-- -..
+
+bcrypt
+$2a$04$2b44V2F3.A244V2F3.A24u3Kk3d6I5L1k3N5O7P9Q1R3S5T7U9V1W
+SHA-512
+$6$saltejemplo$9K3Xj5vQ0L1mN2oP3qR4sT5uV6wX7yZ8aB9cC0dE1fG2hI3jK4lM5nO6pQ7rS8tU9vW0xY1z2A3B4C5D6E7F8
+
+Vim
+VmltQ3J5cHR+MDMhtRLEsyMCOq24rFaFJoCNPgDslSjPlsR2f2WLboitnlzdmWCEzLcddQ==
+
+RaR
+UmFyIRoHAQAzkrXlCgEFBgAFAQGAgAAtDY/nWAIDPKAABJAAIJW/ENeAAwALY2lmcmFkby50eHQwAQADD1iXbc8JAml1zTmNZzLNv9mbCE34cDIBbXEVXekgA8X7uY1eJtbT6Q7MNjsDCgMC990PT/hU3QGWLTAiJrYqR8utAUXlwOyBJw1qz6mxnW6Y7l4+Ys6Nqh13VlEDBQQA
+
+Red
+iVBORw0KGgoAAAANSUhEUgAAAFkAAAAXCAYAAABgWeOzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIqSURBVGhD7ZSBjeIwEEXTC8VQC6VQCYVQB7Vw+oiH3vnGZMMmXmkvX5qFdcb2/DcTpvuuzbVDHqAd8gD9BXmapldcLpf78Xh8fD8cDs+M36t4xPv5fH5Evp9Op2fG53pB5gJiFGTuWMPMpzLgRAB77Z3CaS7v8eR6vb4SswltDZlpyedP6Xa7vby7jmqSnWvBL7wqPbLdjWxAW0OOgZzvxo5Wb8AqAT5hAb/HacJoG9lYQfZrRLgxkQtPuInVm+I18jxBVR2sOXyOgXgCE0yscxypv72z8s2z3oSjxZDbPALQBlpFBdlNIm8OcmU6wfk9gETy1oIcsVbp2z8XXM50uBjkRhoyuWkoIm8Ocity2GeA1BaxlvwoflmrBsB3+sxWlRe0GDJrbWCO/23MrxNGekWRNwfZjXMArweEfZy1FuSo6yl/vgrZxlpYSyFH7LXIewfZZrmHnJ+CTP63J5n/MWZ4QAGci6uaE3Ge76z2s5c1znMjyMmZkYFwZ1Xvp5D/mdbneqVFkA2LAApFu5AqKiNeq+4gqKO6gzoqyFUAaQlkc/IzN6/SIsgReeRizlPVGrSR6nybiziTZ1UdvZx8Rq6hheMpXAI58hDw7EuQt5ZNGjIF29xaMuT21V5bQG4bglaHHGCG5i63RQA/QNbWSMi8DX6brU0gY64NTzFimnsFfqpRkPHbm+Jodcj+jSPeFbCVRk7ynIb8Jv/v2iEP0A55gHbIm+t+/wPfLjX2DYJL3wAAAABJRU5ErkJggg==
