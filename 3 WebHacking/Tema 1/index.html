@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Hacking Web + MariaDB · Curso de Seguridad Ofensiva</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+
+    <style>
+        /* Estilos consistentes con el archivo original */
+        .reveal { color: #1e2b37; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #0b3954; font-weight: 600; letter-spacing: -0.02em; }
+        .reveal h1 { font-size: 2.4em; }
+        .reveal h2 { font-size: 1.8em; border-left: 5px solid #1f7a8c; padding-left: 20px; }
+        .reveal h3 { font-size: 1.4em; color: #1f7a8c; }
+
+        /* Cajas de comandos y ejemplos */
+        .command-box {
+            background: #f0f5fa;
+            padding: 20px;
+            border-radius: 20px;
+            font-family: 'Courier New', 'Fira Code', monospace;
+            margin: 18px 0;
+            border-left: 6px solid #2a7faa;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        .command { color: #1b6b8f; font-weight: bold; }
+        .explanation { font-size: 0.9em; margin-top: 10px; color: #2c5a6e; }
+        .example {
+            background: #fef7e8;
+            padding: 14px 20px;
+            border-radius: 18px;
+            margin-top: 14px;
+            border-left: 5px solid #e67e22;
+            font-size: 0.9em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tip {
+            background: #dff0ea;
+            padding: 12px 20px;
+            border-radius: 18px;
+            border-left: 5px solid #1e7e5e;
+            font-size: 0.92em;
+            margin: 12px 0;
+        }
+        .warning {
+            background: #fbe9e7;
+            padding: 12px 20px;
+            border-radius: 18px;
+            border-left: 5px solid #c44536;
+            font-size: 0.92em;
+            margin: 12px 0;
+        }
+        .slide-title {
+            color: #1f7a8c;
+            border-bottom: 3px solid #1f7a8c;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 24px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .grid-list li {
+            list-style-type: none;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        .grid-list li::before {
+            content: "▹";
+            color: #1f7a8c;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .two-columns {
+            display: flex;
+            gap: 24px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .col {
+            flex: 1;
+            background: #fafcfd;
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .badge-mariadb {
+            background: #004d66;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 500;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+        }
+        .reveal table {
+            font-size: 0.75rem;
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .reveal th {
+            background: #1f7a8c;
+            color: white;
+            padding: 10px 8px;
+            font-weight: 600;
+        }
+        .reveal td {
+            padding: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        pre {
+            font-size: 0.7rem;
+            line-height: 1.4;
+            border-radius: 14px;
+        }
+        .reveal pre code {
+            max-height: 350px;
+            border-radius: 14px;
+        }
+        .inline-icon {
+            font-weight: bold;
+            background: #eef2f5;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-family: monospace;
+        }
+        .file-structure {
+            background: #1e2b37;
+            color: #d4d4d4;
+            padding: 16px;
+            border-radius: 16px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            text-align: left;
+        }
+        .network-flow {
+            background: #eef2fa;
+            padding: 15px;
+            border-radius: 20px;
+            text-align: center;
+            font-family: monospace;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+    <!-- ==================== PORTADA PRINCIPAL ==================== -->
+    <section>
+        
+        <h2 class="slide-title">Introducción al Hacking Web</h2>
+        
+        <br>
+        <p class="tip">Juan Alberto Fajardo Canaza</p>
+        <p style="font-size: 0.8rem;">Entendiendo la web para poder hackearla (de forma ética)</p>
+    </section>
+
+    <!-- ==================== MÓDULO 1: FUNDAMENTOS DE LA WEB ==================== -->
+    <section>
+        <section>
+            <h2 class="slide-title">🌐 Fundamentos de la Web</h2>
+            <div class="tip">¿Cómo funciona Internet realmente?</div>
+            <div class="grid-list" style="font-size: large;">
+                <li>Red global de computadoras usando <b>protocolos</b></li>
+                <li>Modelo <b>Cliente-Servidor</b> (petición → respuesta)</li>
+                <li><b>HTTP/HTTPS:</b> texto plano vs cifrado</li>
+                <li><b>DNS:</b> traduce nombres a IPs</li>
+                <li>Puertos típicos: 80 (HTTP), 443 (HTTPS), 3306 (MySQL/MariaDB)</li>
+            </div>
+        </section>
+
+        <section>
+            <h3 class="slide-title">📡 Métodos HTTP y códigos de estado</h3>
+            <div class="two-columns" style="font-size: large;">
+                <div class="col">
+                    <h4>Métodos principales</h4>
+                    <ul>
+                        <li><b>GET</b> → Obtener datos</li>
+                        <li><b>POST</b> → Enviar datos</li>
+                        <li><b>PUT</b> → Reemplazar recurso</li>
+                        <li><b>DELETE</b> → Borrar</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>Códigos comunes</h4>
+                    <ul>
+                        <li>200 OK</li>
+                        <li>301/302 Redirección</li>
+                        <li>403 Prohibido / 404 No encontrado</li>
+                        <li>500 Error interno</li>
+                    </ul>
+                </div>
+            </div>
+            
+        </section>
+
+        <section>
+            <h2 class="slide-title">⚙️ Tecnologías Web Básicas</h2>
+            <div class="grid-list" style="font-size: large;">
+                <li><b>HTML:</b> estructura de la página</li>
+                <li><b>CSS:</b> estilos visuales</li>
+                <li><b>JavaScript:</b> interactividad (y gran fuente de vulnerabilidades)</li>
+                <li><b>Backend:</b> PHP, Node.js (corren en el servidor)</li>
+                <li><b>Bases de datos:</b> MySQL, PostgreSQL, MariaDB</li>
+            </div>
+        </section>
+       
+    </section>
+
+        
+
+    <!-- ==================== MÓDULO 3: VER CONEXIONES ==================== -->
+    <section>
+        <section>
+            <h2 class="slide-title">🔍 Ver conexiones</h2>
+            <div class="tip">Las herramientas del hacker web</div>
+            <div class="grid-list" style="font-size: large;">
+                <li><b>DevTools del navegador (F12)</b> → Elements, Console, Network</li>
+                <li><b>BurpSuite</b> → Proxy interceptador, Repeater, Intruder</li>
+                <li><b>Wappalyzer</b> → detecta tecnologías</li>
+                <li><b>FlagFox</b> → geolocalización de IPs</li>
+            </div>
+        </section>
+
+        <section>
+            <h3 class="slide-title">🛠️ DevTools: Pestaña Network</h3>
+            <div class="network-flow" >
+                Navegador → [Petición GET/POST] → Servidor<br>
+                ← [Respuesta HTML/JSON/Imagen] ←
+            </div>
+            <div class="example" style="font-size: large;">
+                📡 Desde Network puedes ver:<br>
+                - Método HTTP usado<br>
+                - Parámetros enviados (query string, formulario)<br>
+                - Cookies, cabeceras, respuesta del servidor
+            </div>
+            
+        </section>
+
+        <section>
+            <h3 class="slide-title">🕵️ Proxy con BurpSuite</h3>
+            <div class="command-box">
+                Flujo típico:<br>
+                Navegador → (proxy localhost:8080) → BurpSuite → Servidor
+            </div>
+            <div class="grid-list">
+                <li>Interceptar peticiones en vivo</li>
+                <li>Modificar parámetros (id, token, rol)</li>
+                <li>Reenviar con Repeater</li>
+                <li>Fuzzear con Intruder</li>
+            </div>
+            <div class="tip">
+                🔧 Configuración: proxy manual a 127.0.0.1:8080 + certificado HTTPS de Burp.
+            </div>
+        </section>
+    </section>
+
+   
+    </section>
+    
+        <section>
+    <h2 class="slide-title">⚙️ OWASP Top 10</h2>
+    
+        <table border="1" style="border-collapse: collapse; width: 100%; text-align: left;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th >Categoría OWASP</th>
+                    <th >Ejemplo de Ataque</th>
+                    <th >Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td ><b>A01: Broken Access Control</b></td>
+                    <td >Cambiar el ID en la URL (<code>/cuenta?id=101</code> a <code>/cuenta?id=102</code>) para ver datos ajenos.</td>
+                    <td >Acceso no autorizado a funciones o datos confidenciales de otros usuarios.</td>
+                </tr>
+                <tr>
+                    <td ><b>A02: Cryptographic Failures</b></td>
+                    <td >Interceptar contraseñas en Wi-Fi pública porque la web usa HTTP sin cifrado.</td>
+                    <td >Exposición de datos sensibles por falta de cifrado o algoritmos obsoletos.</td>
+                </tr>
+                <tr>
+                    <td ><b>A03: Injection</b></td>
+                    <td >Introducir código malicioso en un buscador para extraer la base de datos (SQLi).</td>
+                    <td >Envío de datos no confiables a un intérprete para ejecutar órdenes no deseadas.</td>
+                </tr>
+                <tr>
+                    <td ><b>A04: Insecure Design</b></td>
+                    <td >Comprar productos con precios negativos porque el sistema no valida la lógica.</td>
+                    <td >Defectos arquitectónicos y fallos en el diseño inicial de la aplicación.</td>
+                </tr>
+                <tr>
+                    <td ><b>A05: Security Misconfiguration</b></td>
+                    <td >Dejar la cuenta por defecto (<code>admin</code>/<code>admin</code>) en el panel de control.</td>
+                    <td >Configuraciones de seguridad incompletas, desactualizadas o mal gestionadas.</td>
+                </tr>
+                <tr>
+                    <td ><b>A06: Vulnerable and Outdated Components</b></td>
+                    <td >Explotar un fallo público en un plugin antiguo y no actualizado de WordPress.</td>
+                    <td >Uso de librerías o componentes de software obsoletos con fallos conocidos.</td>
+                </tr>
+                <tr>
+                    <td ><b>A07: Identification and Authentication Failures</b></td>
+                    <td >Un bot prueba millones de contraseñas filtradas (Credential Stuffing) hasta entrar.</td>
+                    <td >Debilidades al confirmar la identidad, permitiendo el robo de sesiones o credenciales.</td>
+                </tr>
+                <tr>
+                    <td ><b>A08: Software and Data Integrity Failures</b></td>
+                    <td >Modificar un archivo de actualización en el servidor para distribuir un virus.</td>
+                    <td >Aceptación de código o datos sin verificar previamente su integridad o firma digital.</td>
+                </tr>
+                <tr>
+                    <td ><b>A09: Security Logging and Monitoring Failures</b></td>
+                    <td >Un hacker extrae datos durante meses porque la web no registra accesos sospechosos.</td>
+                    <td >Falta de logs y monitoreo en tiempo real, impidiendo detectar o responder a ataques.</td>
+                </tr>
+                <tr>
+                    <td ><b>A10: Server-Side Request Forgery (SSRF)</b></td>
+                    <td >Manipular un parámetro para obligar al servidor a extraer claves de su nube privada.</td>
+                    <td >Ocurre cuando la aplicación lee una URL remota sin validar el destino final.</td>
+                </tr>
+            </tbody>
+        </table>
+    
+    </section>
+
+</div> <!-- /.slides -->
+</div> <!-- /.reveal -->
+
+<!-- Reveal.js scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/zoom/zoom.min.js"></script>
+
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        slideNumber: true,
+        plugins: [ RevealHighlight, RevealNotes, RevealMarkdown, RevealZoom ]
+    });
+</script>
+
+</body>
+</html>
