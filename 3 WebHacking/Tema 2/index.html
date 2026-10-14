@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Hacking Web · Index Of, Fuzzing y .git Exposure</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+
+    <style>
+        /* Estilos consistentes con el archivo original */
+        .reveal { color: #1e2b37; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #0b3954; font-weight: 600; letter-spacing: -0.02em; }
+        .reveal h1 { font-size: 2.4em; }
+        .reveal h2 { font-size: 1.8em; border-left: 5px solid #1f7a8c; padding-left: 20px; }
+        .reveal h3 { font-size: 1.4em; color: #1f7a8c; }
+
+        /* Cajas de comandos y ejemplos */
+        .command-box {
+            background: #f0f5fa;
+            padding: 20px;
+            border-radius: 20px;
+            font-family: 'Courier New', 'Fira Code', monospace;
+            margin: 18px 0;
+            border-left: 6px solid #2a7faa;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        .command { color: #1b6b8f; font-weight: bold; }
+        .explanation { font-size: 0.9em; margin-top: 10px; color: #2c5a6e; }
+        .example {
+            background: #fef7e8;
+            padding: 14px 20px;
+            border-radius: 18px;
+            margin-top: 14px;
+            border-left: 5px solid #e67e22;
+            font-size: 0.9em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tip {
+            background: #dff0ea;
+            padding: 12px 20px;
+            border-radius: 18px;
+            border-left: 5px solid #1e7e5e;
+            font-size: 0.92em;
+            margin: 12px 0;
+        }
+        .warning {
+            background: #fbe9e7;
+            padding: 12px 20px;
+            border-radius: 18px;
+            border-left: 5px solid #c44536;
+            font-size: 0.92em;
+            margin: 12px 0;
+        }
+        .slide-title {
+            color: #1f7a8c;
+            border-bottom: 3px solid #1f7a8c;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 24px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .grid-list li {
+            list-style-type: none;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        .grid-list li::before {
+            content: "▹";
+            color: #1f7a8c;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .two-columns {
+            display: flex;
+            gap: 24px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .col {
+            flex: 1;
+            background: #fafcfd;
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .badge-mariadb {
+            background: #004d66;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 500;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+        }
+        .badge-owasp {
+            background: #c44536;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 500;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+            margin-left: 10px;
+        }
+        .reveal table {
+            font-size: 0.75rem;
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .reveal th {
+            background: #1f7a8c;
+            color: white;
+            padding: 10px 8px;
+            font-weight: 600;
+        }
+        .reveal td {
+            padding: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        pre {
+            font-size: 0.7rem;
+            line-height: 1.4;
+            border-radius: 14px;
+        }
+        .reveal pre code {
+            max-height: 350px;
+            border-radius: 14px;
+        }
+        .inline-icon {
+            font-weight: bold;
+            background: #eef2f5;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-family: monospace;
+        }
+        .file-structure {
+            background: #1e2b37;
+            color: #d4d4d4;
+            padding: 16px;
+            border-radius: 16px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            text-align: left;
+        }
+        .network-flow {
+            background: #eef2fa;
+            padding: 15px;
+            border-radius: 20px;
+            text-align: center;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        .highlight-text {
+            background: #fff3cd;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #856404;
+        }
+        .tool-link {
+            display: inline-block;
+            background: #004d66;
+            color: white !important;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            margin-top: 8px;
+        }
+        .tool-link:hover {
+            background: #006080;
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+    <!-- ==================== PORTADA PRINCIPAL ==================== -->
+    <section>
+        <h1 style="font-size: 2em;">🔓 Hacking Web</h1>
+        <h2 class="slide-title">Reconocimiento y enumeración web</h2>
+        <br>
+        <p class="tip">Juan Alberto Fajardo Canaza</p>
+        
+    </section>
+
+    <!-- ==================== TEMA 1: INDEX OF ==================== -->
+    <section>
+        <section>
+            <h2 class="slide-title">📂 Tema 1: Index Of</h2>
+            <div class="tip">¿Qué es el "Index Of"?</div>
+            <div class="grid-list" style="font-size: large;">
+                <li>Es una <b>lista generada automáticamente</b> por el servidor web</li>
+                <li>Muestra el <b>contenido de un directorio</b> sin una página index</li>
+                <li>Expone archivos que <b>no deberían ser públicos</b></li>
+                <li>Ocurre cuando <span class="inline-icon">Options +Indexes</span> está habilitado en Apache</li>
+                <li>Puede revelar: backups, configuraciones, código fuente, credenciales</li>
+            </div>
+            <div class="warning">
+                ⚠️ Un "Index Of" mal configurado es una <b>fuga de información crítica</b>.
+            </div>
+        </section>
+
+        <section>
+            <h3 class="slide-title">🎯 ¿Dónde está en el OWASP Top 10?</h3>
+            <div class="two-columns">
+                <div class="col">
+                    <h4>OWASP Top 10:2021</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li><b>A01:2021</b> – Broken Access Control</li>
+                        <li><b>A05:2021</b> – Security Misconfiguration</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>Relación directa</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li><b>A05</b> → Configuración insegura del servidor</li>
+                        <li><b>A01</b> → Acceso no autorizado a recursos</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="example">
+                📌 Un Index Of es típicamente una <b>mala configuración</b> (A05) que permite <b>acceso no autorizado</b> (A01) a información sensible.
+            </div>
+        </section>
+
+        <section>
+            <h3 class="slide-title">🔧 Herramientas: Google Dorks</h3>
+            <div class="command-box">
+                <span class="command">intitle:"index of"</span> site:ejemplo.com<br>
+                <span class="command">intitle:"index of"</span> "parent directory"<br>
+                <span class="command">intitle:"index of"</span> "backup"<br>
+                <span class="command">intitle:"index of"</span> "config"<br>
+                <span class="command">intitle:"index of"</span> "password"<br>
+                <span class="command">intitle:"index of"</span> "db" | "sql" | "mdb"
+            </div>
+            <div class="explanation">
+                🔍 Los <b>Google Dorks</b> son consultas avanzadas que permiten encontrar directorios expuestos indexados por Google.
+            </div>
+            <div class="tip">
+                💡 <b>Ejemplo real:</b> <span class="inline-icon">intitle:"index of" "parent directory" site:gov</span> puede revelar documentos gubernamentales expuestos.
+            </div>
+        </section>
+    </section>
+
+    <!-- ==================== TEMA 2: FUZZING ==================== -->
+    <section>
+        <section>
+            <h2 class="slide-title">💥 Tema 2: Fuzzing a directorios y archivos</h2>
+            <div class="tip">¿Qué es el Fuzzing Web?</div>
+            <div class="grid-list" style="font-size: large;">
+                <li>Técnica de <b>fuerza bruta</b> para descubrir rutas ocultas</li>
+                <li>Envía <b>miles de peticiones</b> con nombres comunes</li>
+                <li>Busca: <span class="inline-icon">/admin</span>, <span class="inline-icon">/backup</span>, <span class="inline-icon">/config.php</span>, etc.</li>
+                <li>Identifica <b>códigos de respuesta</b> (200, 403, 301)</li>
+                <li>Puede encontrar <b>paneles de administración</b>, archivos de backup, APIs ocultas</li>
+            </div>
+            <div class="network-flow">
+                Diccionario → [Petición GET /ruta] → Servidor<br>
+                ← [200 OK / 404 / 403] ←
+            </div>
+        </section>
+
+        <section>
+            <h3 class="slide-title">🎯 ¿Dónde está en el OWASP Top 10?</h3>
+            <div class="two-columns">
+                <div class="col">
+                    <h4>OWASP Top 10:2021</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li><b>A01:2021</b> – Broken Access Control</li>
+                        <li><b>A05:2021</b> – Security Misconfiguration</li>
+                        <li><b>A06:2021</b> – Vulnerable and Outdated Components</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>Relación directa</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li><b>A01</b> → Rutas administrativas sin protección</li>
+                        <li><b>A05</b> → Directorios listados o mal configurados</li>
+                        <li><b>A06</b> → Versiones antiguas con archivos expuestos</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="example">
+                📌 El fuzzing descubre <b>recursos ocultos</b> que pueden estar mal protegidos o ser vulnerables.
+            </div>
+        </section>
+
+        <section>
+            <h3 class="slide-title">🔧 Herramientas: DirBuster</h3>
+            <div class="command-box">
+                <span class="command">DirBuster</span> → Interfaz gráfica (Java)<br>
+                <span class="command">Configurar:</span> URL objetivo + diccionario<br>
+                <span class="command">Diccionarios comunes:</span><br>
+                &nbsp;&nbsp;• /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt<br>
+                &nbsp;&nbsp;• /usr/share/wordlists/dirb/common.txt<br>
+                &nbsp;&nbsp;• /usr/share/seclists/Discovery/Web-Content/
+            </div>
+            <div class="explanation">
+                🛠️ <b>DirBuster</b> es una herramienta clásica de OWASP para fuzzing de directorios y archivos.
+            </div>
+            <div class="tip">
+                💡 También existen alternativas modernas como <b>Gobuster</b>, <b>FFuf</b> y <b>Dirsearch</b>.
+            </div>
+        </section>
+
+        <section>
+            <h3 class="slide-title">🔧 Herramientas: BurpSuite Intruder</h3>
+            <div class="command-box">
+                <span class="command">BurpSuite → Intruder</span><br>
+                1. Interceptar petición con Proxy<br>
+                2. Enviar a Intruder (Ctrl+I)<br>
+                3. Marcar posición de payload: <span class="inline-icon">§ruta§</span><br>
+                4. Cargar diccionario de rutas<br>
+                5. Iniciar ataque → Analizar códigos de respuesta
+            </div>
+            <div class="grid-list">
+                <li><b>Sniper:</b> un solo parámetro</li>
+                <li><b>Battering Ram:</b> mismo payload en todos</li>
+                <li><b>Pitchfork:</b> múltiples diccionarios en paralelo</li>
+                <li><b>Cluster Bomb:</b> combinaciones de diccionarios</li>
+            </div>
+            
+        </section>
+    </section>
+
+    <!-- ==================== TEMA 3: .GIT EXPOSURE ==================== -->
+    <section>
+        <section>
+            <h2 class="slide-title">🔓 Tema 3: .git Exposure</h2>
+            <div class="tip">¿Qué es la exposición de .git?</div>
+            <div class="grid-list" style="font-size: large;">
+                <li>El directorio <span class="inline-icon">/.git/</span> queda <b>accesible públicamente</b></li>
+                <li>Contiene <b>todo el historial</b> del repositorio Git</li>
+                <li>Expone: <b>código fuente</b>, <b>credenciales</b>, <b>ramas</b>, <b>commits</b></li>
+                <li>Ocurre por <b>mala configuración</b> del servidor web</li>
+                <li>Muy común en despliegues automáticos (CI/CD mal configurados)</li>
+            </div>
+            <div class="warning">
+                ⚠️ Un <span class="inline-icon">/.git/</span> expuesto puede comprometer <b>todo el proyecto</b>.
+            </div>
+        </section>
+
+        <section>
+            <h3 class="slide-title">🎯 ¿Dónde está en el OWASP Top 10?</h3>
+            <div class="two-columns">
+                <div class="col">
+                    <h4>OWASP Top 10:2021</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li><b>A01:2021</b> – Broken Access Control</li>
+                        <li><b>A05:2021</b> – Security Misconfiguration</li>
+                        <li><b>A02:2021</b> – Cryptographic Failures</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h4>Relación directa</h4>
+                    <ul style="font-size: 0.9em;">
+                        <li><b>A05</b> → Directorio .git mal protegido</li>
+                        <li><b>A01</b> → Acceso no autorizado al código</li>
+                        <li><b>A02</b> → Credenciales en texto plano en commits</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 class="slide-title">📋 Estructura típica de .git expuesto</h3>
+            <div class="file-structure">
+                .git/<br>
+                ├── HEAD          → Rama actual<br>
+                ├── config        → Configuración del repo<br>
+                ├── index         → Índice de archivos<br>
+                ├── logs/         → Historial de cambios<br>
+                │   └── HEAD      → Referencias de commits<br>
+                ├── objects/      → Objetos Git (commits, árboles, blobs)<br>
+                │   ├── pack/     → Paquetes comprimidos<br>
+                │   └── info/     → Información de alternates<br>
+                └── refs/         → Referencias a ramas y tags<br>
+                    ├── heads/    → Ramas locales<br>
+                    └── tags/     → Etiquetas
+            </div>
+            <div class="tip">
+                💡 Con acceso a <span class="inline-icon">.git/</span> se puede reconstruir <b>todo el código fuente</b> y su historial.
+            </div>
+        </section>
+
+        <section>
+            <h3 class="slide-title">🔧 Herramientas: DotGit y GitDump</h3>
+            <div class="command-box">
+                <span class="command"># Verificar si .git está expuesto</span><br>
+                curl -I https://ejemplo.com/.git/HEAD<br><br>
+                <span class="command"># GitDump - Reconstruir repositorio</span><br>
+                git clone https://github.com/Ebryx/GitDump<br>
+                cd GitDump<br>
+                python3 gitdump.py -u https://ejemplo.com/.git/ -o output_dir
+            </div>
+            <a href="https://github.com/Ebryx/GitDump" class="tool-link" target="_blank">🔗 GitDump en GitHub</a>
+            <div class="explanation" style="margin-top: 16px;">
+                🛠️ <b>DotGit</b> es una extensión de navegador que detecta automáticamente si <span class="inline-icon">/.git/</span> está expuesto.
+            </div>
+        </section>
+
+        
+    </section>
+
+    <!-- ==================== RESUMEN ==================== -->
+    <section>
+        <h2 class="slide-title">📊 Resumen de Técnicas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Técnica</th>
+                    <th>¿Qué busca?</th>
+                    <th>OWASP Top 10</th>
+                    <th>Herramienta</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Index Of</b></td>
+                    <td>Directorios listados públicamente</td>
+                    <td>A01, A05</td>
+                    <td>Google Dorks</td>
+                </tr>
+                <tr>
+                    <td><b>Fuzzing</b></td>
+                    <td>Rutas y archivos ocultos</td>
+                    <td>A01, A05, A06</td>
+                    <td>DirBuster, BurpSuite</td>
+                </tr>
+                <tr>
+                    <td><b>.git Exposure</b></td>
+                    <td>Código fuente e historial Git</td>
+                    <td>A01, A02, A05</td>
+                    <td>DotGit, GitDump</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="tip" style="margin-top: 20px;">
+            🔐 <b>Recuerda:</b> Estas técnicas deben usarse <b>solo en entornos autorizados</b> y con fines éticos.
+        </div>
+    </section>
+
+    <!-- ==================== CIERRE ==================== -->
+    <section>
+        <h3>¿Preguntas?</h3>
+        <p style="font-size: 0.9rem;">Juan Alberto Fajardo Canaza</p>
+        <p class="small-note">Hacking ético · Seguridad ofensiva · Defensa de bases de datos</p>
+        <div class="tip" style="margin-top: 30px;">
+            🛡️ <b>La mejor defensa es conocer el ataque.</b>
+        </div>
+    </section>
+
+</div> <!-- /.slides -->
+</div> <!-- /.reveal -->
+
+<!-- Reveal.js scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/zoom/zoom.min.js"></script>
+
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        slideNumber: true,
+        plugins: [ RevealHighlight, RevealNotes, RevealMarkdown, RevealZoom ]
+    });
+</script>
+
+</body>
+</html>
