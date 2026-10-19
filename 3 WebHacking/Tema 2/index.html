@@ -413,9 +413,12 @@
                 <span class="command"># Verificar si .git está expuesto</span><br>
                 curl -I https://ejemplo.com/.git/HEAD<br><br>
                 <span class="command"># GitDump - Reconstruir repositorio</span><br>
-                git clone https://github.com/Ebryx/GitDump<br>
+                git clone https://github.com/Ebryx/GitDump.git<br>
                 cd GitDump<br>
-                python3 gitdump.py -u https://ejemplo.com/.git/ -o output_dir
+                python3 git-dump.py https://ejemplo.com/.git/<br>
+                cd output/<br>
+                git restore .<br>
+                /.git/refs/heads/ ; /.git/refs/tags/
             </div>
             <a href="https://github.com/Ebryx/GitDump" class="tool-link" target="_blank">🔗 GitDump en GitHub</a>
             <div class="explanation" style="margin-top: 16px;">
