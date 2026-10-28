@@ -55,3 +55,11 @@ https://github.com/portswigger/turbo-intruder
 https://portswigger.net/bappstore/9abaa233088242e8be252cd4ff534988
 
 https://docs.google.com/spreadsheets/d/1vNRxu5bqLMRaOte6p8DjsfJqL9ofLA0oChqF--RjDcU/edit?usp=sharing
+
+
+### Doork
+site:bo inurl:wp-login.php
+
+### Worpress reconocimiento
+/?author=1
+/wp-json/wp/v2/users
