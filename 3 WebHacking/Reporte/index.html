@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a las Pruebas de Penetración - Pentesting con Kali Linux</title>
+    
+    <!-- Reveal.js CSS - Tema Blanco -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+    
+    <!-- Code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+    
+    <style>
+        .reveal {
+            color: #2c3e50;
+        }
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            color: #2c3e50;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .left-col, .right-col {
+            width: 48%;
+            text-align: left;
+        }
+        .command-box {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+            color: #2c3e50;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        .command {
+            color: #2980b9;
+            font-weight: bold;
+        }
+        .explanation {
+            color: #2c3e50;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .example {
+            color: #d35400;
+            background: #fdf2e9;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            border-left: 3px solid #e67e22;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .tip {
+            background: #d5f4e6;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #27ae60;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+        .warning {
+            background: #fadbd8;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #e74c3c;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        .kali-color {
+            color: #557cf2;
+        }
+        .description {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .comparison-table {
+            font-size: 0.7em;
+            width: 100%;
+            color: #2c3e50;
+        }
+        .comparison-table th {
+            background: #e9ecef;
+            color: #2c3e50;
+            text-align: left;
+            padding: 10px;
+        }
+        .comparison-table td {
+            border-bottom: 1px solid #dee2e6;
+            padding: 10px;
+            vertical-align: top;
+        }
+        .slide-title {
+            color: #557cf2;
+            border-bottom: 2px solid #557cf2;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            color: #2c3e50;
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .exercise {
+            background: #fef9e6;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #e67e22;
+            text-align: left;
+            margin: 15px 0;
+        }
+        .exercise-title {
+            color: #e67e22;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .question-hint {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .badge {
+            background: #2c3e50;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+
+             <section>
+                <img src="logo.png" alt="">
+            </section>
+
+            <!-- Portada -->
+            <section>
+                <h2>Introducción a las<br>Pruebas de Penetración<br>Pruebas de Penetración</h2>
+                
+                <p class="tip">
+                    Juan Alberto Fajardo Canaza
+                </p>
+            </section>
+
+           <!-- INTRODUCCIÓN AL REPORTE -->
+<section>
+    <h2 class="slide-title">Reporte de Pruebas de Penetración</h2>
+
+    <div class="description">
+        <p>
+            Un reporte de pruebas de penetración es un documento técnico
+            que presenta los resultados obtenidos durante una evaluación
+            de seguridad.
+        </p>
+        <p>
+            Su finalidad es comunicar las vulnerabilidades identificadas,
+            demostrar su existencia mediante evidencias, evaluar su impacto
+            y proporcionar recomendaciones para su corrección.
+        </p>
+    </div>
+</section>
+
+<section>
+    <div class="three-column">
+        <div class="command-box">
+            <strong>Identificar</strong>
+            <p class="explanation">
+                Detectar debilidades y posibles vulnerabilidades.
+            </p>
+        </div>
+
+        <div class="command-box">
+            <strong>Demostrar</strong>
+            <p class="explanation">
+                Documentar los hallazgos mediante evidencias verificables.
+            </p>
+        </div>
+
+        <div class="command-box">
+            <strong>Recomendar</strong>
+            <p class="explanation">
+                Proponer medidas para corregir o mitigar los riesgos.
+            </p>
+        </div>
+    </div>
+</section>
+
+
+<!-- IMPACTO SOBRE LA SEGURIDAD -->
+<section>
+    <h2 class="slide-title">Evaluación del Impacto: Tríada CIA</h2>
+
+    <div class="description">
+        <p>
+            La tríada CIA es un modelo fundamental de seguridad de la
+            información. Permite analizar cómo una vulnerabilidad puede
+            afectar los activos y servicios de una organización.
+        </p>
+    </div>
+</section>
+
+<section>
+    <div class="three-column">
+        <div class="command-box">
+            <strong class="kali-color">Confidencialidad</strong>
+            <p class="explanation">
+                Protección de la información frente a accesos
+                o divulgaciones no autorizadas.
+            </p>
+        </div>
+
+        <div class="command-box">
+            <strong class="kali-color">Integridad</strong>
+            <p class="explanation">
+                Garantizar que la información no sea modificada
+                de manera no autorizada.
+            </p>
+        </div>
+
+        <div class="command-box">
+            <strong class="kali-color">Disponibilidad</strong>
+            <p class="explanation">
+                Garantizar que los sistemas y la información
+                estén accesibles cuando se necesiten.
+            </p>
+        </div>
+    </div>
+</section>
+
+
+<!-- CVSS -->
+<section>
+    <h2 class="slide-title">Clasificación de Vulnerabilidades: CVSS</h2>
+
+    <div class="description">
+        <p>
+            CVSS (Common Vulnerability Scoring System) es un estándar
+            que permite evaluar la severidad técnica de una vulnerabilidad
+            mediante una puntuación de 0.0 a 10.0.
+        </p>
+        <p>
+            La puntuación ayuda a priorizar la atención de las
+            vulnerabilidades identificadas.
+        </p>
+    </div>
+</section>
+
+<section>
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Puntuación</th>
+                <th>Severidad</th>
+                <th>Interpretación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0.0</td>
+                <td>Sin severidad</td>
+                <td>No presenta una puntuación de severidad.</td>
+            </tr>
+            <tr>
+                <td>0.1 - 3.9</td>
+                <td>Baja</td>
+                <td>Impacto técnico limitado.</td>
+            </tr>
+            <tr>
+                <td>4.0 - 6.9</td>
+                <td>Media</td>
+                <td>Puede representar un riesgo significativo.</td>
+            </tr>
+            <tr>
+                <td>7.0 - 8.9</td>
+                <td>Alta</td>
+                <td>Puede comprometer componentes importantes.</td>
+            </tr>
+            <tr>
+                <td>9.0 - 10.0</td>
+                <td>Crítica</td>
+                <td>Severidad técnica muy elevada.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="explanation">
+        <a href="https://www.first.org/cvss/" target="_blank">
+            https://www.first.org/cvss/
+        </a>
+    </p>
+</section>
+
+
+<!-- ESTRUCTURA DEL REPORTE -->
+<section>
+    <h2 class="slide-title">Estructura de un Reporte Profesional</h2>
+        <div class="command-box">
+            <strong>1. Portada</strong>
+            <p class="explanation">
+                Nombre del proyecto, organización, fecha,
+                responsable y versión del documento.
+            </p>
+        </div>
+
+        <div class="command-box">
+            <strong>2. Resumen ejecutivo</strong>
+            <p class="explanation">
+                Presentación general de los resultados,
+                riesgos principales y conclusiones.
+            </p>
+        </div>
+</section>
+<section>
+        <div class="command-box">
+            <strong>3. Alcance y objetivos</strong>
+            <p class="explanation">
+                Sistemas evaluados, direcciones IP, aplicaciones,
+                exclusiones y objetivos de las pruebas.
+            </p>
+        </div>
+
+        <div class="command-box">
+            <strong>4. Metodología</strong>
+            <p class="explanation">
+                Técnicas, herramientas y procedimientos
+                utilizados durante la evaluación.
+            </p>
+        </div>
+</section>
+<section>
+        <div class="command-box">
+            <strong>5. Hallazgos técnicos</strong>
+            <p class="explanation">
+                Vulnerabilidades identificadas, severidad,
+                impacto y descripción técnica.
+            </p>
+        </div>
+
+        <div class="command-box">
+            <strong>6. Evidencias</strong>
+            <p class="explanation">
+                Capturas de pantalla, solicitudes HTTP,
+                respuestas, registros y resultados.
+            </p>
+        </div>
+</section>
+<section>
+        <div class="command-box">
+            <strong>7. Recomendaciones</strong>
+            <p class="explanation">
+                Acciones correctivas y medidas de mitigación
+                para cada hallazgo.
+            </p>
+        </div>
+
+        <div class="command-box">
+            <strong>8. Conclusiones</strong>
+            <p class="explanation">
+                Estado general de seguridad y prioridades
+                de remediación.
+            </p>
+        </div>
+</section>
+
+
+<!-- DOCUMENTACIÓN DE HALLAZGOS -->
+<section>
+    <h2 class="slide-title">Ejemplo</h2>
+    <div class="command-box" style="font-size: 18px;">
+            <p><strong>Identificador:</strong> H-001</p>
+            <p><strong>Nombre:</strong> Exposición de información sensible</p>
+            <p><strong>Severidad:</strong> Alta</p>
+            <p><strong>Activo afectado:</strong> Aplicación web /api/users</p>
+            <p><strong>Descripción:</strong></p>
+            Se identificó que un endpoint de la aplicación permite
+            obtener información de usuarios sin aplicar los controles
+            de autorización correspondientes.
+            <p><strong>Impacto:</strong></p>
+            Un usuario no autorizado podría acceder a información
+            que debería estar restringida.
+            <p><strong>Evidencia:</strong></p>
+            Captura de la solicitud HTTP y de la respuesta obtenida
+            durante la validación.
+            <p><strong>Recomendación:</strong></p>
+            Implementar controles de autenticación y autorización
+            en el servidor, verificando los permisos del usuario
+            antes de entregar la información.
+    </div>
+</section>
+
+
+<!-- EVIDENCIAS -->
+<section>
+    <h2 class="slide-title">Documentación de Evidencias</h2>
+
+    <div class="two-column">
+        <div>
+            <h3>¿Qué incluir?</h3>
+            <ul>
+                <li>Capturas de pantalla.</li>
+                <li>Solicitudes y respuestas HTTP.</li>
+                <li>Fragmentos de código relevantes.</li>
+                <li>Resultados de herramientas.</li>
+                <li>Fecha y contexto de la prueba.</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3>Buenas prácticas</h3>
+            <ul>
+                <li>Mostrar evidencia clara y legible.</li>
+                <li>Ocultar contraseñas y datos sensibles.</li>
+                <li>Evitar capturas innecesarias.</li>
+                <li>Relacionar cada evidencia con un hallazgo.</li>
+                <li>Proteger la información del reporte.</li>
+            </ul>
+        </div>
+    </div>
+
+</section>
+
+
+
+
+<!-- RESUMEN EJECUTIVO -->
+<section>
+    <h2 class="slide-title">Resumen Ejecutivo vs. Informe Técnico</h2>
+
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Resumen ejecutivo</th>
+                <th>Informe técnico</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dirigido a gerencia y responsables de negocio.</td>
+                <td>Dirigido a desarrolladores y equipos técnicos.</td>
+            </tr>
+            <tr>
+                <td>Explica los riesgos principales.</td>
+                <td>Explica las vulnerabilidades encontradas.</td>
+            </tr>
+            <tr>
+                <td>Presenta el impacto para la organización.</td>
+                <td>Incluye evidencias y pasos de reproducción.</td>
+            </tr>
+            <tr>
+                <td>Prioriza las acciones de remediación.</td>
+                <td>Detalla las soluciones técnicas.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</section>
+
+
+<!-- EJEMPLOS DE REPORTES -->
+<section>
+    <h2 class="slide-title">Ejemplos de Reportes de Pentesting</h2>
+
+    <div class="description">
+        <p>
+            Revisar informes de referencia permite conocer cómo
+            se presentan los resultados de una evaluación de seguridad
+            en un entorno profesional.
+        </p>
+    </div>
+
+    <div class="command-box">
+        <p>
+            <a href="https://www.pentestreports.com/reports"
+               target="_blank">
+                https://www.pentestreports.com/reports
+            </a>
+        </p>
+    </div>
+</section>
+
+
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/zoom/zoom.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            plugins: [RevealHighlight, RevealNotes, RevealMarkdown, RevealZoom]
+        });
+    </script>
+</body>
+</html>
