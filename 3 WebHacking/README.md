@@ -65,6 +65,10 @@ site:bo inurl:wp-login.php
 /wp-json/wp/v2/users
 
 
+### Reporte
+https://docs.google.com/document/d/1ngGhSvQ7Vv_KevyoY3SP03GRVYhH-BzKZGQ7X8yhago/edit?usp=drive_link
+
+
 # Práctica: Enumeración de usuarios y pruebas de autenticación en WordPress
 
 ### Configuración del archivo `hosts`
