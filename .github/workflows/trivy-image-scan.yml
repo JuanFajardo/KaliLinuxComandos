@@ -1,0 +1,75 @@
+name: Trivy Image Scan
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+permissions:
+  contents: read
+
+jobs:
+  trivy-scan:
+    name: Scanear Imagen
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Obtener información del repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Instalar Docker
+      - name: Install Docker
+        run: |
+          docker --version
+          sudo systemctl start docker
+          sudo docker info
+
+      # 3. Descargar imagen Alpine
+      - name: Pull Alpine Image
+        run: |
+          docker pull alpine:3.12
+
+      # 4. Instalar Trivy
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https gnupg
+
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key \
+            | gpg --dearmor \
+            | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" \
+            | sudo tee /etc/apt/sources.list.d/trivy.list
+
+          sudo apt-get update
+          sudo apt-get install -y trivy
+
+          trivy --version
+
+      # 5. Escanear imagen y generar reporte JSON
+      - name: Scan Alpine Image
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+
+          trivy image \
+            --format json \
+            --output "${REPO_NAME}.json" \
+            alpine:3.12
+
+          ls -lh "${REPO_NAME}.json"
+
+      # 6. Enviar reporte al sistema externo
+      - name: Upload JSON Report
+        env:
+          API_TOKEN: ${{ secrets.TRIVY_API_TOKEN }}
+          UPLOAD_URL: http://pagina.com
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+
+          curl --fail-with-body \
+            --request POST \
+            "$UPLOAD_URL" \
+            -H "Authorization: Bearer ${API_TOKEN}" \
+            -F "file=@${REPO_NAME}.json"
