@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Respuesta a Incidentes y Análisis Forense · Apache</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/zenburn.min.css">
+    <style>
+        /* Estilos consistentes con el archivo original */
+        .reveal { color: #1e2b37; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        .reveal h1, .reveal h2, .reveal h3 { color: #0b3954; font-weight: 600; letter-spacing: -0.02em; }
+        .reveal h1 { font-size: 2.4em; }
+        .reveal h2 { font-size: 1.8em; border-left: 5px solid #1f7a8c; padding-left: 20px; }
+        .reveal h3 { font-size: 1.4em; color: #1f7a8c; }
+
+        /* Cajas de comandos y ejemplos */
+        .command-box {
+            background: #f0f5fa;
+            padding: 20px;
+            border-radius: 20px;
+            font-family: 'Courier New', 'Fira Code', monospace;
+            margin: 18px 0;
+            border-left: 6px solid #2a7faa;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        .command { color: #1b6b8f; font-weight: bold; }
+        .explanation { font-size: 0.9em; margin-top: 10px; color: #2c5a6e; }
+        .example {
+            background: #fef7e8;
+            padding: 14px 20px;
+            border-radius: 18px;
+            margin-top: 14px;
+            border-left: 5px solid #e67e22;
+            font-size: 0.9em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tip {
+            background: #dff0ea;
+            padding: 12px 20px;
+            border-radius: 18px;
+            border-left: 5px solid #1e7e5e;
+            font-size: 0.92em;
+            margin: 12px 0;
+        }
+        .warning {
+            background: #fbe9e7;
+            padding: 12px 20px;
+            border-radius: 18px;
+            border-left: 5px solid #c44536;
+            font-size: 0.92em;
+            margin: 12px 0;
+        }
+        .slide-title {
+            color: #1f7a8c;
+            border-bottom: 3px solid #1f7a8c;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .grid-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 24px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .grid-list li {
+            list-style-type: none;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        .grid-list li::before {
+            content: "▹";
+            color: #1f7a8c;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .two-columns {
+            display: flex;
+            gap: 24px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .col {
+            flex: 1;
+            background: #fafcfd;
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .badge-mariadb {
+            background: #004d66;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 500;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+        }
+        .reveal table {
+            font-size: 0.75rem;
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .reveal th {
+            background: #1f7a8c;
+            color: white;
+            padding: 10px 8px;
+            font-weight: 600;
+        }
+        .reveal td {
+            padding: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        pre {
+            font-size: 0.7rem;
+            line-height: 1.4;
+            border-radius: 14px;
+        }
+        .reveal pre code {
+            max-height: 350px;
+            border-radius: 14px;
+        }
+        .inline-icon {
+            font-weight: bold;
+            background: #eef2f5;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-family: monospace;
+        }
+        .file-structure {
+            background: #1e2b37;
+            color: #d4d4d4;
+            padding: 16px;
+            border-radius: 16px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            text-align: left;
+        }
+        .network-flow {
+            background: #eef2fa;
+            padding: 15px;
+            border-radius: 20px;
+            text-align: center;
+            font-family: monospace;
+            font-weight: bold;
+        }
+    </style>
+<style>
+.reveal .slides section { text-align: left; }
+.reveal .slides section.title-slide { text-align: center; }
+.reveal pre { width: 100%; }
+.reveal pre code { max-height: 420px; font-size: 0.82em; }
+.small-note { font-size: 0.72em; color: #526575; }
+.reveal ul, .reveal ol { display: block; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<section class="title-slide">
+  <h2 class="slide-title">Respuesta a Incidentes</h2>
+  <h3>Análisis forense de un servidor web Apache</h3>
+  <br><p class="tip">Juan Alberto Fajardo Canaza</p>
+</section>
+<section>
+  <img src="incidente.png" alt="">
+</section>
+
+<section>
+  <section><h2 class="slide-title">Fases de respuesta a incidentes</h2>
+    <div class="network-flow">Preparación → Detección y análisis → Contención<br>↓<br>Lecciones aprendidas ← Recuperación ← Erradicación</div>
+    <p class="small-note">Proceso cíclico: cada incidente permite mejorar la preparación.</p>
+  </section>
+  <section><h3 class="slide-title">1. Preparación</h3>
+    <ul><li>Definir responsables y canales de comunicación.</li><li>Establecer procedimientos.</li><li>Habilitar registros y sincronización horaria.</li><li>Preparar herramientas y respaldos.</li><li>Definir cómo preservar evidencias.</li></ul>
+  </section>
+  <section><h3 class="slide-title">2. Detección e identificación</h3>
+    <ul><li>Revisar alertas y registros.</li><li>Identificar IP, usuario, servicio y hora.</li><li>Determinar si es un evento o incidente.</li><li>Registrar cómo y cuándo se detectó.</li></ul>
+  </section>
+  <section><h3 class="slide-title">3. Análisis y evaluación</h3>
+    <ul><li>Determinar alcance y sistemas afectados.</li><li>Identificar el vector de ataque.</li><li>Establecer una línea de tiempo.</li><li>Evaluar impacto y criticidad.</li><li>Correlacionar logs web, autenticación y sistema.</li></ul>
+  </section>
+  <section><h3 class="slide-title">4. Contención</h3>
+    <ul><li>Limitar el origen del ataque.</li><li>Aplicar rate limiting o bloqueo temporal.</li><li>Deshabilitar cuentas comprometidas.</li><li>Preservar registros antes de modificar el sistema.</li></ul>
+    <div class="warning">Evitar acciones que destruyan evidencias necesarias para la investigación.</div>
+  </section>
+  <section><h3 class="slide-title">5. Erradicación y 6. Recuperación</h3>
+    <div class="two-columns">
+      <div class="col"><h4>Erradicación</h4><ul><li>Eliminar persistencia maliciosa.</li><li>Corregir la causa raíz.</li><li>Rotar credenciales expuestas.</li><li>Aplicar actualizaciones.</li></ul></div>
+      <div class="col"><h4>Recuperación</h4><ul><li>Restaurar servicios.</li><li>Verificar funcionamiento.</li><li>Monitorear nuevos intentos.</li><li>Validar controles.</li></ul></div>
+    </div>
+  </section>
+  <section><h3 class="slide-title">7. Lecciones aprendidas</h3>
+    <ul><li>Documentar causa, impacto y acciones.</li><li>Identificar controles insuficientes.</li><li>Actualizar procedimientos y alertas.</li><li>Definir recomendaciones y responsables.</li></ul>
+  </section>
+</section>
+
+<section>
+  <section><h2 class="slide-title">Análisis Forense Digital</h2>
+    <div class="tip">Permite identificar, preservar, examinar y documentar evidencias digitales relacionadas con un incidente.</div>
+    <ul><li>Determinar qué ocurrió y cuándo.</li><li>Identificar sistemas, cuentas y datos afectados.</li><li>Reconstruir las acciones del atacante.</li><li>Respaldar conclusiones con evidencias.</li></ul>
+  </section>
+  <section><h3 class="slide-title">Forense como parte de la respuesta</h3>
+    <div class="network-flow">Incidente → Identificación → Preservación<br>↓<br>Informe ← Análisis ← Adquisición</div>
+    <p>La preservación debe comenzar tan pronto como sea posible; el análisis forense acompaña varias fases de la respuesta.</p>
+  </section>
+  <section><h3 class="slide-title">Evidencias y preservación</h3>
+    <ul><li>Logs Apache: <code>access.log</code> y <code>error.log</code>.</li><li>Logs de autenticación de la aplicación y del sistema.</li><li>Registros de firewall, proxy y WAF.</li><li>Archivos, procesos y configuraciones relevantes.</li></ul>
+    <div class="tip">Conservar originales, trabajar sobre copias, registrar origen y fecha, y calcular hashes.</div>
+  </section>
+  <section><h3 class="slide-title">¿Qué registra Apache?</h3>
+    <div class="two-columns"><div class="col"><h4>access.log</h4><p>IP, fecha, método, recurso, código HTTP y tamaño de respuesta.</p></div><div class="col"><h4>error.log</h4><p>Errores y eventos del servidor, permisos y problemas de funcionamiento.</p></div></div>
+    <pre><code class="language-text">192.168.1.50 - - [16/Nov/2026:10:15:01 -0400] "POST /login HTTP/1.1" 401 512</code></pre>
+    <p class="small-note">El formato exacto depende de la configuración LogFormat de Apache.</p>
+  </section>
+</section>
+
+<section>
+  <section><h2 class="slide-title">Caso práctico: Apache comprometido</h2>
+    <div class="warning"><b>Escenario:</b> se detectan numerosos intentos de autenticación contra una aplicación alojada en Apache.</div>
+    
+  </section>
+  <section><h3 class="slide-title">¿Qué es fuerza bruta?</h3>
+    <p>Consiste en probar repetidamente diferentes contraseñas o combinaciones de credenciales hasta encontrar una válida.</p>
+    <ul><li>Solicitudes repetidas a <code>/login</code>.</li><li>Frecuencia elevada desde una o varias IP.</li><li>Numerosas respuestas de autenticación fallida.</li><li>Actividad automatizada en intervalos cortos.</li></ul>
+    <div class="tip">El volumen elevado es un indicador, no una prueba definitiva de ataque.</div>
+  </section>
+  <section><h3 class="slide-title">Actividad 1: obtener los logs</h3>
+    <pre><code class="language-bash">wget http://192.168.1.100/logs/access.log
+wget http://192.168.1.100/logs/error.log
+
+ls -lh *.log
+file access.log error.log</code></pre>
+    <div class="warning">En un entorno real, obtener los registros por un canal autorizado y seguro. No exponer públicamente los logs.</div>
+  </section>
+  <section><h3 class="slide-title">Actividad 2: preservar evidencias</h3>
+    <pre><code class="language-bash">sha256sum access.log error.log
+
+mkdir evidencia_original trabajo
+cp access.log error.log evidencia_original/
+cp access.log error.log trabajo/</code></pre>
+    <p>Guardar los hashes y realizar el análisis sobre las copias de trabajo.</p>
+  </section>
+  <section><h3 class="slide-title">Actividad 3: inspección inicial</h3>
+    <pre><code class="language-bash">head -n 20 access.log
+tail -n 20 access.log
+wc -l access.log
+grep '"POST ' access.log | head -n 20</code></pre>
+    <div class="example">Preguntas: ¿Cuántos registros existen? ¿Qué rutas reciben solicitudes POST? ¿Qué información contiene cada línea?</div>
+  </section>
+  <section><h3 class="slide-title">Actividad 4: IP con más solicitudes</h3>
+    <pre><code class="language-bash">cut -d ' ' -f 1 access.log |
+sort |
+uniq -c |
+sort -nr |
+head -n 10</code></pre>
+    <pre><code class="language-text">1500 192.168.1.50
+ 320 192.168.1.25
+  85 192.168.1.30
+  12 192.168.1.40</code></pre>
+    <div class="tip">Investigar la IP con mayor volumen; no asumir automáticamente que es maliciosa.</div>
+  </section>
+  <section><h3 class="slide-title">Actividad 5: filtrar una IP</h3>
+    <pre><code class="language-bash">grep '^192.168.1.50 ' access.log
+
+grep -c '^192.168.1.50 ' access.log
+
+grep '^192.168.1.50 ' access.log |
+grep '"POST '</code></pre>
+    <p>Buscar todos los registros, contar solicitudes y aislar los métodos POST de la IP investigada.</p>
+  </section>
+  <section><h3 class="slide-title">Actividad 6: localizar rutas de autenticación</h3>
+    <pre><code class="language-bash">grep -Ei 'login|signin|auth|authenticate' access.log
+
+grep '^192.168.1.50 ' access.log |
+grep '"POST ' |
+grep -Ei 'login|signin|auth'</code></pre>
+    <div class="example">Buscar rutas como <code>/login</code>, <code>/signin</code> o <code>/auth</code>. Ajustar los patrones a la aplicación real.</div>
+  </section>
+  <section><h3 class="slide-title">Actividad 7: revisar códigos HTTP</h3>
+    <pre><code class="language-bash">grep '^192.168.1.50 ' access.log |
+awk '{print $9}' |
+sort |
+uniq -c |
+sort -nr</code></pre>
+    <table><thead><tr><th>Código</th><th>Significado</th><th>Interpretación</th></tr></thead><tbody>
+      <tr><td>200</td><td>OK</td><td>Solicitud procesada.</td></tr><tr><td>302</td><td>Redirect</td><td>Redirección del flujo.</td></tr><tr><td>401</td><td>Unauthorized</td><td>Falta autenticación válida.</td></tr><tr><td>403</td><td>Forbidden</td><td>Acceso prohibido.</td></tr>
+    </tbody></table>
+    <p class="small-note">Los códigos HTTP no prueban por sí solos que el inicio de sesión haya fallado o tenido éxito.</p>
+  </section>
+  <section><h3 class="slide-title">Actividad 8: solicitudes por minuto</h3>
+    <pre><code class="language-bash">grep '^192.168.1.50 ' access.log |
+awk '{print $4}' |
+cut -d: -f1-3 |
+sort |
+uniq -c |
+sort -nr</code></pre>
+    <pre><code class="language-text">350 [16/Nov/2026:10:15
+300 [16/Nov/2026:10:14
+280 [16/Nov/2026:10:13
+150 [16/Nov/2026:10:12</code></pre>
+    <p>Permite identificar intervalos con concentración de solicitudes.</p>
+  </section>
+  <section><h3 class="slide-title">Actividad 9: extraer campos con AWK</h3>
+    <pre><code class="language-bash">grep '^192.168.1.50 ' access.log |
+awk '{print $4, $1, $6, $7, $9}'
+
+awk '{print $1, $7}' access.log | head</code></pre>
+    <p>Mostrar fecha, IP, método, recurso y código HTTP.</p>
+    <div class="tip">En el formato habitual de Apache, estos campos ocupan posiciones conocidas. Verificar la estructura si LogFormat fue personalizado.</div>
+  </section>
+  <section><h3 class="slide-title">Actividad 10: investigar posible acceso posterior</h3>
+    <pre><code class="language-bash">grep '^192.168.1.50 ' access.log |
+grep -Ei 'dashboard|admin|profile|account'
+
+grep '^192.168.1.50 ' access.log |
+grep -E '" (200|302|401|403) '</code></pre>
+    <div class="warning">Un 200 o una visita a /dashboard no demuestra acceso exitoso. Confirmar con logs de la aplicación, eventos de sesión y auditoría.</div>
+  </section>
+  <section><h3 class="slide-title">Actividad 11: correlacionar evidencias</h3>
+    <ul><li>Logs de aplicación: usuario, resultado y hora.</li><li>Logs del sistema: autenticaciones y privilegios.</li><li>Firewall o WAF: conexiones y bloqueos.</li><li>Apache: secuencia de peticiones y respuestas.</li></ul>
+    <pre><code class="language-bash">grep '192.168.1.50' error.log
+grep -Ei 'authentication|failed|invalid|login' error.log</code></pre>
+    <p class="small-note">Los eventos de autenticación de la aplicación no necesariamente aparecen en error.log de Apache.</p>
+  </section>
+  <section><h3 class="slide-title">Actividad 12: construir una línea de tiempo</h3>
+    <pre><code class="language-bash">grep '^192.168.1.50 ' access.log |
+sort -k4,4</code></pre>
+    <ol><li>Primer intento de autenticación.</li><li>Repetición y frecuencia.</li><li>Respuestas del servidor.</li><li>Cambio de comportamiento.</li><li>Solicitudes posteriores que requieran investigación.</li></ol>
+  </section>
+</section>
+
+<section>
+  <section><h2 class="slide-title">Interpretación del caso</h2>
+    <table><thead><tr><th>Indicador</th><th>Posible significado</th><th>Validación</th></tr></thead><tbody>
+      <tr><td>Muchas solicitudes POST</td><td>Automatización</td><td>Ruta y frecuencia</td></tr>
+      <tr><td>Numerosos 401</td><td>Autenticaciones no válidas</td><td>Logs de aplicación</td></tr>
+      <tr><td>Una IP dominante</td><td>Origen concentrado</td><td>Proxy, NAT y contexto</td></tr>
+      <tr><td>Acceso posterior al panel</td><td>Posible sesión válida</td><td>Auditoría y sesión</td></tr>
+    </tbody></table>
+    <div class="tip">Diferenciar hechos observados, hipótesis e información aún no confirmada.</div>
+  </section>
+  <section><h2 class="slide-title">Contención y mitigación</h2>
+    <ul><li>Limitar intentos y aplicar demoras progresivas.</li><li>Implementar MFA en cuentas sensibles.</li><li>Bloquear o rotar credenciales comprometidas.</li><li>Configurar alertas ante patrones anómalos.</li><li>Evaluar firewall, WAF y bloqueo temporal.</li><li>Revisar sesiones activas si existe compromiso.</li></ul>
+    <div class="warning">Preservar registros y coordinar las acciones con el responsable del sistema.</div>
+  </section>
+  <section><h2 class="slide-title">Informe técnico del incidente</h2>
+    <ul><li>Resumen y fecha de detección.</li><li>Sistemas y servicios afectados.</li><li>Fuentes de evidencia y hashes.</li><li>IP, rutas, frecuencia y códigos HTTP observados.</li><li>Línea de tiempo e impacto.</li><li>Conclusiones, limitaciones y recomendaciones.</li></ul>
+  </section>
+</section>
+
+
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/zoom/zoom.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  transition: 'slide',
+  slideNumber: true,
+  plugins: [ RevealHighlight, RevealNotes, RevealMarkdown, RevealZoom ]
+});
+</script>
+</body>
+</html>
